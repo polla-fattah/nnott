@@ -10,6 +10,9 @@ class Neuron:
         self.learning_rate = learning_rate
         self.last_input = None
         self.last_output = None
+        # gradient accumulators for mini-batch updates
+        self.grad_w = np.zeros_like(self.weights, dtype=np.float32)
+        self.grad_b = 0.0
 
     def activate(self, x):
         """Apply activation function"""
@@ -32,3 +35,7 @@ class Neuron:
         total = np.dot(inputs, self.weights) + self.bias
         self.last_output = self.activate(total)
         return self.last_output
+
+    def zero_grad(self):
+        self.grad_w.fill(0.0)
+        self.grad_b = 0.0

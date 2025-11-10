@@ -28,7 +28,8 @@ class Layer:
     def backward(self, output_gradient):
         """
         output_gradient: dL/dy_i for each neuron output y_i
-        Returns: dL/dx for this layer's input
+        Returns: dL/dx for this layer's input.
+        Accumulates parameter gradients on each neuron; does not update weights.
         """
         output_gradient = np.asarray(output_gradient, dtype=np.float32)
         input_gradient = np.zeros_like(self.inputs, dtype=np.float32)
@@ -45,13 +46,15 @@ class Layer:
 
             delta = output_gradient[i] * act_deriv  # dL/dz
 
-            old_weights = neuron.weights.copy()
+            # accumulate gradients for optimizer step later
+            neuron.grad_w += delta * self.inputs
+            neuron.grad_b += float(delta)
 
-            # update weights & bias (gradient descent)
-            neuron.weights -= self.learning_rate * delta * self.inputs
-            neuron.bias -= self.learning_rate * delta
-
-            # accumulate gradient wrt inputs
-            input_gradient += old_weights * delta
+            # accumulate gradient wrt inputs using current weights
+            input_gradient += neuron.weights * delta
 
         return input_gradient
+
+    def zero_grad(self):
+        for neuron in self.neurons:
+            neuron.zero_grad()

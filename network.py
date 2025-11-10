@@ -9,7 +9,7 @@ class Network:
         num_classes=10,
         hidden_sizes=(128, 64),    # smaller network for speed/stability
         learning_rate=0.01,
-        activation='sigmoid'
+        activation='relu'
     ):
         self.layers = []
         prev_size = input_size
@@ -23,7 +23,8 @@ class Network:
 
         # output layer
         self.layers.append(
-            Layer(prev_size, num_classes, activation=activation, learning_rate=learning_rate)
+            # keep output layer linear (logits) for CE
+            Layer(prev_size, num_classes, activation='linear', learning_rate=learning_rate)
         )
         self.num_classes = num_classes
 

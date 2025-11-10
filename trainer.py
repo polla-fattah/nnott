@@ -3,28 +3,32 @@ import matplotlib.pyplot as plt
 from data_utils import DataUtility
 from tqdm import tqdm  # <- ALWAYS use tqdm now
 import time  # at the top of trainer.py
-
-
-def mse_loss(pred, target):
-    return np.mean((pred - target) ** 2)
-
-
-def mse_loss_grad(pred, target):
-    return 2 * (pred - target) / pred.size
+from cross_entropy import CrossEntropyLoss
+from optimizer import SGD, Adam
 
 
 class Trainer:
-    def __init__(self, network, num_classes=10):
+    def __init__(self, network, num_classes=10, optimizer="sgd", lr=0.01, weight_decay=0.0):
         self.network = network
         self.num_classes = num_classes
         self.loss_history = []
+        self.criterion = CrossEntropyLoss(reduction="mean")
+        if isinstance(optimizer, str):
+            if optimizer.lower() == "sgd":
+                self.optimizer = SGD(lr=lr, momentum=0.0, weight_decay=weight_decay)
+            elif optimizer.lower() == "adam":
+                self.optimizer = Adam(lr=lr, weight_decay=weight_decay)
+            else:
+                raise ValueError("Unknown optimizer; use 'sgd' or 'adam' or pass an instance")
+        else:
+            self.optimizer = optimizer
 
     def _one_hot(self, label):
         v = np.zeros(self.num_classes, dtype=np.float32)
         v[int(label)] = 1.0
         return v
 
-    def train(self, X_train, y_train, epochs=5, verbose=True):
+    def train(self, X_train, y_train, epochs=5, batch_size=64, verbose=True):
         n = len(X_train)
         self.loss_history = []
         start_time = time.time()
@@ -40,18 +44,29 @@ class Trainer:
 
             total_loss = 0.0
 
-            # tqdm over indices so we’re 100% sure it runs
-            for i in tqdm(range(n), desc=f"Epoch {epoch}", unit="sample"):
-                x = X_shuf[i]
-                y = y_shuf[i]
+            # iterate over mini-batches
+            for start in tqdm(range(0, n, batch_size), desc=f"Epoch {epoch}", unit="batch"):
+                end = min(start + batch_size, n)
+                bs = end - start
 
-                target = self._one_hot(y)
-                pred = self.network.forward(x)
-                loss = mse_loss(pred, target)
-                total_loss += loss
+                # zero accumulators
+                for layer in self.network.layers:
+                    layer.zero_grad()
 
-                grad = mse_loss_grad(pred, target)
-                self.network.backward(grad)
+                # accumulate over batch
+                for i in range(start, end):
+                    x = X_shuf[i]
+                    y = y_shuf[i]
+
+                    logits = self.network.forward(x)
+                    loss = self.criterion.forward(logits, int(y))
+                    total_loss += loss
+
+                    grad_logits = self.criterion.backward(logits, int(y))
+                    self.network.backward(grad_logits)
+
+                # optimizer step with average gradients
+                self.optimizer.step(self.network.layers, batch_size=bs)
 
             avg_loss = total_loss / n
             self.loss_history.append(avg_loss)
