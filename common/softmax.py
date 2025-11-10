@@ -1,4 +1,5 @@
 import numpy as np
+# moved to common package
 
 
 def softmax(logits, axis=-1):
@@ -49,4 +50,3 @@ def _run_checks():
 
 if __name__ == "__main__":
     _run_checks()
-

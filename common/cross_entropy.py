@@ -1,5 +1,5 @@
 import numpy as np
-from softmax import softmax
+from common.softmax import softmax
 
 
 def logsumexp(x, axis=-1, keepdims=False):

@@ -1,10 +1,10 @@
 import time
 import numpy as np
 
-from data_utils import DataUtility
-from network import Network
-from trainer import Trainer
-from optimizer import SGD
+from common.data_utils import DataUtility
+from scalar.network import Network
+from scalar.trainer import Trainer
+from scalar.optimizer import SGD
 
 
 def run_experiment(name, trainer_args, train_args):
@@ -65,4 +65,3 @@ if __name__ == "__main__":
     )
 
     print("\nDone.")
-

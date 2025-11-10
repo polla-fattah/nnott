@@ -109,4 +109,3 @@ class Adam(Optimizer):
                 self._t[gid] = t
 
         self.zero_grad(layers)
-
