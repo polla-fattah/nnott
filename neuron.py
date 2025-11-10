@@ -1,4 +1,4 @@
-import cupy as np
+import numpy as np
 
 class Neuron:
     def __init__(self, num_inputs, activation='sigmoid', learning_rate=0.01):
