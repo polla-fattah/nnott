@@ -24,6 +24,11 @@ class DataUtility:
         X_train = X_train.astype(np.float32) / 255.0
         X_test = X_test.astype(np.float32) / 255.0
 
+        # Zero-center using training mean for better ReLU dynamics
+        train_mean = float(np.mean(X_train))
+        X_train = X_train - train_mean
+        X_test = X_test - train_mean
+
         # labels stay as ints
         y_train = y_train.astype(np.int64)
         y_test = y_test.astype(np.int64)

@@ -32,7 +32,7 @@ def main():
     trainer = Trainer(network, num_classes=num_classes)
 
     # 2. Start training (tip: start with 1–2 epochs to make it faster)
-    trainer.train(X_train, y_train, epochs=3, verbose=True)
+    trainer.train(X_train, y_train, epochs=20, verbose=True)
 
     # 3. Test the result (evaluate)
     trainer.evaluate(X_test, y_test)

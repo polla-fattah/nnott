@@ -8,7 +8,7 @@ from optimizer import SGD, Adam
 
 
 class Trainer:
-    def __init__(self, network, num_classes=10, optimizer="sgd", lr=0.01, weight_decay=0.0):
+    def __init__(self, network, num_classes=10, optimizer="adam", lr=0.001, weight_decay=0.0):
         self.network = network
         self.num_classes = num_classes
         self.loss_history = []
@@ -43,6 +43,9 @@ class Trainer:
             y_shuf = y_train[indices]
 
             total_loss = 0.0
+            batches = (n + batch_size - 1) // batch_size
+            if verbose:
+                print(f"Batches/epoch: {batches} | Batch size: {batch_size}")
 
             # iterate over mini-batches
             for start in tqdm(range(0, n, batch_size), desc=f"Epoch {epoch}", unit="batch"):

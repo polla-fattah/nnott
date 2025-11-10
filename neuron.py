@@ -3,9 +3,16 @@ import numpy as np
 class Neuron:
     def __init__(self, num_inputs, activation='sigmoid', learning_rate=0.01):
         """Initialize neuron with small random weights and zero bias"""
-        # small weights help avoid huge activations at the start
-        self.weights = (np.random.randn(num_inputs).astype(np.float32)) * 0.01
-        self.bias = 0.0
+        # initialization tuned per activation
+        if activation == 'relu':
+            # He initialization for ReLU
+            std = np.sqrt(2.0 / float(num_inputs))
+            self.weights = (np.random.randn(num_inputs).astype(np.float32)) * std
+            self.bias = 0.01  # small positive bias helps avoid dead ReLUs
+        else:
+            # fallback small Gaussian
+            self.weights = (np.random.randn(num_inputs).astype(np.float32)) * 0.01
+            self.bias = 0.0
         self.activation = activation
         self.learning_rate = learning_rate
         self.last_input = None
