@@ -4,6 +4,7 @@ import os, sys, numpy as np
 if __package__ is None or __package__ == "":
     sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
+
 from common.data_utils import DataUtility
 from vectorized.modules import Sequential, Linear, ReLU
 from vectorized.optim import Adam, SGD
@@ -30,7 +31,7 @@ def main():
     trainer = VTrainer(model, optim, num_classes=10)
 
     # Train
-    trainer.train(X_train, y_train, epochs=10, batch_size=32, verbose=True)
+    trainer.train(X_train, y_train, epochs=3, batch_size=32, verbose=True)
     trainer.plot_loss()
 
     # Evaluate
