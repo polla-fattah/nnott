@@ -1,10 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from data_utils import DataUtility
+from common.data_utils import DataUtility
 from tqdm import tqdm  # <- ALWAYS use tqdm now
 import time  # at the top of trainer.py
-from cross_entropy import CrossEntropyLoss
-from optimizer import SGD, Adam
+from common.cross_entropy import CrossEntropyLoss
+from scalar.optimizer import SGD, Adam
 
 
 class Trainer:

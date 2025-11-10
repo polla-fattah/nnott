@@ -1,5 +1,5 @@
 import numpy as np
-from cross_entropy import cross_entropy_from_logits, cross_entropy_grad_logits
+from common.cross_entropy import cross_entropy_from_logits, cross_entropy_grad_logits
 
 
 def make_toy(seed=0):
@@ -59,4 +59,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

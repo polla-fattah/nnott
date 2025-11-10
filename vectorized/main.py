@@ -1,8 +1,13 @@
-import numpy as np
-from data_utils import DataUtility
-from vmodules import Sequential, Linear, ReLU
-from voptim import Adam, SGD
-from vtrainer import VTrainer
+import os, sys, numpy as np
+
+# Allow running this file directly (adds project root to sys.path)
+if __package__ is None or __package__ == "":
+    sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+from common.data_utils import DataUtility
+from vectorized.modules import Sequential, Linear, ReLU
+from vectorized.optim import Adam, SGD
+from vectorized.trainer import VTrainer
 
 
 def main():
@@ -34,4 +39,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

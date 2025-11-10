@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 import time
-from cross_entropy import CrossEntropyLoss
+from common.cross_entropy import CrossEntropyLoss
 
 
 class VTrainer:
@@ -72,4 +72,3 @@ class VTrainer:
         plt.tight_layout()
         plt.show(block=False)
         plt.pause(0.001)
-

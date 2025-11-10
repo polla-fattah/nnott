@@ -72,4 +72,3 @@ class Adam(Optimizer):
             self._m[pid] = m
             self._v[pid] = v
             self._t[pid] = t
-

@@ -1,5 +1,5 @@
 import numpy as np
-from layer import Layer
+from scalar.layer import Layer
 
 
 class Network:

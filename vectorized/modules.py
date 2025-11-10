@@ -99,4 +99,3 @@ class Sequential(Module):
     def zero_grad(self):
         for m in self.modules:
             m.zero_grad()
-
