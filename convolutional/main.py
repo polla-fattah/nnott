@@ -7,6 +7,7 @@ if __package__ is None or __package__ == "":
     sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from common.data_utils import DataUtility
+import common.backend as backend
 from convolutional.architectures import (
     LeNet,
     BaselineCNN,
@@ -48,12 +49,20 @@ def parse_args():
     parser.add_argument("--load", type=str, help="Load weights before training/evaluation.")
     parser.add_argument("--no-augment", action="store_true", help="Disable shift augmentation.")
     parser.add_argument("--skip-train", action="store_true", help="Skip training phase (use with --load).")
+    parser.add_argument("--gpu", action="store_true", help="Use CuPy GPU backend if available.")
     return parser.parse_args()
 
 
 def main(opts=None):
     args = opts or parse_args()
     arch_name = args.arch.lower()
+    if args.gpu:
+        try:
+            backend.use_gpu()
+            print("GPU backend enabled via CuPy.")
+        except RuntimeError as exc:
+            print(f"[WARN] {exc} Falling back to CPU backend.")
+            backend.use_cpu()
     X_train, y_train, X_test, y_test = DataUtility("data").load_data()
     X_train = X_train.reshape(-1, 1, 28, 28).astype(np.float32)
     X_test = X_test.reshape(-1, 1, 28, 28).astype(np.float32)

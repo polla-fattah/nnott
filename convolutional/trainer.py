@@ -1,10 +1,13 @@
 import time
-import numpy as np
+import numpy as _np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
+import common.backend as backend
 from common.cross_entropy import CrossEntropyLoss
 from common.model_io import save_model, load_model as load_model_state
+
+xp = backend.xp
 
 
 class ConvTrainer:
@@ -25,8 +28,8 @@ class ConvTrainer:
         augment=True,
         lr_schedule=None,
     ):
-        X = np.asarray(X_train, dtype=np.float32)
-        y = np.asarray(y_train, dtype=np.int64)
+        X = backend.to_device(X_train, dtype=xp.float32)
+        y = backend.to_device(y_train, dtype=xp.int64)
         n = len(X)
         self.loss_history = []
         t0 = time.time()
@@ -43,7 +46,7 @@ class ConvTrainer:
             if hasattr(self.model, "train"):
                 self.model.train()
 
-            idx = np.random.permutation(n)
+            idx = xp.random.permutation(n)
             Xs = X[idx]
             ys = y[idx]
             running = 0.0
@@ -67,7 +70,7 @@ class ConvTrainer:
                 self.optimizer.step(self.model.parameters(), batch_size=len(xb))
 
             avg = running / n
-            self.loss_history.append(avg)
+            self.loss_history.append(float(avg))
             if verbose:
                 print(f"Epoch {epoch}: avg loss {avg:.5f}")
 
@@ -77,16 +80,16 @@ class ConvTrainer:
     def evaluate(self, X_test, y_test, batch_size=256):
         if hasattr(self.model, "eval"):
             self.model.eval()
-        X = np.asarray(X_test, dtype=np.float32)
-        y = np.asarray(y_test, dtype=np.int64)
+        X = backend.to_device(X_test, dtype=xp.float32)
+        y = backend.to_device(y_test, dtype=xp.int64)
         n = len(X)
         preds = []
         for start in range(0, n, batch_size):
             end = min(start + batch_size, n)
             logits = self.model.forward(X[start:end])
-            preds.append(np.argmax(logits, axis=1))
-        preds = np.concatenate(preds)
-        acc = float((preds == y).mean())
+            preds.append(xp.argmax(logits, axis=1))
+        preds = xp.concatenate(preds)
+        acc = float(backend.to_cpu((preds == y).mean()))
         print(f"Test accuracy: {acc * 100:.2f}%")
         return acc
 
@@ -106,32 +109,35 @@ class ConvTrainer:
     def show_misclassifications(self, X_test, y_test, max_images=25, cols=5):
         if hasattr(self.model, "eval"):
             self.model.eval()
-        X = np.asarray(X_test, dtype=np.float32)
-        y = np.asarray(y_test, dtype=np.int64)
+        X = backend.to_device(X_test, dtype=xp.float32)
+        y = backend.to_device(y_test, dtype=xp.int64)
         logits = self.model.forward(X)
-        preds = np.argmax(logits, axis=1)
-        mis_idx = np.where(preds != y)[0]
-        total = len(mis_idx)
+        preds = xp.argmax(logits, axis=1)
+        mis_idx = xp.where(preds != y)[0]
+        mis_idx_cpu = backend.to_cpu(mis_idx).astype(_np.int64, copy=False)
+        total = len(mis_idx_cpu)
         if total == 0:
             print("No misclassifications 🎉")
-            return mis_idx
-        mis_idx = mis_idx[:max_images]
-        imgs = X[mis_idx]
-        rows = int(np.ceil(len(mis_idx) / cols))
+            return mis_idx_cpu
+        mis_idx_cpu = mis_idx_cpu[:max_images]
+        imgs = backend.to_cpu(X[mis_idx_cpu])
+        preds_cpu = backend.to_cpu(preds[mis_idx_cpu])
+        y_cpu = backend.to_cpu(y[mis_idx_cpu])
+        rows = int(_np.ceil(len(mis_idx_cpu) / cols))
         fig, axes = plt.subplots(rows, cols, figsize=(cols * 2.2, rows * 2.2))
-        axes = np.atleast_1d(axes).ravel()
-        for ax, img, true, pred in zip(axes, imgs, y[mis_idx], preds[mis_idx]):
+        axes = _np.atleast_1d(axes).ravel()
+        for ax, img, true, pred in zip(axes, imgs, y_cpu, preds_cpu):
             disp = img[0]
             ax.imshow(disp, cmap="gray")
             ax.set_title(f"T:{int(true)} P:{int(pred)}")
             ax.axis("off")
-        for ax in axes[len(mis_idx):]:
+        for ax in axes[len(mis_idx_cpu):]:
             ax.axis("off")
-        fig.suptitle(f"Misclassifications: showing {len(mis_idx)} of {total}")
+        fig.suptitle(f"Misclassifications: showing {len(mis_idx_cpu)} of {total}")
         plt.tight_layout()
         plt.show(block=False)
         plt.pause(0.001)
-        return mis_idx
+        return mis_idx_cpu
 
     def save_model(self, path, metadata=None):
         meta = dict(metadata or {})
@@ -153,9 +159,9 @@ class ConvTrainer:
     def _augment_batch(self, xb, max_shift=2):
         if xb.ndim != 4:
             return xb
-        shifted = np.empty_like(xb)
+        shifted = xp.empty_like(xb)
         for i in range(len(xb)):
-            dx = np.random.randint(-max_shift, max_shift + 1)
-            dy = np.random.randint(-max_shift, max_shift + 1)
-            shifted[i] = np.roll(np.roll(xb[i], dy, axis=1), dx, axis=2)
+            dx = int(xp.random.randint(-max_shift, max_shift + 1))
+            dy = int(xp.random.randint(-max_shift, max_shift + 1))
+            shifted[i] = xp.roll(xp.roll(xb[i], dy, axis=1), dx, axis=2)
         return shifted

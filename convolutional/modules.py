@@ -1,5 +1,8 @@
-import numpy as np
-from numpy.lib.stride_tricks import sliding_window_view
+import numpy as _np
+import common.backend as backend
+
+xp = backend.xp
+np = xp  # shorthand for array operations on the active backend
 
 
 class Module:
@@ -39,7 +42,7 @@ class Module:
         state = {}
         params = self._state_tensors()
         if params:
-            state["__params__"] = {k: np.array(v, copy=True) for k, v in params.items()}
+            state["__params__"] = {k: backend.to_cpu(v) for k, v in params.items()}
         for child_name, child in self.named_children():
             child_state = child.state_dict()
             if child_state:
@@ -52,7 +55,7 @@ class Module:
             tensor = getattr(self, key, None)
             if tensor is None:
                 raise KeyError(f"Parameter '{key}' not found in {self.__class__.__name__}")
-            tensor[...] = value
+            tensor[...] = backend.to_device(value, dtype=tensor.dtype)
         for child_name, child in self.named_children():
             if child_name in state:
                 child.load_state_dict(state[child_name])
@@ -70,7 +73,8 @@ def _im2col(x, kernel_size, stride, padding):
     H_padded = H + 2 * ph
     W_padded = W + 2 * pw
     x_padded = np.pad(x, ((0, 0), (0, 0), (ph, ph), (pw, pw)), mode="constant")
-    windows = sliding_window_view(x_padded, (kh, kw), axis=(2, 3))
+    lib = np.lib if hasattr(np, "lib") else _np.lib
+    windows = lib.stride_tricks.sliding_window_view(x_padded, (kh, kw), axis=(2, 3))
     windows = windows[:, :, ::sh, ::sw, :, :]
     H_out = windows.shape[2]
     W_out = windows.shape[3]
