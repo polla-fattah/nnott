@@ -14,6 +14,15 @@ class Module:
     def zero_grad(self):
         pass
 
+    # Training/eval mode helpers
+    def train(self):
+        self.training = True
+        return self
+
+    def eval(self):
+        self.training = False
+        return self
+
 
 class Linear(Module):
     def __init__(self, in_features, out_features, activation_hint=None):
@@ -30,6 +39,7 @@ class Linear(Module):
         self._gW = np.zeros_like(self.W, dtype=np.float32)
         self._gb = np.zeros_like(self.b, dtype=np.float32)
         self._x = None
+        self.training = True
 
     def forward(self, x):
         x = np.asarray(x, dtype=np.float32)
@@ -59,6 +69,7 @@ class Linear(Module):
 class ReLU(Module):
     def __init__(self):
         self._mask = None
+        self.training = True
 
     def forward(self, x):
         x = np.asarray(x, dtype=np.float32)
@@ -77,6 +88,7 @@ class ReLU(Module):
 class Sequential(Module):
     def __init__(self, *modules):
         self.modules = list(modules)
+        self.training = True
 
     def forward(self, x):
         h = x
@@ -99,3 +111,47 @@ class Sequential(Module):
     def zero_grad(self):
         for m in self.modules:
             m.zero_grad()
+
+    def train(self):
+        self.training = True
+        for m in self.modules:
+            if hasattr(m, 'train'):
+                m.train()
+        return self
+
+    def eval(self):
+        self.training = False
+        for m in self.modules:
+            if hasattr(m, 'eval'):
+                m.eval()
+        return self
+
+
+class Dropout(Module):
+    def __init__(self, p=0.2):
+        assert 0.0 <= p < 1.0
+        self.p = float(p)
+        self.mask = None
+        self.training = True
+
+    def forward(self, x):
+        x = np.asarray(x, dtype=np.float32)
+        if x.ndim == 1:
+            x = x[None, :]
+        if self.training and self.p > 0.0:
+            keep_prob = 1.0 - self.p
+            self.mask = (np.random.rand(*x.shape) < keep_prob).astype(np.float32)
+            return (x * self.mask) / keep_prob
+        else:
+            self.mask = None
+            return x
+
+    def backward(self, grad_output):
+        go = np.asarray(grad_output, dtype=np.float32)
+        if go.ndim == 1:
+            go = go[None, :]
+        if self.training and self.p > 0.0 and self.mask is not None:
+            keep_prob = 1.0 - self.p
+            return (go * self.mask) / keep_prob
+        else:
+            return go

@@ -31,11 +31,13 @@ def main():
     trainer = VTrainer(model, optim, num_classes=10)
 
     # Train
-    trainer.train(X_train, y_train, epochs=3, batch_size=32, verbose=True)
+    trainer.train(X_train, y_train, epochs=2, batch_size=32, verbose=True)
     trainer.plot_loss()
 
     # Evaluate
     trainer.evaluate(X_test, y_test)
+    # Show misclassified test images (cap at 100 for practicality)
+    trainer.show_misclassifications(X_test, y_test, max_images=100, cols=5)
 
 
 if __name__ == "__main__":
