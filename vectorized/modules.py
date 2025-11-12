@@ -23,6 +23,40 @@ class Module:
         self.training = False
         return self
 
+    def _state_tensors(self):
+        return {}
+
+    def named_children(self):
+        for name, value in self.__dict__.items():
+            if isinstance(value, Module):
+                yield name, value
+            elif isinstance(value, (list, tuple)):
+                for idx, item in enumerate(value):
+                    if isinstance(item, Module):
+                        yield f"{name}.{idx}", item
+
+    def state_dict(self):
+        state = {}
+        params = self._state_tensors()
+        if params:
+            state["__params__"] = {k: np.array(v, copy=True) for k, v in params.items()}
+        for child_name, child in self.named_children():
+            child_state = child.state_dict()
+            if child_state:
+                state[child_name] = child_state
+        return state
+
+    def load_state_dict(self, state):
+        params = state.get("__params__", {})
+        for key, value in params.items():
+            tensor = getattr(self, key, None)
+            if tensor is None:
+                raise KeyError(f"Parameter '{key}' not found in {self.__class__.__name__}")
+            tensor[...] = value
+        for child_name, child in self.named_children():
+            if child_name in state:
+                child.load_state_dict(state[child_name])
+
 
 class Linear(Module):
     def __init__(self, in_features, out_features, activation_hint=None):
@@ -64,6 +98,9 @@ class Linear(Module):
     def zero_grad(self):
         self._gW.fill(0.0)
         self._gb.fill(0.0)
+
+    def _state_tensors(self):
+        return {"W": self.W, "b": self.b}
 
 
 class ReLU(Module):

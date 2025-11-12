@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 import time
 from common.cross_entropy import CrossEntropyLoss
+from common.model_io import save_model, load_model as load_model_state
 
 
 class VTrainer:
@@ -144,6 +145,15 @@ class VTrainer:
         plt.show(block=False)
         plt.pause(0.001)
         return mis_idx
+
+    def save_model(self, path, metadata=None):
+        meta = dict(metadata or {})
+        meta.setdefault("num_classes", self.num_classes)
+        save_model(self.model, path, meta)
+        return meta
+
+    def load_model(self, path):
+        return load_model_state(self.model, path)
 
     # --- augmentation utilities ---
     def _augment_batch(self, Xb_flat, side=28, max_shift=2, max_rotate_deg=10):
