@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 from common.cross_entropy import CrossEntropyLoss
+from common.model_io import save_model, load_model as load_model_state
 
 
 class ConvTrainer:
@@ -131,6 +132,15 @@ class ConvTrainer:
         plt.show(block=False)
         plt.pause(0.001)
         return mis_idx
+
+    def save_model(self, path, metadata=None):
+        meta = dict(metadata or {})
+        meta.setdefault("num_classes", self.num_classes)
+        save_model(self.model, path, meta)
+        return meta
+
+    def load_model(self, path):
+        return load_model_state(self.model, path)
 
     @staticmethod
     def _default_multistep_schedule(epochs, base_lr):
