@@ -6,7 +6,7 @@ if __package__ is None or __package__ == "":
     sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from common.data_utils import DataUtility
-from convolutional.architectures import lenet, deeper_baseline
+from convolutional.architectures import lenet, deeper_baseline, alexnet
 from convolutional.trainer import ConvTrainer
 from vectorized.optim import Adam
 
@@ -14,6 +14,7 @@ from vectorized.optim import Adam
 ARCH_REGISTRY = {
     "lenet": lenet,
     "baseline": deeper_baseline,
+    "alexnet": alexnet,
 }
 
 

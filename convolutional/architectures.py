@@ -70,4 +70,36 @@ def deeper_baseline(num_classes=10):
     )
 
 
-__all__ = ["lenet", "deeper_baseline"]
+def alexnet(num_classes=10):
+    """AlexNet-inspired architecture adapted for 28x28 grayscale images."""
+    return Sequential(
+        Conv2D(1, 64, kernel_size=3, stride=1, padding=1),
+        BatchNorm2D(64),
+        ReLU(),
+        MaxPool2D(kernel_size=2, stride=2),
+        Conv2D(64, 192, kernel_size=3, stride=1, padding=1),
+        BatchNorm2D(192),
+        ReLU(),
+        MaxPool2D(kernel_size=2, stride=2),
+        Conv2D(192, 384, kernel_size=3, stride=1, padding=1),
+        BatchNorm2D(384),
+        ReLU(),
+        Conv2D(384, 256, kernel_size=3, stride=1, padding=1),
+        BatchNorm2D(256),
+        ReLU(),
+        Conv2D(256, 256, kernel_size=3, stride=1, padding=1),
+        BatchNorm2D(256),
+        ReLU(),
+        MaxPool2D(kernel_size=2, stride=2),
+        Flatten(),
+        Dense(256 * 3 * 3, 1024, activation_hint="relu"),
+        ReLU(),
+        Dropout(p=0.5),
+        Dense(1024, 512, activation_hint="relu"),
+        ReLU(),
+        Dropout(p=0.5),
+        Dense(512, num_classes),
+    )
+
+
+__all__ = ["lenet", "deeper_baseline", "alexnet"]
