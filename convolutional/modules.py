@@ -373,3 +373,192 @@ class Softmax(Module):
     def backward(self, grad_output):
         # Softmax derivative is complex; return grad_output unchanged for loss layers to handle
         return grad_output
+
+
+class GlobalAvgPool2D(Module):
+    def __init__(self):
+        self._input_shape = None
+        self.training = True
+
+    def forward(self, x):
+        x = np.asarray(x, dtype=np.float32)
+        self._input_shape = x.shape
+        return x.mean(axis=(2, 3))
+
+    def backward(self, grad_output):
+        g = np.asarray(grad_output, dtype=np.float32)
+        N, C, H, W = self._input_shape
+        g = g[:, :, None, None] / float(H * W)
+        return np.broadcast_to(g, self._input_shape)
+
+
+class DepthwiseConv2D(Module):
+    def __init__(self, in_channels, kernel_size, stride=1, padding=0):
+        if isinstance(kernel_size, int):
+            kernel_size = (kernel_size, kernel_size)
+        if isinstance(stride, int):
+            stride = (stride, stride)
+        if isinstance(padding, int):
+            padding = (padding, padding)
+        self.kernel_size = kernel_size
+        self.stride = stride
+        self.padding = padding
+        kh, kw = kernel_size
+        scale = np.sqrt(2.0 / (kh * kw))
+        self.W = np.random.randn(in_channels, kh, kw).astype(np.float32) * scale
+        self._gW = np.zeros_like(self.W)
+        self._cache = None
+        self.in_channels = in_channels
+        self.training = True
+
+    def forward(self, x):
+        x = np.asarray(x, dtype=np.float32)
+        if x.ndim == 3:
+            x = x[None, :]
+        cols, cache = _im2col(x, self.kernel_size, self.stride, self.padding)
+        N, _, H, W = x.shape
+        H_out = _compute_output_dim(H, self.kernel_size[0], self.stride[0], self.padding[0])
+        W_out = _compute_output_dim(W, self.kernel_size[1], self.stride[1], self.padding[1])
+        cols = cols.reshape(N * H_out * W_out, self.in_channels, -1)
+        out = np.einsum("nck,ck->nc", cols, self.W.reshape(self.in_channels, -1))
+        out = out.reshape(N, H_out, W_out, self.in_channels).transpose(0, 3, 1, 2)
+        self._cache = (cols, cache, (H_out, W_out))
+        return out
+
+    def backward(self, grad_output):
+        cols, cache, _ = self._cache
+        g = grad_output.transpose(0, 2, 3, 1).reshape(cols.shape[0], cols.shape[1])
+        self._gW += np.einsum("nc,nck->ck", g, cols).reshape(self.W.shape)
+        grad_cols = g[:, :, None] * self.W.reshape(1, self.in_channels, -1)
+        grad_cols = grad_cols.reshape(cols.shape[0], -1)
+        dx = _col2im(grad_cols, cache)
+        return dx
+
+    def parameters(self):
+        return [(self.W, self._gW)]
+
+    def zero_grad(self):
+        self._gW.fill(0.0)
+
+
+class LayerNorm2D(Module):
+    def __init__(self, num_channels, eps=1e-5):
+        self.gamma = np.ones(num_channels, dtype=np.float32)
+        self.beta = np.zeros(num_channels, dtype=np.float32)
+        self.eps = eps
+        self._cache = None
+        self._ggamma = np.zeros_like(self.gamma)
+        self._gbeta = np.zeros_like(self.beta)
+        self.training = True
+
+    def forward(self, x):
+        x = np.asarray(x, dtype=np.float32)
+        if x.ndim == 3:
+            x = x[None, :]
+        x_perm = x.transpose(0, 2, 3, 1)
+        mean = x_perm.mean(axis=-1, keepdims=True)
+        var = x_perm.var(axis=-1, keepdims=True)
+        inv_std = 1.0 / np.sqrt(var + self.eps)
+        x_hat = (x_perm - mean) * inv_std
+        out = self.gamma.reshape(1, 1, 1, -1) * x_hat + self.beta.reshape(1, 1, 1, -1)
+        self._cache = (x_hat, inv_std, x_perm.shape)
+        return out.transpose(0, 3, 1, 2)
+
+    def backward(self, grad_output):
+        x_hat, inv_std, shape = self._cache
+        g_perm = grad_output.transpose(0, 2, 3, 1)
+        self._gbeta += g_perm.sum(axis=(0, 1, 2))
+        self._ggamma += (g_perm * x_hat).sum(axis=(0, 1, 2))
+        grad = g_perm * self.gamma.reshape(1, 1, 1, -1)
+        C = shape[-1]
+        sum_grad = grad.sum(axis=-1, keepdims=True)
+        sum_grad_xhat = (grad * x_hat).sum(axis=-1, keepdims=True)
+        dx = (grad - sum_grad / C - x_hat * sum_grad_xhat / C) * inv_std
+        return dx.transpose(0, 3, 1, 2)
+
+    def parameters(self):
+        return [(self.gamma, self._ggamma), (self.beta, self._gbeta)]
+
+    def zero_grad(self):
+        self._ggamma.fill(0.0)
+        self._gbeta.fill(0.0)
+
+
+class SiLU(Module):
+    def __init__(self):
+        self._sig = None
+        self._x = None
+        self.training = True
+
+    def forward(self, x):
+        x = np.asarray(x, dtype=np.float32)
+        self._x = x
+        sig = 1.0 / (1.0 + np.exp(-x))
+        self._sig = sig
+        return x * sig
+
+    def backward(self, grad_output):
+        sig = self._sig
+        x = self._x
+        return grad_output * (sig + x * sig * (1 - sig))
+
+
+class GELU(Module):
+    def __init__(self, approximate=True):
+        self.approximate = approximate
+        self._x = None
+        self.training = True
+
+    def forward(self, x):
+        x = np.asarray(x, dtype=np.float32)
+        self._x = x
+        if self.approximate:
+            return 0.5 * x * (1.0 + np.tanh(np.sqrt(2 / np.pi) * (x + 0.044715 * x ** 3)))
+        else:
+            return 0.5 * x * (1.0 + erf(x / np.sqrt(2)))
+
+    def backward(self, grad_output):
+        x = self._x
+        if self.approximate:
+            tanh_term = np.tanh(np.sqrt(2 / np.pi) * (x + 0.044715 * x ** 3))
+            sech2 = 1 - tanh_term ** 2
+            term = 0.5 * (1 + tanh_term) + 0.5 * x * sech2 * np.sqrt(2 / np.pi) * (1 + 3 * 0.044715 * x ** 2)
+            return grad_output * term
+        else:
+            raise NotImplementedError("Exact GELU derivative not implemented")
+
+
+class SqueezeExcite(Module):
+    def __init__(self, channels, reduction=4):
+        self.channels = channels
+        hidden = max(1, channels // reduction)
+        self.pool = GlobalAvgPool2D()
+        self.fc1 = Dense(channels, hidden)
+        self.act = SiLU()
+        self.fc2 = Dense(hidden, channels)
+        self._sigma = None
+        self._input = None
+        self.training = True
+
+    def forward(self, x):
+        self._input = x
+        y = self.pool.forward(x)
+        y = self.fc1.forward(y)
+        y = self.act.forward(y)
+        y = self.fc2.forward(y)
+        sigma = 1.0 / (1.0 + np.exp(-y))
+        self._sigma = sigma
+        scale = sigma.reshape(sigma.shape[0], sigma.shape[1], 1, 1)
+        return x * scale
+
+    def backward(self, grad_output):
+        sigma = self._sigma
+        x = self._input
+        grad_input = grad_output * sigma.reshape(sigma.shape[0], sigma.shape[1], 1, 1)
+        grad_sigma = (grad_output * x).sum(axis=(2, 3))
+        grad_sigma = grad_sigma * sigma * (1 - sigma)
+        grad = self.fc2.backward(grad_sigma)
+        grad = self.act.backward(grad)
+        grad = self.fc1.backward(grad)
+        grad = self.pool.backward(grad)
+        return grad_input + grad

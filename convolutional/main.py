@@ -6,16 +6,27 @@ if __package__ is None or __package__ == "":
     sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from common.data_utils import DataUtility
-from convolutional.architectures import lenet, deeper_baseline, alexnet, vgg16
+from convolutional.architectures import (
+    LeNet,
+    BaselineCNN,
+    AlexNet,
+    VGG16,
+    ResNet18,
+    EfficientNetLite0,
+    ConvNeXtTiny,
+)
 from convolutional.trainer import ConvTrainer
 from vectorized.optim import Adam
 
 
 ARCH_REGISTRY = {
-    "lenet": lenet,
-    "baseline": deeper_baseline,
-    "alexnet": alexnet,
-    "vgg16": vgg16,
+    "lenet": LeNet(),
+    "baseline": BaselineCNN(),
+    "alexnet": AlexNet(),
+    "vgg16": VGG16(),
+    "resnet18": ResNet18(),
+    "efficientnet_lite0": EfficientNetLite0(),
+    "convnext_tiny": ConvNeXtTiny(),
 }
 
 
@@ -23,7 +34,8 @@ def build_cnn(name="baseline", num_classes=10):
     name = name.lower()
     if name not in ARCH_REGISTRY:
         raise ValueError(f"Unknown architecture '{name}'. Available: {list(ARCH_REGISTRY)}")
-    return ARCH_REGISTRY[name](num_classes=num_classes)
+    builder = ARCH_REGISTRY[name]
+    return builder.build(num_classes=num_classes)
 
 
 def main(arch_name="baseline"):
