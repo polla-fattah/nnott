@@ -1,4 +1,5 @@
 import os, sys, numpy as np
+import argparse
 import matplotlib.pyplot as plt
 
 # Allow running this file directly (adds project root to sys.path)
@@ -12,33 +13,66 @@ from vectorized.optim import Adam, SGD
 from vectorized.trainer import VTrainer
 
 
-def main():
+def parse_args():
+    parser = argparse.ArgumentParser(description="Train/evaluate the vectorized MLP.")
+    parser.add_argument("--epochs", type=int, default=2, help="Number of training epochs.")
+    parser.add_argument("--batch-size", type=int, default=32, help="Mini-batch size.")
+    parser.add_argument(
+        "--hidden-sizes",
+        type=str,
+        default="256,128",
+        help="Comma-separated hidden layer sizes (e.g., 256,128,64).",
+    )
+    parser.add_argument(
+        "--optimizer",
+        choices=["adam", "sgd"],
+        default="adam",
+        help="Optimizer to use for training.",
+    )
+    parser.add_argument("--lr", type=float, default=1e-3, help="Learning rate.")
+    parser.add_argument("--weight-decay", type=float, default=1e-4, help="Weight decay value.")
+    parser.add_argument(
+        "--plot",
+        action="store_true",
+        help="Enable matplotlib plots (disabled by default).",
+    )
+    return parser.parse_args()
+
+
+def main(opts=None):
+    args = opts or parse_args()
+
     # Load and flatten
     X_train, y_train, X_test, y_test = DataUtility("data").load_data()
     X_train = X_train.reshape(len(X_train), -1).astype(np.float32)
     X_test = X_test.reshape(len(X_test), -1).astype(np.float32)
 
-    # Build vectorized model (logits output)
-    model = Sequential(
-        Linear(28*28, 256, activation_hint='relu'),
-        ReLU(),
-        Linear(256, 128, activation_hint='relu'),
-        ReLU(),
-        Linear(128, 10, activation_hint=None),
-    )
+    hidden_sizes = tuple(
+        int(h) for h in args.hidden_sizes.split(",") if h.strip()
+    ) or (256, 128)
 
-    # Optimizer: Adam default
-    optim = Adam(lr=1e-3, weight_decay=1e-4)
+    layers = []
+    in_dim = 28 * 28
+    for h in hidden_sizes:
+        layers.append(Linear(in_dim, h, activation_hint="relu"))
+        layers.append(ReLU())
+        in_dim = h
+    layers.append(Linear(in_dim, 10, activation_hint=None))
+    model = Sequential(*layers)
+
+    if args.optimizer == "sgd":
+        optim = SGD(lr=args.lr, momentum=0.9, weight_decay=args.weight_decay)
+    else:
+        optim = Adam(lr=args.lr, weight_decay=args.weight_decay)
     trainer = VTrainer(model, optim, num_classes=10)
 
-    # Train
-    trainer.train(X_train, y_train, epochs=2, batch_size=32, verbose=True)
-    plot_loss(trainer.loss_history)
+    trainer.train(X_train, y_train, epochs=args.epochs, batch_size=args.batch_size, verbose=True)
+    if args.plot:
+        plot_loss(trainer.loss_history)
 
-    # Evaluate
     trainer.evaluate(X_test, y_test)
     imgs, preds, trues, total = trainer.misclassification_data(X_test, y_test, max_images=100)
-    if total:
+    if args.plot and total:
         plot_misclassifications(imgs, preds, trues, total)
 
 

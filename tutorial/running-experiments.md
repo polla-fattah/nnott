@@ -78,6 +78,23 @@ python convolutional/main.py resnet18 --epochs 1 --batch-size 64 --gpu \
 
 ---
 
+## Quick-Start Scripts
+
+Prefer a guided walkthrough? Each module has a scenario-driven helper in `scripts/`:
+
+- `python scripts/quickstart_scalar.py --scenario basic --plot`  
+  Loads MNIST, previews a handful of samples, trains the scalar MLP, and optionally plots loss/prediction grids. Alternate scenarios compare optimizers or plug in Fashion-MNIST style `.npy` files.
+
+- `python scripts/quickstart_vectorized.py --scenario hidden-sweep --plot`  
+  Sweeps over several hidden-layer configurations, printing accuracies and (optionally) plotting curves. Use `--scenario optimizer-compare` to benchmark SGD vs Adam in minutes.
+
+- `python scripts/quickstart_convolutional.py --scenario gpu-fast --lookahead --plot`  
+  Trains ResNet18 with Lookahead + gradient clipping on GPU (falls back to CPU). Additional scenarios demonstrate CPU baselines, checkpoint resume flows, and dataset swaps (e.g., CIFAR-10 shaped data via `--image-shape 3,32,32`).
+
+Each script exposes flags (`--epochs`, `--batch-size`, dataset overrides, `--plot`, etc.) so students can experiment interactively without editing the main entrypoints.
+
+---
+
 ## Suggested Experiments
 
 | Idea | What to measure |

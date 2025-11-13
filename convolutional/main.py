@@ -83,6 +83,16 @@ def parse_args():
         default=0.5,
         help="Lookahead interpolation factor alpha.",
     )
+    parser.add_argument(
+        "--plot",
+        action="store_true",
+        help="Enable matplotlib plots (disabled by default).",
+    )
+    parser.add_argument(
+        "--show-misclassified",
+        action="store_true",
+        help="Collect misclassified samples after evaluation (uses extra GPU memory).",
+    )
     return parser.parse_args()
 
 
@@ -122,14 +132,16 @@ def main(opts=None):
             verbose=True,
             augment=not args.no_augment,
         )
-        plot_loss(trainer.loss_history)
+        if args.plot:
+            plot_loss(trainer.loss_history)
     else:
         print("Skipping training as requested.")
 
     trainer.evaluate(X_test, y_test)
-    imgs, preds, trues, total = trainer.collect_misclassifications(X_test, y_test, max_images=25)
-    if total:
-        plot_misclassifications(imgs, preds, trues, total, cols=5)
+    if args.show_misclassified or args.plot:
+        imgs, preds, trues, total = trainer.collect_misclassifications(X_test, y_test, max_images=25)
+        if args.plot and total:
+            plot_misclassifications(imgs, preds, trues, total, cols=5)
 
     if args.save:
         metadata = {"arch": arch_name, "epochs": args.epochs}

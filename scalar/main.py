@@ -39,7 +39,7 @@ def main():
 
     # 2. Create network & trainer
     # for MNIST-like data: 28x28, 10 classes
-    num_classes = 10  # labels 0–9
+    num_classes = 10  # labels 0-9
 
     network = Network(
         input_size=28 * 28,       # explicit, matches (28,28)
