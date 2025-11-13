@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # Optimization Lab (Jupyter Walkthrough)
 
 **Breadcrumb:** [Home](README.md) / Optimization Lab (Jupyter Walkthrough)
@@ -140,3 +144,6 @@ Save the notebook as `notebooks/optimization_lab.ipynb` (or similar) so future s
 
 **Navigation:**
 [Back to Running Experiments](../running-experiments.md)
+
+---
+Return to [Tutorial Hub](README.md)

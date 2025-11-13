@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # Loss & Softmax: Cross-Entropy from Logits
 
 **Breadcrumb:** [Home](../README.md) / [Core Concepts](../core-concepts.md) / Loss & Softmax: Cross-Entropy from Logits
@@ -44,3 +48,6 @@ Directly computing softmax can overflow when logits are large. The code uses the
 
 **Navigation:**
 [Back to Core Concepts](../core-concepts.md)
+
+---
+Return to [Tutorial Hub](../README.md)

@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # Baseline CNN
 
 **Breadcrumb:** [Home](../README.md) / [Architecture Gallery](../architecture-gallery.md) / Baseline CNN
@@ -37,3 +41,6 @@ The BaselineCNN is a compact starter architecture built specifically for the san
 
 **Navigation:**
 [Previous (AlexNet (2012))](alexnet.md) | [Back to Gallery](../architecture-gallery.md) | [Next (ConvNeXt-Tiny (2022))](convnext-tiny.md)
+
+---
+Return to [Tutorial Hub](../README.md)

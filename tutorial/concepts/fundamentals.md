@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # Fundamentals: Neurons, Layers, Networks
 
 **Breadcrumb:** [Home](../README.md) / [Core Concepts](../core-concepts.md) / Fundamentals: Neurons, Layers, Networks
@@ -38,3 +42,6 @@ Understanding neural networks starts with the simplest building block: a neuron 
 
 **Navigation:**
 [Back to Core Concepts](../core-concepts.md)
+
+---
+Return to [Tutorial Hub](../README.md)

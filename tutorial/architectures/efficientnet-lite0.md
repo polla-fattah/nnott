@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # EfficientNet-Lite0 (2019)
 
 **Breadcrumb:** [Home](../README.md) / [Architecture Gallery](../architecture-gallery.md) / EfficientNet-Lite0 (2019)
@@ -46,3 +50,6 @@ EfficientNet (Tan & Le) introduced a family of models that scale depth, width, a
 
 **Navigation:**
 [Previous (ConvNeXt-Tiny (2022))](convnext-tiny.md) | [Back to Gallery](../architecture-gallery.md) | [Next (LeNet-5 (1998))](lenet.md)
+
+---
+Return to [Tutorial Hub](../README.md)

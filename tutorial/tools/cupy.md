@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # CuPy Quick Notes
 
 **Breadcrumb:** [Home](../README.md) / [Project Tour](../project-tour.md) / CuPy Quick Notes
@@ -25,3 +29,6 @@ Once configured, add `--gpu` to any training command to feel the difference in t
 
 **Navigation:**
 [Back to Project Tour](../project-tour.md)
+
+---
+Return to [Tutorial Hub](../README.md)

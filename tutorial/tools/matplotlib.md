@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # Matplotlib Quick Notes
 
 **Breadcrumb:** [Home](../README.md) / [Project Tour](../project-tour.md) / Matplotlib Quick Notes
@@ -24,3 +28,6 @@ Official docs: <https://matplotlib.org/stable/contents.html>
 
 **Navigation:**
 [Back to Project Tour](../project-tour.md)
+
+---
+Return to [Tutorial Hub](../README.md)

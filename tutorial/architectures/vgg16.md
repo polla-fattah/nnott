@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # VGG-16 (2014)
 
 **Breadcrumb:** [Home](../README.md) / [Architecture Gallery](../architecture-gallery.md) / VGG-16 (2014)
@@ -46,3 +50,6 @@ K. Simonyan and A. Zisserman’s VGG-16 demonstrated that a deep network built f
 
 **Navigation:**
 [Previous (ResNet-18 (2015))](resnet18.md) | [Back to Gallery](../architecture-gallery.md) | [Next (AlexNet (2012))](alexnet.md)
+
+---
+Return to [Tutorial Hub](../README.md)

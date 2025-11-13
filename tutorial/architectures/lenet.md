@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # LeNet-5 (1998)
 
 **Breadcrumb:** [Home](../README.md) / [Architecture Gallery](../architecture-gallery.md) / LeNet-5 (1998)
@@ -46,3 +50,6 @@ In this project, the implementation mirrors the original layout but uses ReLU ac
 
 **Navigation:**
 [Previous (EfficientNet-Lite0 (2019))](efficientnet-lite0.md) | [Back to Gallery](../architecture-gallery.md) | [Next (ResNet-18 (2015))](resnet18.md)
+
+---
+Return to [Tutorial Hub](../README.md)

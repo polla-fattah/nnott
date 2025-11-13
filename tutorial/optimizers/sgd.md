@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # Stochastic Gradient Descent (SGD) & Momentum
 
 **Breadcrumb:** [Home](../README.md) / [Optimizers Hub](../concepts/optimizers.md) / Stochastic Gradient Descent (SGD) & Momentum
@@ -76,3 +80,6 @@ trainer.train(X_train, y_train, epochs=20, batch_size=128)
 
 **Navigation:**
 [Back to Optimizers Hub](../concepts/optimizers.md)
+
+---
+Return to [Tutorial Hub](../README.md)

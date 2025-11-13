@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # 05 · Architecture Gallery & Dataset Notes
 
 **Breadcrumb:** [Home](README.md) / 05 · Architecture Gallery & Dataset Notes
@@ -54,3 +58,6 @@ Pick any architecture above to dive into its dedicated tutorial and explore how 
 
 1. **Historical timeline:** Choose three architectures from different eras (e.g., LeNet, VGG16, ConvNeXt) and create a comparison table that lists their parameter counts, training tricks, and MNIST accuracy after 2 epochs. Highlight one design idea that evolved between each pair.
 2. **Residual vs non-residual:** Train ResNet-18 for one epoch, then (for learning purposes only) comment out the skip connections in a single block and retrain. Document how loss and accuracy change, and explain why the skip path matters.
+
+---
+Return to [Tutorial Hub](README.md)

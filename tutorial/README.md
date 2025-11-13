@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # Neural Networks From Scratch - Tutorial Hub
 
 Welcome to the learning guide for the **Neural Networks From Scratch (NNFS)** sandbox. This tutorial series walks through the entire project—why it exists, how it is organized, and how to run meaningful experiments. Use the navigation list below to jump to the relevant module.
@@ -40,3 +44,6 @@ Welcome to the learning guide for the **Neural Networks From Scratch (NNFS)** sa
 | Scalar loop walkthrough | `python scripts/quickstart_scalar.py --scenario basic --plot` |
 
 > Tip: Each module is self-contained. Read them in order or jump directly to the section that matches your current work.
+
+---
+Return to [Tutorial Hub](README.md)

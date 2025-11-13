@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # Normalization Layers
 
 **Breadcrumb:** [Home](../README.md) / [Core Concepts](../core-concepts.md) / Normalization Layers
@@ -36,3 +40,6 @@ Normalization stabilizes activations, speeds up training, and often improves gen
 
 **Navigation:**
 [Back to Core Concepts](../core-concepts.md)
+
+---
+Return to [Tutorial Hub](../README.md)

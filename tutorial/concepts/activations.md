@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # Activation Functions
 
 **Breadcrumb:** [Home](../README.md) / [Core Concepts](../core-concepts.md) / Activation Functions
@@ -45,3 +49,6 @@ Activations introduce non-linearity so networks can model complex decision bound
 
 **Navigation:**
 [Back to Core Concepts](../core-concepts.md)
+
+---
+Return to [Tutorial Hub](../README.md)

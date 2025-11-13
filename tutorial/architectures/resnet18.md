@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # ResNet-18 (2015)
 
 **Breadcrumb:** [Home](../README.md) / [Architecture Gallery](../architecture-gallery.md) / ResNet-18 (2015)
@@ -45,3 +49,6 @@ Residual Networks (ResNets) by He et al. solved the “degradation” problem: d
 
 **Navigation:**
 [Previous (LeNet-5 (1998))](lenet.md) | [Back to Gallery](../architecture-gallery.md) | [Next (VGG-16 (2014))](vgg16.md)
+
+---
+Return to [Tutorial Hub](../README.md)

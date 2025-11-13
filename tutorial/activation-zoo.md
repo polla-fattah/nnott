@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # Activation Zoo
 
 **Breadcrumb:** [Home](README.md) / Activation Zoo
@@ -95,3 +99,6 @@ Document your observations in the notebook so you can refer back when choosing a
 
 **Navigation:**
 [Back to Core Concepts](../core-concepts.md)
+
+---
+Return to [Tutorial Hub](README.md)

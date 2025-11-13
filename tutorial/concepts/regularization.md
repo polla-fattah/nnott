@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # Regularization & Augmentation
 
 **Breadcrumb:** [Home](../README.md) / [Core Concepts](../core-concepts.md) / Regularization & Augmentation
@@ -42,3 +46,6 @@ Regularization techniques keep models from overfitting and improve generalizatio
 
 **Navigation:**
 [Back to Core Concepts](../core-concepts.md)
+
+---
+Return to [Tutorial Hub](../README.md)

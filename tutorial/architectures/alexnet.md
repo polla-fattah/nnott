@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # AlexNet (2012)
 
 **Breadcrumb:** [Home](../README.md) / [Architecture Gallery](../architecture-gallery.md) / AlexNet (2012)
@@ -45,3 +49,6 @@ AlexNet, created by Alex Krizhevsky, Ilya Sutskever, and Geoffrey Hinton, won th
 
 **Navigation:**
 [Previous (VGG-16 (2014))](vgg16.md) | [Back to Gallery](../architecture-gallery.md) | [Next (Baseline CNN)](baseline.md)
+
+---
+Return to [Tutorial Hub](../README.md)

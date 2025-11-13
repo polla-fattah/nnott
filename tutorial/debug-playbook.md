@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # Debug Playbook
 
 **Breadcrumb:** [Home](README.md) / Debug Playbook
@@ -105,3 +109,6 @@ If `--gpu` prints `[WARN] CuPy is not installed` and continues on CPU:
 | Fashion-MNIST swap smoke test | `python scripts/quickstart_scalar.py --scenario dataset-swap --plot` |
 
 Keep this playbook handy whenever you run into trouble—most issues trace back to one of the scenarios above. If you discover a new pitfall, add it here (noting the symptoms, cause, and fix) to help the next learner.
+
+---
+Return to [Tutorial Hub](README.md)

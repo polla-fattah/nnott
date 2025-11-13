@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # Lookahead Optimizer
 
 **Breadcrumb:** [Home](../README.md) / [Optimizers Hub](../concepts/optimizers.md) / Lookahead Optimizer
@@ -65,3 +69,6 @@ Vectorized MLPs currently require a code edit (wrap the optimizer manually as in
 
 **Navigation:**
 [Back to Optimizers Hub](../concepts/optimizers.md)
+
+---
+Return to [Tutorial Hub](../README.md)

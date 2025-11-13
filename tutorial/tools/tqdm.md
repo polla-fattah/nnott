@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # tqdm Quick Notes
 
 **Breadcrumb:** [Home](../README.md) / [Project Tour](../project-tour.md) / tqdm Quick Notes
@@ -29,3 +33,6 @@ Official docs: <https://tqdm.github.io/>
 
 **Navigation:**
 [Back to Project Tour](../project-tour.md)
+
+---
+Return to [Tutorial Hub](../README.md)

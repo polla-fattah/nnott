@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # Convolution Mechanics & Advanced Blocks
 
 **Breadcrumb:** [Home](../README.md) / [Core Concepts](../core-concepts.md) / Convolution Mechanics & Advanced Blocks
@@ -50,3 +54,6 @@ Convolutional layers are the backbone of the CNN architectures in this sandbox. 
 
 **Navigation:**
 [Back to Core Concepts](../core-concepts.md)
+
+---
+Return to [Tutorial Hub](../README.md)

@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # Augmentation Playground
 
 **Breadcrumb:** [Home](README.md) / Augmentation Playground
@@ -157,3 +161,6 @@ Remember: augmentations are only beneficial when they preserve label semantics. 
 
 **Navigation:**
 [Back to Project Tour](../project-tour.md)
+
+---
+Return to [Tutorial Hub](README.md)

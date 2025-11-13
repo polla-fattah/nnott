@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # NumPy Quick Notes
 
 **Breadcrumb:** [Home](../README.md) / [Project Tour](../project-tour.md) / NumPy Quick Notes
@@ -26,3 +30,6 @@ Brush up on NumPy and you’ll understand 100% of the CPU path in this repo. The
 
 **Navigation:**
 [Back to Project Tour](../project-tour.md)
+
+---
+Return to [Tutorial Hub](../README.md)

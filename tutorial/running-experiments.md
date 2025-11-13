@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # 03 · Running Experiments
 
 **Breadcrumb:** [Home](README.md) / 03 · Running Experiments
@@ -125,3 +129,6 @@ Document your findings—timing tables, accuracy plots, or misclassification gri
 - **Long training time on large nets:** start with `--epochs 1` to smoke-test your setup before longer runs.
 
 With these commands and experiments, you can turn the sandbox into a full hands-on lab sequence.
+
+---
+Return to [Tutorial Hub](README.md)

@@ -1,3 +1,7 @@
+---
+**NNOTT Tutorial Series**
+---
+
 # Experiment Log Template
 
 **Breadcrumb:** [Home](README.md) / Experiment Log Template
@@ -57,3 +61,6 @@ Fill in one template per experiment and store them under `experiments/` or a per
 
 **Navigation:**
 [Back to Running Experiments](../running-experiments.md)
+
+---
+Return to [Tutorial Hub](README.md)
