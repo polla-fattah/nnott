@@ -20,3 +20,8 @@ CuPy mirrors the NumPy API but executes on NVIDIA GPUs. By swapping the backend 
 3. Run `python scripts/test_cupy.py --stress-seconds 10 --stress-size 4096` to confirm kernels, memory pools, and custom ops behave.
 
 Once configured, add `--gpu` to any training command to feel the difference in throughput.
+
+[Previous (tqdm Quick Notes)](tqdm.md) | [Back to Project Tour](../project-tour.md) | [Next (Matplotlib Quick Notes)](matplotlib.md)
+
+**Navigation:**
+[Back to Project Tour](../project-tour.md)

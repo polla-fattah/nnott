@@ -54,3 +54,8 @@ trainer = VTrainer(model, Adam(lr=1e-3), grad_clip_norm=1.0)
 ## Reference
 
 - Pascanu, R., Mikolov, T., & Bengio, Y. (2013). “On the difficulty of training recurrent neural networks.” arXiv:1211.5063. <https://arxiv.org/abs/1211.5063>
+
+[Previous (Adam (Adaptive Moment Estimation))](adam.md) | [Back to Optimizers Hub](../concepts/optimizers.md) | [Next (Lookahead Optimizer)](lookahead.md)
+
+**Navigation:**
+[Back to Optimizers Hub](../concepts/optimizers.md)

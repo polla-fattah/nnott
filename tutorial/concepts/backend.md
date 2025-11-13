@@ -39,3 +39,8 @@ The sandbox abstracts CPU and GPU execution through a lightweight backend layer 
 - Import `backend` once per module to avoid circular dependencies.
 - Keep CPU-only utilities (like plotting) wrapped with `backend.to_cpu` so they don’t accidentally receive CuPy arrays.
 - When writing new modules, test them with both `backend.use_cpu()` and `backend.use_gpu()` to ensure portability.
+
+[Previous (Activation Functions)](activations.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Convolution Mechanics & Advanced Blocks)](convolution.md)
+
+**Navigation:**
+[Back to Core Concepts](../core-concepts.md)

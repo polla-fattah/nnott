@@ -21,3 +21,8 @@ NumPy is the numerical backbone of this sandbox. Even when you run on GPU, the A
 - Reductions: `np.sum`, `np.mean`, `np.max`, `np.argmax`.
 
 Brush up on NumPy and you’ll understand 100% of the CPU path in this repo. The official docs are excellent: <https://numpy.org/doc/stable/>
+
+[Previous (Matplotlib Quick Notes)](matplotlib.md) | [Back to Project Tour](../project-tour.md) | [Next (tqdm Quick Notes)](tqdm.md)
+
+**Navigation:**
+[Back to Project Tour](../project-tour.md)

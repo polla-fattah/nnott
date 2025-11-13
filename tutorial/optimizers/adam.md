@@ -64,3 +64,8 @@ optim = Lookahead(Adam(lr=5e-4, weight_decay=1e-4), k=5, alpha=0.5)
 ## Reference
 
 - Kingma, D. P., & Ba, J. (2014). “Adam: A Method for Stochastic Optimization.” arXiv:1412.6980. <https://arxiv.org/abs/1412.6980>
+
+[Previous (Stochastic Gradient Descent (SGD) & Momentum)](sgd.md) | [Back to Optimizers Hub](../concepts/optimizers.md) | [Next (Gradient Clipping)](gradient-clipping.md)
+
+**Navigation:**
+[Back to Optimizers Hub](../concepts/optimizers.md)

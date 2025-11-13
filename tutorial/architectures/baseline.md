@@ -29,3 +29,11 @@ The BaselineCNN is a compact starter architecture built specifically for the san
 ## Further Reading
 
 - Review the scalar/vectorized tutorials first so you can inspect how convolutions extend the same ideas to 2D data.
+
+
+[Previous (AlexNet (2012))](alexnet.md) | [Back to Gallery](../architecture-gallery.md) | [Next (ConvNeXt-Tiny (2022))](convnext-tiny.md)
+
+[Back to Architecture Gallery](../architecture-gallery.md)
+
+**Navigation:**
+[Previous (AlexNet (2012))](alexnet.md) | [Back to Gallery](../architecture-gallery.md) | [Next (ConvNeXt-Tiny (2022))](convnext-tiny.md)

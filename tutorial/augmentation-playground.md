@@ -154,3 +154,6 @@ Tune probabilities/thresholds per dataset.
 3. For CIFAR-10, try combining horizontal flips and color jitter (via additive noise). Note how training time or stability changes.
 
 Remember: augmentations are only beneficial when they preserve label semantics. Evaluate carefully before enabling them in production runs.
+
+**Navigation:**
+[Back to Project Tour](../project-tour.md)

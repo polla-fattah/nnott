@@ -39,3 +39,8 @@ Directly computing softmax can overflow when logits are large. The code uses the
 1. Print both logits and loss for a small batch to see how cross-entropy behaves as predictions improve.
 2. Manually compute the loss for a few samples and compare with the function output to build intuition.
 3. Experiment with label smoothing (modify targets slightly) to understand its regularization effect.
+
+[Previous (Fundamentals: Neurons, Layers, Networks)](fundamentals.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Normalization Layers)](normalization.md)
+
+**Navigation:**
+[Back to Core Concepts](../core-concepts.md)

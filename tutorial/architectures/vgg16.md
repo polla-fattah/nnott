@@ -38,3 +38,11 @@ K. Simonyan and A. Zisserman’s VGG-16 demonstrated that a deep network built f
 
 - [“Very Deep Convolutional Networks for Large-Scale Image Recognition”](https://arxiv.org/abs/1409.1556)
 - [VGG16 overview (Great Learning blog)](https://medium.com/@mygreatlearning/everything-you-need-to-know-about-vgg16-7315defb5918)
+
+
+[Previous (ResNet-18 (2015))](resnet18.md) | [Back to Gallery](../architecture-gallery.md) | [Next (AlexNet (2012))](alexnet.md)
+
+[Back to Architecture Gallery](../architecture-gallery.md)
+
+**Navigation:**
+[Previous (ResNet-18 (2015))](resnet18.md) | [Back to Gallery](../architecture-gallery.md) | [Next (AlexNet (2012))](alexnet.md)

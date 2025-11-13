@@ -19,3 +19,8 @@ Training is more insightful when you can visualize learning curves and misclassi
 - If you’re on a headless server, set `matplotlib.use("Agg")` or save figures to disk instead of showing them.
 
 Official docs: <https://matplotlib.org/stable/contents.html>
+
+[Previous (CuPy Quick Notes)](cupy.md) | [Back to Project Tour](../project-tour.md) | [Next (NumPy Quick Notes)](numpy.md)
+
+**Navigation:**
+[Back to Project Tour](../project-tour.md)

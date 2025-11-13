@@ -37,3 +37,8 @@ Regularization techniques keep models from overfitting and improve generalizatio
 1. Run baseline without augmentation to measure overfitting.
 2. Enable dropout and augmentation; quantify the improvement.
 3. Plot weight histograms before and after applying weight decay to see shrinkage.
+
+[Previous (Optimizer Hub)](optimizers.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Activation Functions)](activations.md)
+
+**Navigation:**
+[Back to Core Concepts](../core-concepts.md)

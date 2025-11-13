@@ -45,3 +45,8 @@ Convolutional layers are the backbone of the CNN architectures in this sandbox. 
 1. Inspect `_im2col` and `_col2im` to understand how memory layout tricks speed up convolution.
 2. Modify kernel size or stride in `Conv2D` and verify the output dimensions using `_compute_output_dim`.
 3. Visualize SE weights to see which channels the network deems important for specific digits.
+
+[Previous (Backend & Device Utilities)](backend.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Fundamentals: Neurons, Layers, Networks)](fundamentals.md)
+
+**Navigation:**
+[Back to Core Concepts](../core-concepts.md)

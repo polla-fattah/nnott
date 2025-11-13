@@ -37,3 +37,11 @@ AlexNet, created by Alex Krizhevsky, Ilya Sutskever, and Geoffrey Hinton, won th
 ## References
 
 - [AlexNet on Wikipedia](https://en.wikipedia.org/wiki/AlexNet)
+
+
+[Previous (VGG-16 (2014))](vgg16.md) | [Back to Gallery](../architecture-gallery.md) | [Next (Baseline CNN)](baseline.md)
+
+[Back to Architecture Gallery](../architecture-gallery.md)
+
+**Navigation:**
+[Previous (VGG-16 (2014))](vgg16.md) | [Back to Gallery](../architecture-gallery.md) | [Next (Baseline CNN)](baseline.md)
