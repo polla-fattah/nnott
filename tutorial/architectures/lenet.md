@@ -1,5 +1,8 @@
 # LeNet-5 (1998)
 
+![LeNet-5 diagram](https://upload.wikimedia.org/wikipedia/commons/6/6a/LeNet.png)
+<sub>Figure credit: Yann LeCun et al., via Wikipedia (CC BY-SA 3.0).</sub>
+
 ## Historical Context
 
 LeNet-5, introduced by Yann LeCun and colleagues, is one of the first successful convolutional neural networks. It was designed for handwritten digit recognition on bank checks and showed that local receptive fields plus pooling dramatically outperform dense networks on images.

@@ -1,5 +1,8 @@
 # EfficientNet-Lite0 (2019)
 
+![EfficientNet MBConv + SE](https://upload.wikimedia.org/wikipedia/commons/e/e9/EfficientNet_block.png)
+<sub>Figure credit: Tan & Le, via Wikipedia (CC BY 4.0).</sub>
+
 ## Historical Context
 
 EfficientNet (Tan & Le) introduced a family of models that scale depth, width, and input resolution in a balanced way. EfficientNet-Lite0 adapts those ideas for mobile/CPU targets by removing swish activations and float16, yet still delivering strong accuracy per parameter.

@@ -1,5 +1,8 @@
 # AlexNet (2012)
 
+![AlexNet schematic](https://upload.wikimedia.org/wikipedia/commons/2/29/AlexNet_layers.png)
+<sub>Figure credit: Alex Krizhevsky et al., via Wikipedia (CC BY-SA 4.0).</sub>
+
 ## Historical Context
 
 AlexNet, created by Alex Krizhevsky, Ilya Sutskever, and Geoffrey Hinton, won the 2012 ImageNet competition and sparked the modern deep-learning wave in computer vision. It proved that deep CNNs paired with GPUs could outperform traditional methods by a wide margin.

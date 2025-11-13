@@ -1,5 +1,8 @@
 # ConvNeXt-Tiny (2022)
 
+![ConvNeXt block](https://upload.wikimedia.org/wikipedia/commons/0/03/ConvNeXt_block.png)
+<sub>Figure credit: Liu et al., via Wikipedia (CC BY 4.0).</sub>
+
 ## Historical Context
 
 Facebook AI’s ConvNeXt revisits CNN design in the age of Vision Transformers. By adopting transformer-inspired choices—large patchification, LayerNorm, GELU, depthwise separable convs—the authors produced pure CNNs that rival transformer accuracy on ImageNet.

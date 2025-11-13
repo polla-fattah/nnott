@@ -1,5 +1,8 @@
 # VGG-16 (2014)
 
+![VGG16 block diagram](https://upload.wikimedia.org/wikipedia/commons/4/41/VGG16.png)
+<sub>Figure credit: Simonyan & Zisserman, via Wikipedia (CC BY 4.0).</sub>
+
 ## Historical Context
 
 K. Simonyan and A. Zisserman’s VGG-16 demonstrated that a deep network built from simple, uniform 3×3 convolutions could reach top-tier accuracy on ImageNet. Its clean design made it a favorite starting point for transfer learning and architectural experiments.

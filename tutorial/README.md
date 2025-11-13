@@ -20,6 +20,11 @@ Welcome to the learning guide for the **Neural Networks From Scratch (NNFS)** sa
 | [04. Core Concepts](core-concepts.md) | Educational notes on neurons, activations, normalization, loss functions, optimizers, and convolution tricks. |
 | [05. Architecture Gallery](architecture-gallery.md) | Background on each CNN provided (LeNet, AlexNet, VGG16, ResNet18, EfficientNet-Lite0, ConvNeXt-Tiny) plus dataset considerations. |
 | [Debug Playbook](debug-playbook.md) | Troubleshooting recipes for environment, GPU, data, and training issues. |
+| [Optimization Lab](optimization-lab.md) | Jupyter-based walkthrough for tuning learning rate, gradient clipping, Lookahead, and batch sizes interactively. |
+| [Activation Zoo](activation-zoo.md) | Side-by-side comparison of ReLU, LeakyReLU, SiLU, and GELU with sample plots and derivatives. |
+| [Experiment Log Template](experiment-log-template.md) | Markdown template for recording dataset, hyperparameters, results, and observations per run. |
+| [Performance Profiles](performance-profiles.md) | Typical training times and accuracies (CPU vs GPU) for each architecture to set expectations. |
+| [Augmentation Playground](augmentation-playground.md) | Step-by-step guide for extending `_augment_batch` with rotations, flips, noise, and cutout. |
 
 ## Scenario Reference Table
 

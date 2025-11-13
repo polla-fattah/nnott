@@ -1,5 +1,8 @@
 # ResNet-18 (2015)
 
+![ResNet residual block](https://upload.wikimedia.org/wikipedia/commons/5/5f/ResNet_module.svg)
+<sub>Figure credit: He et al., via Wikipedia (CC BY 4.0).</sub>
+
 ## Historical Context
 
 Residual Networks (ResNets) by He et al. solved the “degradation” problem: deeper models were underperforming shallower ones because gradients struggled to flow through many layers. ResNets introduced identity skip connections that let layers learn residual functions, enabling networks with 100+ layers.
