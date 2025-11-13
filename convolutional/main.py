@@ -2,6 +2,7 @@ import os
 import sys
 import argparse
 import numpy as np
+import matplotlib.pyplot as plt
 
 if __package__ is None or __package__ == "":
     sys.path.append(os.path.dirname(os.path.dirname(__file__)))
@@ -121,17 +122,53 @@ def main(opts=None):
             verbose=True,
             augment=not args.no_augment,
         )
-        trainer.plot_loss()
+        plot_loss(trainer.loss_history)
     else:
         print("Skipping training as requested.")
 
     trainer.evaluate(X_test, y_test)
-    trainer.show_misclassifications(X_test, y_test, max_images=25, cols=5)
+    imgs, preds, trues, total = trainer.collect_misclassifications(X_test, y_test, max_images=25)
+    if total:
+        plot_misclassifications(imgs, preds, trues, total, cols=5)
 
     if args.save:
         metadata = {"arch": arch_name, "epochs": args.epochs}
         trainer.save_model(args.save, metadata=metadata)
         print(f"Saved weights to {args.save}")
+
+
+def plot_loss(loss_history):
+    if not loss_history:
+        return
+    epochs = range(1, len(loss_history) + 1)
+    plt.figure()
+    plt.plot(epochs, loss_history, marker="o")
+    plt.title("Convolutional Training Loss")
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_misclassifications(imgs, preds, trues, total, cols=5):
+    n = len(imgs)
+    cols = max(1, min(cols, n))
+    rows = int(np.ceil(n / cols))
+    fig, axes = plt.subplots(rows, cols, figsize=(cols * 2.2, rows * 2.2))
+    axes = np.atleast_1d(axes).ravel()
+    for ax, img, true, pred in zip(axes, imgs, trues, preds):
+        disp = img
+        if disp.ndim == 3 and disp.shape[0] == 1:
+            disp = disp[0]
+        ax.imshow(disp, cmap="gray")
+        ax.set_title(f"T:{int(true)} P:{int(pred)}")
+        ax.axis("off")
+    for ax in axes[n:]:
+        ax.axis("off")
+    fig.suptitle(f"Misclassifications: showing {n} of {total}")
+    plt.tight_layout()
+    plt.show()
 
 
 if __name__ == "__main__":

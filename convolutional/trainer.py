@@ -1,6 +1,5 @@
 import time
 import numpy as _np
-import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 import common.backend as backend
@@ -95,27 +94,12 @@ class ConvTrainer:
         print(f"Test accuracy: {acc * 100:.2f}%")
         return acc
 
-    def plot_loss(self):
-        if not self.loss_history:
-            return
-        plt.figure()
-        plt.plot(range(1, len(self.loss_history) + 1), self.loss_history, marker="o")
-        plt.title("Convolutional Training Loss")
-        plt.xlabel("Epoch")
-        plt.ylabel("Loss")
-        plt.grid(True)
-        plt.tight_layout()
-        plt.show(block=False)
-        plt.pause(0.001)
-
-
-    def show_misclassifications(self, X_test, y_test, max_images=25, cols=5, batch_size=512):
+    def collect_misclassifications(self, X_test, y_test, max_images=25, batch_size=512):
         if hasattr(self.model, "eval"):
             self.model.eval()
         n = len(X_test)
         if n == 0:
-            print("No samples provided for misclassification display.")
-            return _np.array([], dtype=_np.int64)
+            return _np.empty((0,)), _np.empty((0,)), _np.empty((0,)), 0
 
         preds = xp.empty(n, dtype=xp.int64)
         for start in range(0, n, batch_size):
@@ -129,29 +113,14 @@ class ConvTrainer:
         mis_idx_cpu = backend.to_cpu(mis_idx).astype(_np.int64, copy=False)
         total = len(mis_idx_cpu)
         if total == 0:
-            print("No misclassifications dYZ%")
-            return mis_idx_cpu
+            return _np.empty((0,)), _np.empty((0,)), _np.empty((0,)), 0
         mis_idx_cpu = mis_idx_cpu[:max_images]
         imgs = _np.asarray(X_test)[mis_idx_cpu]
         preds_cpu_all = backend.to_cpu(preds)
         y_cpu_all = backend.to_cpu(y_all)
         preds_cpu = preds_cpu_all[mis_idx_cpu]
         y_cpu = y_cpu_all[mis_idx_cpu]
-        rows = int(_np.ceil(len(mis_idx_cpu) / cols))
-        fig, axes = plt.subplots(rows, cols, figsize=(cols * 2.2, rows * 2.2))
-        axes = _np.atleast_1d(axes).ravel()
-        for ax, img, true, pred in zip(axes, imgs, y_cpu, preds_cpu):
-            disp = img[0]
-            ax.imshow(disp, cmap="gray")
-            ax.set_title(f"T:{int(true)} P:{int(pred)}")
-            ax.axis("off")
-        for ax in axes[len(mis_idx_cpu):]:
-            ax.axis("off")
-        fig.suptitle(f"Misclassifications: showing {len(mis_idx_cpu)} of {total}")
-        plt.tight_layout()
-        plt.show(block=False)
-        plt.pause(0.001)
-        return mis_idx_cpu
+        return imgs, preds_cpu, y_cpu, total
 
     def save_model(self, path, metadata=None):
         meta = dict(metadata or {})

@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from tqdm import tqdm
 import time
 from common.cross_entropy import CrossEntropyLoss
@@ -71,7 +70,7 @@ class VTrainer:
                 print(f"Epoch {epoch}/{epochs} - Avg Loss: {avg:.6f}")
 
         if verbose:
-            print(f"\n⏱ Total training time: {time.time()-t0:.2f}s")
+        print(f"\n⏱ Total training time: {time.time()-t0:.2f}s")
 
     def evaluate(self, X_test, y_test):
         if hasattr(self.model, 'eval'):
@@ -84,69 +83,18 @@ class VTrainer:
         print(f"Test accuracy: {acc*100:.2f}%")
         return acc
 
-    def plot_loss(self):
-        if not self.loss_history:
-            return
-        plt.figure()
-        plt.plot(range(1, len(self.loss_history)+1), self.loss_history, marker='o')
-        plt.title("Vectorized Training Loss per Epoch")
-        plt.xlabel("Epoch")
-        plt.ylabel("Average Loss")
-        plt.grid(True)
-        plt.tight_layout()
-        plt.show(block=False)
-        plt.pause(0.001)
-
-    def show_misclassifications(self, X_test, y_test, max_images=None, cols=5):
+    def misclassification_data(self, X_test, y_test, max_images=None):
         X = np.asarray(X_test, dtype=np.float32)
         y = np.asarray(y_test, dtype=np.int64)
         logits = self.model.forward(X)
         preds = np.argmax(logits, axis=1)
         mis_idx = np.where(preds != y)[0]
-
         total = len(mis_idx)
         if total == 0:
-            print("No misclassifications found.")
-            return mis_idx
-
+            return np.array([]), np.array([]), np.array([]), 0
         if max_images is not None:
             mis_idx = mis_idx[:max_images]
-
-        n = len(mis_idx)
-        cols = max(1, min(cols, n))
-        rows = int(np.ceil(n / cols))
-
-        # Infer image side length from feature size if flattened
-        D = X.shape[1]
-        side = int(np.sqrt(D))
-        if side * side != D:
-            side = None  # can't reshape to square cleanly
-
-        fig, axes = plt.subplots(rows, cols, figsize=(cols * 2.2, rows * 2.2))
-        axes = np.atleast_1d(axes).ravel()
-
-        for ax, idx in zip(axes, mis_idx):
-            img = X[idx]
-            if side is not None:
-                img = img.reshape(side, side)
-            # rescale per-image for display
-            imin, imax = float(img.min()), float(img.max())
-            if imax > imin:
-                disp = (img - imin) / (imax - imin)
-            else:
-                disp = img
-            ax.imshow(disp, cmap="gray")
-            ax.set_title(f"T:{int(y[idx])} P:{int(preds[idx])}")
-            ax.axis("off")
-
-        for ax in axes[n:]:
-            ax.axis("off")
-
-        fig.suptitle(f"Misclassifications: showing {n} of {total}")
-        plt.tight_layout()
-        plt.show(block=False)
-        plt.pause(0.001)
-        return mis_idx
+        return X[mis_idx], preds[mis_idx], y[mis_idx], total
 
     def save_model(self, path, metadata=None):
         meta = dict(metadata or {})

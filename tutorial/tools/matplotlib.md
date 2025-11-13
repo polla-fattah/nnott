@@ -6,9 +6,9 @@ Training is more insightful when you can visualize learning curves and misclassi
 
 ## Where It Appears in the Project
 
-- **Loss curves:** `ConvTrainer.plot_loss()` and the vectorized trainer both call Matplotlib to chart epoch losses.
-- **Misclassification grids:** `ConvTrainer.show_misclassifications()` renders a tiled gallery of incorrectly predicted digits, labeling predictions vs ground truth.
-- **Sample visualization:** `common/data_utils.DataUtility.show_samples()` uses Matplotlib to preview the dataset before training.
+- **Loss curves:** `scalar/main.py`, `vectorized/main.py`, and `convolutional/main.py` each plot `trainer.loss_history` after training.
+- **Misclassification grids:** The main scripts gather misclassification data from the trainers and render grids directly.
+- **Sample visualization:** `scalar/main.py` calls `DataUtility.sample_images(...)` and handles plotting itself.
 
 ## Tips
 

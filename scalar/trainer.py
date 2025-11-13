@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from common.data_utils import DataUtility
 from tqdm import tqdm  # <- ALWAYS use tqdm now
 import time  # at the top of trainer.py
@@ -77,27 +76,10 @@ class Trainer:
             if verbose:
                 print(f"Epoch {epoch}/{epochs} - Avg Loss: {avg_loss:.6f}")
 
-        # After all epochs, show loss plot
-        self._plot_loss()
-
         end_time = time.time()
         elapsed = end_time - start_time
         print(f"\n⏱ Total training time: {elapsed:.2f} seconds "
               f"({elapsed / epochs:.2f} sec/epoch)")
-
-    def _plot_loss(self):
-        if not self.loss_history:
-            return
-
-        epochs = range(1, len(self.loss_history) + 1)
-        plt.figure()
-        plt.plot(epochs, self.loss_history, marker='o')
-        plt.title("Training Loss per Epoch")
-        plt.xlabel("Epoch")
-        plt.ylabel("Average Loss")
-        plt.grid(True)
-        plt.tight_layout()
-        plt.show()
 
     def evaluate(self, X_test, y_test):
         correct = 0
@@ -112,28 +94,15 @@ class Trainer:
         print(f"Test accuracy: {acc * 100:.2f}%")
         return acc
 
-    def show_random_predictions(self, X_test, y_test, num_samples=10):
+    def get_random_predictions(self, X_test, y_test, num_samples=10):
         num_samples = min(num_samples, len(X_test))
+        if num_samples == 0:
+            return []
         idxs = np.random.choice(len(X_test), size=num_samples, replace=False)
-
-        cols = min(num_samples, 5)
-        rows = int(np.ceil(num_samples / cols))
-
-        fig, axes = plt.subplots(rows, cols, figsize=(cols * 2.5, rows * 2.5))
-        axes = axes.flatten()
-
-        for ax, idx in zip(axes, idxs):
+        samples = []
+        for idx in idxs:
             img = DataUtility._to_image(X_test[idx])
             true_label = int(y_test[idx])
             pred_label = self.network.predict(X_test[idx])
-
-            ax.imshow(img, cmap="gray")
-            ax.set_title(f"T: {true_label}  P: {pred_label}")
-            ax.axis("off")
-
-        for ax in axes[num_samples:]:
-            ax.axis("off")
-
-        fig.suptitle("Random Test Predictions")
-        plt.tight_layout()
-        plt.show()
+            samples.append((img, true_label, pred_label))
+        return samples

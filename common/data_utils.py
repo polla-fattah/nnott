@@ -1,8 +1,6 @@
 import numpy as np
 from pathlib import Path
-import matplotlib.pyplot as plt
-import math
-# moved to common package
+ # moved to common package
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
@@ -56,25 +54,19 @@ class DataUtility:
         return arr
 
     @classmethod
-    def show_samples(cls, images, labels, num_samples=10, title="Sample images"):
+    def sample_images(cls, images, labels, num_samples=10):
+        """Return a list of (image, label) pairs for visualization."""
         num_samples = min(num_samples, len(images))
+        if num_samples == 0:
+            return []
         idxs = np.random.choice(len(images), size=num_samples, replace=False)
+        samples = []
+        for idx in idxs:
+            samples.append((cls._to_image(images[idx]), labels[idx]))
+        return samples
 
-        cols = min(num_samples, 5)
-        rows = math.ceil(num_samples / cols)
-
-        fig, axes = plt.subplots(rows, cols, figsize=(cols * 2, rows * 2))
-        axes = np.array(axes).reshape(-1)
-
-        for ax, idx in zip(axes, idxs):
-            img = cls._to_image(images[idx])
-            ax.imshow(img, cmap="gray")
-            ax.set_title(str(labels[idx]))
-            ax.axis("off")
-
-        for ax in axes[num_samples:]:
-            ax.axis("off")
-
-        fig.suptitle(title)
-        plt.tight_layout()
-        plt.show()
+    # Backward-compatible alias
+    @classmethod
+    def show_samples(cls, images, labels, num_samples=10, title=None):
+        """Deprecated: returns sample data instead of plotting."""
+        return cls.sample_images(images, labels, num_samples=num_samples)

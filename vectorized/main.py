@@ -1,4 +1,5 @@
 import os, sys, numpy as np
+import matplotlib.pyplot as plt
 
 # Allow running this file directly (adds project root to sys.path)
 if __package__ is None or __package__ == "":
@@ -32,12 +33,51 @@ def main():
 
     # Train
     trainer.train(X_train, y_train, epochs=2, batch_size=32, verbose=True)
-    trainer.plot_loss()
+    plot_loss(trainer.loss_history)
 
     # Evaluate
     trainer.evaluate(X_test, y_test)
-    # Show misclassified test images (cap at 100 for practicality)
-    trainer.show_misclassifications(X_test, y_test, max_images=100, cols=5)
+    imgs, preds, trues, total = trainer.misclassification_data(X_test, y_test, max_images=100)
+    if total:
+        plot_misclassifications(imgs, preds, trues, total)
+
+
+def plot_loss(loss_history):
+    if not loss_history:
+        return
+    epochs = range(1, len(loss_history) + 1)
+    plt.figure()
+    plt.plot(epochs, loss_history, marker="o")
+    plt.title("Vectorized Training Loss per Epoch")
+    plt.xlabel("Epoch")
+    plt.ylabel("Average Loss")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_misclassifications(imgs, preds, trues, total, cols=5):
+    n = len(imgs)
+    cols = max(1, min(cols, n))
+    rows = int(np.ceil(n / cols))
+    side = int(np.sqrt(imgs.shape[1])) if imgs.size else 0
+    fig, axes = plt.subplots(rows, cols, figsize=(cols * 2.2, rows * 2.2))
+    axes = np.atleast_1d(axes).ravel()
+    for ax, img, true, pred in zip(axes, imgs, trues, preds):
+        disp = img
+        if side and side * side == img.size:
+            disp = img.reshape(side, side)
+        imin, imax = float(disp.min()), float(disp.max())
+        if imax > imin:
+            disp = (disp - imin) / (imax - imin)
+        ax.imshow(disp, cmap="gray")
+        ax.set_title(f"T:{int(true)} P:{int(pred)}")
+        ax.axis("off")
+    for ax in axes[n:]:
+        ax.axis("off")
+    fig.suptitle(f"Misclassifications: showing {n} of {total}")
+    plt.tight_layout()
+    plt.show()
 
 
 if __name__ == "__main__":
