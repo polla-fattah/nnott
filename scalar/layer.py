@@ -41,6 +41,10 @@ class Layer:
                 act_deriv = y * (1.0 - y)
             elif neuron.activation == 'relu':
                 act_deriv = 1.0 if y > 0.0 else 0.0
+            elif neuron.activation == 'leaky_relu':
+                act_deriv = 1.0 if y > 0.0 else neuron.negative_slope
+            elif neuron.activation == 'tanh':
+                act_deriv = 1.0 - y**2
             else:
                 act_deriv = 1.0  # linear
 

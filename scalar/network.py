@@ -9,15 +9,24 @@ class Network:
         num_classes=10,
         hidden_sizes=(128, 64),    # smaller network for speed/stability
         learning_rate=0.01,
-        activation='relu'
+        activation='relu',
+        hidden_activations=None
     ):
         self.layers = []
         prev_size = input_size
 
-        # hidden layers
-        for h in hidden_sizes:
+        if hidden_activations is None:
+            hidden_activation_list = [activation] * len(hidden_sizes)
+        elif isinstance(hidden_activations, (list, tuple)):
+            if len(hidden_activations) != len(hidden_sizes):
+                raise ValueError("hidden_activations must match hidden_sizes length.")
+            hidden_activation_list = list(hidden_activations)
+        else:
+            hidden_activation_list = [hidden_activations] * len(hidden_sizes)
+
+        for h, act in zip(hidden_sizes, hidden_activation_list):
             self.layers.append(
-                Layer(prev_size, h, activation=activation, learning_rate=learning_rate)
+                Layer(prev_size, h, activation=act, learning_rate=learning_rate)
             )
             prev_size = h
 

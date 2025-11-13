@@ -2,18 +2,21 @@ import numpy as np
 
 class Neuron:
     def __init__(self, num_inputs, activation='sigmoid', learning_rate=0.01):
-        """Initialize neuron with small random weights and zero bias"""
-        # initialization tuned per activation
-        if activation == 'relu':
-            # He initialization for ReLU
+        """Initialize neuron with activation-aware weights."""
+        act = (activation or 'linear').lower()
+        if act in ('relu', 'leaky_relu'):
             std = np.sqrt(2.0 / float(num_inputs))
-            self.weights = (np.random.randn(num_inputs).astype(np.float32)) * std
-            self.bias = 0.01  # small positive bias helps avoid dead ReLUs
-        else:
-            # fallback small Gaussian
-            self.weights = (np.random.randn(num_inputs).astype(np.float32)) * 0.01
+            self.weights = np.random.randn(num_inputs).astype(np.float32) * std
+            self.bias = 0.01 if act == 'relu' else 0.0
+        elif act in ('tanh', 'sigmoid'):
+            std = np.sqrt(1.0 / float(num_inputs))
+            self.weights = np.random.randn(num_inputs).astype(np.float32) * std
             self.bias = 0.0
-        self.activation = activation
+        else:
+            self.weights = np.random.randn(num_inputs).astype(np.float32) * 0.01
+            self.bias = 0.0
+        self.activation = act
+        self.negative_slope = 0.01 if act == 'leaky_relu' else 0.0
         self.learning_rate = learning_rate
         self.last_input = None
         self.last_output = None
@@ -29,6 +32,10 @@ class Neuron:
             return 1.0 / (1.0 + np.exp(-x))
         elif self.activation == 'relu':
             return np.maximum(0.0, x)
+        elif self.activation == 'leaky_relu':
+            return np.where(x > 0.0, x, self.negative_slope * x)
+        elif self.activation == 'tanh':
+            return np.tanh(x)
         else:
             return x  # linear fallback
 

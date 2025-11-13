@@ -60,11 +60,15 @@ class Module:
 
 class Linear(Module):
     def __init__(self, in_features, out_features, activation_hint=None):
-        # He init for ReLU-like, otherwise small Gaussian
-        if activation_hint == 'relu':
+        hint = (activation_hint or "").lower()
+        if hint in {"relu", "leaky_relu"}:
             std = np.sqrt(2.0 / float(in_features))
             W = np.random.randn(in_features, out_features).astype(np.float32) * std
-            b = np.full(out_features, 0.01, dtype=np.float32)
+            b = np.full(out_features, 0.01 if hint == "relu" else 0.0, dtype=np.float32)
+        elif hint in {"tanh", "sigmoid"}:
+            std = np.sqrt(1.0 / float(in_features))
+            W = np.random.randn(in_features, out_features).astype(np.float32) * std
+            b = np.zeros(out_features, dtype=np.float32)
         else:
             W = np.random.randn(in_features, out_features).astype(np.float32) * 0.01
             b = np.zeros(out_features, dtype=np.float32)
