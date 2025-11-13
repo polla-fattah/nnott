@@ -57,7 +57,15 @@ def parse_args():
     parser.add_argument("--batch-size", type=int, default=64, help="Mini-batch size.")
     parser.add_argument("--save", type=str, help="Path to save trained weights.")
     parser.add_argument("--load", type=str, help="Load weights before training/evaluation.")
-    parser.add_argument("--no-augment", action="store_true", help="Disable shift augmentation.")
+    parser.add_argument("--no-augment", action="store_true", help="Disable train-time augmentation.")
+    parser.add_argument("--augment-max-shift", type=int, default=2, help="Pixel shift radius for jitter.")
+    parser.add_argument("--augment-rotate-deg", type=float, default=10.0, help="Max rotation degrees (0 disables).")
+    parser.add_argument("--augment-rotate-prob", type=float, default=0.5, help="Probability of applying rotation.")
+    parser.add_argument("--augment-hflip-prob", type=float, default=0.5, help="Probability of horizontal flip.")
+    parser.add_argument("--augment-vflip-prob", type=float, default=0.0, help="Probability of vertical flip.")
+    parser.add_argument("--augment-noise-std", type=float, default=0.02, help="Stddev for Gaussian noise (0 disables).")
+    parser.add_argument("--augment-noise-prob", type=float, default=0.3, help="Probability of injecting noise.")
+    parser.add_argument("--augment-noise-clip", type=float, default=3.0, help="Clamp magnitude after noise.")
     parser.add_argument("--skip-train", action="store_true", help="Skip training phase (use with --load).")
     parser.add_argument("--gpu", action="store_true", help="Use CuPy GPU backend if available.")
     parser.add_argument(
@@ -114,7 +122,14 @@ def main(opts=None):
     optim = Adam(lr=5e-4, weight_decay=1e-4)
     if args.lookahead:
         optim = Lookahead(optim, k=args.lookahead_k, alpha=args.lookahead_alpha)
-    trainer = ConvTrainer(model, optim, num_classes=10, grad_clip_norm=args.grad_clip)
+    augment_config = build_augment_config(args)
+    trainer = ConvTrainer(
+        model,
+        optim,
+        num_classes=10,
+        grad_clip_norm=args.grad_clip,
+        augment_config=augment_config,
+    )
 
     if args.load:
         meta = trainer.load_model(args.load)
@@ -188,6 +203,22 @@ def plot_misclassifications(imgs, preds, trues, total, cols=5):
     fig.suptitle(f"Misclassifications: showing {n} of {total}")
     plt.tight_layout()
     plt.show()
+
+
+def build_augment_config(args):
+    def clamp(v):
+        return max(0.0, min(1.0, float(v)))
+
+    return {
+        "max_shift": max(0, int(args.augment_max_shift)),
+        "rotate_deg": max(0.0, float(args.augment_rotate_deg)),
+        "rotate_prob": clamp(args.augment_rotate_prob),
+        "hflip_prob": clamp(args.augment_hflip_prob),
+        "vflip_prob": clamp(args.augment_vflip_prob),
+        "noise_std": max(0.0, float(args.augment_noise_std)),
+        "noise_prob": clamp(args.augment_noise_prob),
+        "noise_clip": max(0.0, float(args.augment_noise_clip)),
+    }
 
 
 if __name__ == "__main__":

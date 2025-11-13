@@ -24,6 +24,7 @@ Regularization techniques keep models from overfitting and improve generalizatio
 - **Function:** `ConvTrainer._augment_batch` (in `convolutional/trainer.py`)
 - **Current augmentation:** Random shifts up to ±2 pixels using `xp.roll`.
 - **Teaching point:** Even simple translations can make MNIST models more robust; try increasing `max_shift` or adding random noise.
+- **New CLI controls:** Vectorized and convolutional entry points now accept `--augment-max-shift`, `--augment-rotate-deg`, `--augment-hflip-prob`, and `--augment-noise-std` so you can enable rotations, flips, and noise injections from the command line instead of editing tutorial notebooks.
 
 ## Early Stopping (DIY)
 

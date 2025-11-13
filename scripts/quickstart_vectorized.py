@@ -33,6 +33,7 @@ from vectorized.main import (
     build_mlp,
     build_scheduler_config,
     build_early_config,
+    build_augment_config,
 )
 
 
@@ -72,6 +73,19 @@ def parse_args():
         default="0.2",
         help="Dropout value(s) per hidden layer (single value or comma-separated).",
     )
+    parser.add_argument(
+        "--no-augment",
+        action="store_true",
+        help="Disable data augmentation during training.",
+    )
+    parser.add_argument("--augment-max-shift", type=int, default=2, help="Pixel shift radius for jitter augmentation.")
+    parser.add_argument("--augment-rotate-deg", type=float, default=10.0, help="Max rotation degrees; 0 disables.")
+    parser.add_argument("--augment-rotate-prob", type=float, default=0.5, help="Probability of applying rotation.")
+    parser.add_argument("--augment-hflip-prob", type=float, default=0.5, help="Probability of horizontal flip.")
+    parser.add_argument("--augment-vflip-prob", type=float, default=0.0, help="Probability of vertical flip.")
+    parser.add_argument("--augment-noise-std", type=float, default=0.02, help="Stddev for Gaussian noise (0 disables).")
+    parser.add_argument("--augment-noise-prob", type=float, default=0.3, help="Probability of adding noise.")
+    parser.add_argument("--augment-noise-clip", type=float, default=3.0, help="Clamp magnitude after noise/flips.")
     parser.add_argument(
         "--batchnorm",
         action="store_true",
@@ -146,6 +160,7 @@ def run_basic(args, data):
         batch_size=args.batch_size,
         verbose=True,
         val_data=data.val_tuple,
+        augment=not args.no_augment,
     )
     if args.plot:
         plot_loss(trainer.loss_history)
@@ -173,6 +188,7 @@ def run_optimizer_compare(args, data):
             batch_size=args.batch_size,
             verbose=True,
             val_data=data.val_tuple,
+            augment=not args.no_augment,
         )
         acc = trainer.evaluate(data.X_test, data.y_test)
         results[name] = acc
@@ -205,6 +221,7 @@ def run_hidden_sweep(args, data):
             batch_size=args.batch_size,
             verbose=True,
             val_data=data.val_tuple,
+            augment=not args.no_augment,
         )
         trainer.evaluate(data.X_test, data.y_test)
         if args.plot:
@@ -258,12 +275,14 @@ def load_dataset(args):
 def build_trainer(args, model, optim):
     scheduler = build_scheduler_config(args)
     early = build_early_config(args)
+    augment = build_augment_config(args)
     return VTrainer(
         model,
         optim,
         num_classes=10,
         lr_scheduler_config=scheduler,
         early_stopping_config=early,
+        augment_config=augment,
     )
 
 

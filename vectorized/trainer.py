@@ -4,6 +4,7 @@ import time
 from math import cos, pi
 from common.cross_entropy import CrossEntropyLoss
 from common.model_io import save_model, load_model as load_model_state
+from common.data_utils import ensure_label_format
 
 
 class CosineScheduler:
@@ -56,6 +57,7 @@ class VTrainer:
         grad_clip_norm=None,
         lr_scheduler_config=None,
         early_stopping_config=None,
+        augment_config=None,
     ):
         self.model = model
         self.optimizer = optimizer
@@ -68,6 +70,7 @@ class VTrainer:
         self.early_best = np.inf
         self.early_wait = 0
         self.early_enabled = bool(self.early_cfg)
+        self.augment_cfg = self._build_augment_cfg(augment_config)
 
     def train(
         self,
@@ -81,14 +84,15 @@ class VTrainer:
         val_data=None,
     ):
         X = np.asarray(X_train, dtype=np.float32)
-        y = np.asarray(y_train, dtype=np.int64)
+        y = self._prepare_labels(y_train)
         n = len(X)
         self.loss_history = []
         t0 = time.time()
 
         X_val, y_val = (None, None)
         if val_data:
-            X_val, y_val = val_data
+            X_val, raw_val = val_data
+            y_val = self._prepare_labels(raw_val)
 
         for epoch in range(1, epochs + 1):
             # training mode
@@ -146,7 +150,7 @@ class VTrainer:
         if hasattr(self.model, 'eval'):
             self.model.eval()
         X = np.asarray(X_test, dtype=np.float32)
-        y = np.asarray(y_test, dtype=np.int64)
+        y = self._prepare_labels(y_test)
         logits = self.model.forward(X)
         preds = np.argmax(logits, axis=1)
         acc = float((preds == y).mean())
@@ -155,7 +159,7 @@ class VTrainer:
 
     def misclassification_data(self, X_test, y_test, max_images=None):
         X = np.asarray(X_test, dtype=np.float32)
-        y = np.asarray(y_test, dtype=np.int64)
+        y = self._prepare_labels(y_test)
         logits = self.model.forward(X)
         preds = np.argmax(logits, axis=1)
         mis_idx = np.where(preds != y)[0]
@@ -176,7 +180,8 @@ class VTrainer:
         return load_model_state(self.model, path)
 
     # --- augmentation utilities ---
-    def _augment_batch(self, Xb_flat, side=28, max_shift=2, max_rotate_deg=10):
+    def _augment_batch(self, Xb_flat, side=28):
+        cfg = self.augment_cfg
         B, D = Xb_flat.shape
         if side * side != D:
             return Xb_flat
@@ -184,15 +189,23 @@ class VTrainer:
         out = np.empty_like(Xb)
         for i in range(B):
             img = Xb[i]
-            dx = np.random.randint(-max_shift, max_shift + 1)
-            dy = np.random.randint(-max_shift, max_shift + 1)
-            shifted = np.roll(np.roll(img, dy, axis=0), dx, axis=1)
-            # with 50% probability apply rotation
-            if max_rotate_deg > 0 and np.random.rand() < 0.5:
-                angle = np.deg2rad(np.random.uniform(-max_rotate_deg, max_rotate_deg))
-                out[i] = self._rotate_nearest(shifted, angle)
-            else:
-                out[i] = shifted
+            if cfg["max_shift"] > 0:
+                dx = np.random.randint(-cfg["max_shift"], cfg["max_shift"] + 1)
+                dy = np.random.randint(-cfg["max_shift"], cfg["max_shift"] + 1)
+                img = np.roll(np.roll(img, dy, axis=0), dx, axis=1)
+            if cfg["rotate_deg"] > 0 and np.random.rand() < cfg["rotate_prob"]:
+                angle = np.deg2rad(np.random.uniform(-cfg["rotate_deg"], cfg["rotate_deg"]))
+                img = self._rotate_nearest(img, angle)
+            if cfg["hflip_prob"] > 0 and np.random.rand() < cfg["hflip_prob"]:
+                img = np.flip(img, axis=1)
+            if cfg["vflip_prob"] > 0 and np.random.rand() < cfg["vflip_prob"]:
+                img = np.flip(img, axis=0)
+            if cfg["noise_std"] > 0 and np.random.rand() < cfg["noise_prob"]:
+                noise = np.random.normal(0.0, cfg["noise_std"], size=img.shape).astype(np.float32)
+                img = img + noise
+            if cfg["noise_clip"] > 0:
+                img = np.clip(img, -cfg["noise_clip"], cfg["noise_clip"])
+            out[i] = img
         return out.reshape(B, D)
 
     @staticmethod
@@ -276,7 +289,7 @@ class VTrainer:
         if hasattr(self.model, 'eval'):
             self.model.eval()
         X = np.asarray(X, dtype=np.float32)
-        y = np.asarray(y, dtype=np.int64)
+        y = self._prepare_labels(y)
         n = len(X)
         total = 0.0
         for start in range(0, n, batch_size):
@@ -289,3 +302,31 @@ class VTrainer:
         if hasattr(self.model, 'train'):
             self.model.train()
         return total / n
+
+    def _build_augment_cfg(self, config):
+        cfg = {
+            "max_shift": 2,
+            "rotate_deg": 10.0,
+            "rotate_prob": 0.5,
+            "hflip_prob": 0.5,
+            "vflip_prob": 0.0,
+            "noise_std": 0.02,
+            "noise_prob": 0.3,
+            "noise_clip": 3.0,
+        }
+        if config:
+            for key in cfg:
+                if key in config and config[key] is not None:
+                    cfg[key] = config[key]
+        cfg["max_shift"] = max(0, int(cfg["max_shift"]))
+        cfg["rotate_deg"] = max(0.0, float(cfg["rotate_deg"]))
+        cfg["rotate_prob"] = float(np.clip(cfg["rotate_prob"], 0.0, 1.0))
+        cfg["hflip_prob"] = float(np.clip(cfg["hflip_prob"], 0.0, 1.0))
+        cfg["vflip_prob"] = float(np.clip(cfg["vflip_prob"], 0.0, 1.0))
+        cfg["noise_std"] = max(0.0, float(cfg["noise_std"]))
+        cfg["noise_prob"] = float(np.clip(cfg["noise_prob"], 0.0, 1.0))
+        cfg["noise_clip"] = max(0.0, float(cfg["noise_clip"]))
+        return cfg
+
+    def _prepare_labels(self, labels):
+        return ensure_label_format(labels, self.num_classes)

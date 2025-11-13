@@ -3,6 +3,7 @@ from pathlib import Path
  # moved to common package
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+LABEL_EPS = 1e-6
 
 
 class DataUtility:
@@ -70,3 +71,37 @@ class DataUtility:
     def show_samples(cls, images, labels, num_samples=10, title=None):
         """Deprecated: returns sample data instead of plotting."""
         return cls.sample_images(images, labels, num_samples=num_samples)
+
+
+def ensure_label_format(labels, num_classes):
+    """
+    Validate and normalize labels to int64 class indices.
+    Supports either 1D int arrays or 2D one-hot matrices.
+    """
+    arr = np.asarray(labels)
+    if arr.ndim == 2:
+        if arr.shape[1] != num_classes:
+            raise ValueError(
+                f"One-hot label matrix has {arr.shape[1]} columns but expected {num_classes}."
+            )
+        row_sums = arr.sum(axis=1)
+        if not np.allclose(row_sums, 1.0, atol=LABEL_EPS):
+            raise ValueError("Each one-hot label row must sum to 1.")
+        arr = np.argmax(arr, axis=1)
+    elif arr.ndim != 1:
+        raise ValueError("Labels must be 1D indices or 2D one-hot matrices.")
+
+    if not np.issubdtype(arr.dtype, np.integer):
+        arr = arr.astype(np.int64)
+    else:
+        arr = arr.astype(np.int64, copy=False)
+
+    if arr.size == 0:
+        return arr
+    min_label = int(arr.min())
+    max_label = int(arr.max())
+    if min_label < 0 or max_label >= num_classes:
+        raise ValueError(
+            f"Label values must be in [0, {num_classes-1}] but range [{min_label}, {max_label}] was found."
+        )
+    return arr

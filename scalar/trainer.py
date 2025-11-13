@@ -1,5 +1,5 @@
 import numpy as np
-from common.data_utils import DataUtility
+from common.data_utils import DataUtility, ensure_label_format
 from tqdm import tqdm  # <- ALWAYS use tqdm now
 import time  # at the top of trainer.py
 from common.cross_entropy import CrossEntropyLoss
@@ -28,6 +28,7 @@ class Trainer:
         return v
 
     def train(self, X_train, y_train, epochs=5, batch_size=64, verbose=True):
+        y_train = ensure_label_format(y_train, self.num_classes)
         n = len(X_train)
         self.loss_history = []
         start_time = time.time()
@@ -87,6 +88,7 @@ class Trainer:
               f"({elapsed / epochs:.2f} sec/epoch)")
 
     def evaluate(self, X_test, y_test):
+        y_test = ensure_label_format(y_test, self.num_classes)
         prev_mode = getattr(self.network, "training", True)
         if hasattr(self.network, "eval"):
             self.network.eval()
@@ -106,6 +108,7 @@ class Trainer:
         return acc
 
     def get_random_predictions(self, X_test, y_test, num_samples=10):
+        y_test = ensure_label_format(y_test, self.num_classes)
         num_samples = min(num_samples, len(X_test))
         if num_samples == 0:
             return []

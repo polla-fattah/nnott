@@ -13,6 +13,8 @@ This guide walks you through training the provided models, timing CPU vs GPU run
 2. Place the MNIST `.npy` files inside `data/` (already provided in this repo).
 3. From the project root, run the commands below.
 
+> Label sanity checks now run automatically. If your labels are one-hot matrices or include values outside `[0, 9]`, the trainer raises a descriptive error before training starts.
+
 ---
 
 ## Fully Connected Networks
@@ -46,6 +48,7 @@ python vectorized/main.py --epochs 3 --batch-size 128 --gpu \
 - `--dropout` accepts either a single value or comma-separated list; semantics match `--hidden-dropout`.
 - `--leaky-negative-slope` controls the slope when you include LeakyReLU in the activation list.
 - `--lr-schedule cosine` / `--lr-schedule reduce_on_plateau` plus `--min-lr`, `--reduce-factor`, `--reduce-patience`, and `--reduce-delta` let you test advanced learning-rate policies; pair them with `--early-stopping --early-patience 4 --early-delta 5e-4` to halt when validation loss stalls (validation split driven by `--val-split`, default 0.1).
+- Augmentation knobs are now built-in: tweak `--augment-max-shift`, `--augment-rotate-deg`, `--augment-hflip-prob`, `--augment-vflip-prob`, `--augment-noise-std`, etc., or disable everything with `--no-augment`.
 - Toggle `--gpu` to route every operation through CuPy without editing network code.
 
 ---
@@ -75,6 +78,7 @@ Observations to make:
 - Training time vs architecture depth.
 - Test accuracy after two epochs.
 - GPU utilization compared to CPU runs (rerun without `--gpu` to see the difference).
+- Want heavier augmentation? Add flags such as `--augment-rotate-deg 15 --augment-hflip-prob 0.5 --augment-noise-std 0.03` (or turn everything off with `--no-augment`).
 
 ### Save / Resume Workflow
 
@@ -101,8 +105,8 @@ Prefer a guided walkthrough? Each module has a scenario-driven helper in `script
 - `python scripts/quickstart_scalar.py --scenario basic --epochs 1 --hidden-activations relu,gelu,tanh --hidden-dropout 0.25 --plot`  
   Loads MNIST, previews a handful of samples, trains the scalar MLP, and optionally plots loss/prediction grids. Alternate scenarios compare optimizers or plug in Fashion-MNIST style `.npy` files, and every scenario now honors the `--hidden-sizes`, `--hidden-activations`, and `--hidden-dropout` flags.
 
-- `python scripts/quickstart_vectorized.py --scenario hidden-sweep --batchnorm --dropout 0.2 --lr-schedule cosine --val-split 0.1 --early-stopping --plot`  
-  Sweeps over several hidden-layer configurations, printing accuracies and (optionally) plotting curves. Use `--scenario optimizer-compare` to benchmark SGD vs Adam; mix activations via `--hidden-activations relu,tanh,gelu`, tune learning-rate schedules via `--lr-schedule ...`, and enable early stopping without editing code. Answer "yes" to the prompt before misclassification plotting (it triggers an extra pass).
+- `python scripts/quickstart_vectorized.py --scenario hidden-sweep --batchnorm --dropout 0.2 --lr-schedule cosine --val-split 0.1 --early-stopping --augment-rotate-deg 15 --augment-noise-std 0.03 --plot`  
+  Sweeps over several hidden-layer configurations, printing accuracies and (optionally) plotting curves. Use `--scenario optimizer-compare` to benchmark SGD vs Adam; mix activations via `--hidden-activations relu,tanh,gelu`, tune learning-rate schedules via `--lr-schedule ...`, toggle richer augmentation via the `--augment-*` flags, and enable early stopping without editing code. Answer "yes" to the prompt before misclassification plotting (it triggers an extra pass).
 
 - `python scripts/quickstart_convolutional.py --scenario gpu-fast --lookahead --plot`  
   Trains ResNet18 with Lookahead + gradient clipping on GPU (falls back to CPU). Additional scenarios cover CPU baselines, checkpoint resume flows, and dataset swaps (e.g., CIFAR-10 shaped data via `--image-shape 3,32,32`). You will be prompted before the misclassification plots run; decline if you want to skip the extra inference sweep.
