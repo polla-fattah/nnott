@@ -1,9 +1,8 @@
-**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](..) | [Architectures](architecture-gallery.md)
+**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
+# Neural Networks From Scratch - Tutorial Hub
 
-# Neural Networks Optimisations And Traingin Tests - Tutorial Hub
-
-Welcome to the learning guide for the **Neural Networks Optimisations And Traingin Tests (NNOTT)** sandbox. This tutorial series walks through the entire project—why it exists, how it is organized, and how to run meaningful experiments. Use the navigation list below to jump to the relevant module.
+Welcome to the learning guide for the **Neural Networks From Scratch (NNFS)** sandbox. This tutorial series walks through the entire project—why it exists, how it is organized, and how to run meaningful experiments. Use the navigation list below to jump to the relevant module.
 
 ## How to Use This Tutorial
 
@@ -28,6 +27,7 @@ Welcome to the learning guide for the **Neural Networks Optimisations And Traing
 | [Experiment Log Template](experiment-log-template.md) | Markdown template for recording dataset, hyperparameters, results, and observations. |
 | [Performance Profiles](performance-profiles.md) | Typical training times and accuracies (CPU vs GPU) for each architecture. |
 | [Augmentation Playground](augmentation-playground.md) | Guide for extending `_augment_batch` with rotations, flips, noise, and cutout. |
+| [About This Tutorial](about.md) | Overview of the teaching goals and how students should progress through the codebase. |
 
 ## Scenario Reference Table
 
@@ -45,4 +45,5 @@ Welcome to the learning guide for the **Neural Networks Optimisations And Traing
 > Tip: Each module is self-contained. Read them in order or jump directly to the section that matches your current work.
 
 ---
-Return to [Tutorial Hub](README.md)
+
+MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

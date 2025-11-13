@@ -1,5 +1,4 @@
-**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](../..) | [Architectures](../architecture-gallery.md)
-
+**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
 
 # Loss & Softmax: Cross-Entropy from Logits
 
@@ -49,4 +48,5 @@ Directly computing softmax can overflow when logits are large. The code uses the
 [Back to Core Concepts](../core-concepts.md)
 
 ---
-Return to [Tutorial Hub](../README.md)
+
+MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

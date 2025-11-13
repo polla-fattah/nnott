@@ -1,5 +1,4 @@
-**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](../..) | [Architectures](../architecture-gallery.md)
-
+**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
 
 # NumPy Quick Notes
 
@@ -31,4 +30,5 @@ Brush up on NumPy and you’ll understand 100% of the CPU path in this repo. The
 [Back to Project Tour](../project-tour.md)
 
 ---
-Return to [Tutorial Hub](../README.md)
+
+MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

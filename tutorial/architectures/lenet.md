@@ -1,5 +1,4 @@
-**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](../..) | [Architectures](../architecture-gallery.md)
-
+**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
 
 # LeNet-5 (1998)
 
@@ -51,4 +50,5 @@ In this project, the implementation mirrors the original layout but uses ReLU ac
 [Previous (EfficientNet-Lite0 (2019))](efficientnet-lite0.md) | [Back to Gallery](../architecture-gallery.md) | [Next (ResNet-18 (2015))](resnet18.md)
 
 ---
-Return to [Tutorial Hub](../README.md)
+
+MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

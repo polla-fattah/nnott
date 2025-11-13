@@ -1,5 +1,4 @@
-**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](..) | [Architectures](architecture-gallery.md)
-
+**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # Debug Playbook
 
@@ -110,4 +109,5 @@ If `--gpu` prints `[WARN] CuPy is not installed` and continues on CPU:
 Keep this playbook handy whenever you run into trouble—most issues trace back to one of the scenarios above. If you discover a new pitfall, add it here (noting the symptoms, cause, and fix) to help the next learner.
 
 ---
-Return to [Tutorial Hub](README.md)
+
+MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

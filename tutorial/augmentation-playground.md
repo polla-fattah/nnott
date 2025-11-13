@@ -1,5 +1,4 @@
-**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](..) | [Architectures](architecture-gallery.md)
-
+**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # Augmentation Playground
 
@@ -162,4 +161,5 @@ Remember: augmentations are only beneficial when they preserve label semantics. 
 [Back to Project Tour](../project-tour.md)
 
 ---
-Return to [Tutorial Hub](README.md)
+
+MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

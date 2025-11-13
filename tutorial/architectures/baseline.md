@@ -1,5 +1,4 @@
-**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](../..) | [Architectures](../architecture-gallery.md)
-
+**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
 
 # Baseline CNN
 
@@ -42,4 +41,5 @@ The BaselineCNN is a compact starter architecture built specifically for the san
 [Previous (AlexNet (2012))](alexnet.md) | [Back to Gallery](../architecture-gallery.md) | [Next (ConvNeXt-Tiny (2022))](convnext-tiny.md)
 
 ---
-Return to [Tutorial Hub](../README.md)
+
+MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

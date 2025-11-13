@@ -1,5 +1,4 @@
-**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](..) | [Architectures](architecture-gallery.md)
-
+**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # 03 · Running Experiments
 
@@ -130,4 +129,5 @@ Document your findings—timing tables, accuracy plots, or misclassification gri
 With these commands and experiments, you can turn the sandbox into a full hands-on lab sequence.
 
 ---
-Return to [Tutorial Hub](README.md)
+
+MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

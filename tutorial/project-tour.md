@@ -1,5 +1,4 @@
-**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](..) | [Architectures](architecture-gallery.md)
-
+**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # 01 · Project Tour
 
@@ -149,4 +148,5 @@ The directory split mirrors the learning journey:
 Refer back to this map whenever you encounter a concept in the tutorial—the table above tells you which file to inspect next.
 
 ---
-Return to [Tutorial Hub](README.md)
+
+MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

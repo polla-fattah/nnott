@@ -1,5 +1,4 @@
-**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](..) | [Architectures](architecture-gallery.md)
-
+**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # 02 · Implementations & Hardware
 
@@ -69,4 +68,5 @@ Understanding these tiers equips you to reason about both the *what* (network ma
 2. **Backend toggle drill:** Run `python convolutional/main.py resnet18 --epochs 1 --batch-size 64` twice—once with `--gpu`, once without. Note the runtime, GPU utilization (via `nvidia-smi`), and any startup warnings. Summarize the steps the backend layer took to select the device.
 
 ---
-Return to [Tutorial Hub](README.md)
+
+MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

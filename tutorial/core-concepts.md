@@ -1,5 +1,4 @@
-**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](..) | [Architectures](architecture-gallery.md)
-
+**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # 04 · Core Concepts Hub
 
@@ -37,4 +36,5 @@ With these guides, you can build a solid foundation before diving into the large
 2. **Optimizer swap experiment:** Using the Optimizer hub, implement both Adam and SGD+momentum for the same network, run each for 3 epochs, and plot/compare their loss histories. Summarize the behavioral differences you observed.
 
 ---
-Return to [Tutorial Hub](README.md)
+
+MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)
