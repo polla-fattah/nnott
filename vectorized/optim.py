@@ -1,4 +1,6 @@
-import numpy as np
+import common.backend as backend
+
+xp = backend.xp
 
 
 class Optimizer:
@@ -30,7 +32,7 @@ class SGD(Optimizer):
             if self.momentum:
                 v = self._vel.get(pid)
                 if v is None:
-                    v = np.zeros_like(p, dtype=np.float32)
+                    v = xp.zeros_like(p)
                 v = self.momentum * v + grad
                 update = self.momentum * v + grad if self.nesterov else v
                 p -= self.lr * update
@@ -62,13 +64,13 @@ class Adam(Optimizer):
             v = self._v.get(pid)
             t = self._t.get(pid, 0) + 1
             if m is None:
-                m = np.zeros_like(p, dtype=np.float32)
-                v = np.zeros_like(p, dtype=np.float32)
+                m = xp.zeros_like(p)
+                v = xp.zeros_like(p)
             m = b1 * m + (1 - b1) * grad
             v = b2 * v + (1 - b2) * (grad * grad)
             m_hat = m / (1 - b1 ** t)
             v_hat = v / (1 - b2 ** t)
-            p -= self.lr * m_hat / (np.sqrt(v_hat) + self.eps)
+            p -= self.lr * m_hat / (xp.sqrt(v_hat) + self.eps)
             self._m[pid] = m
             self._v[pid] = v
             self._t[pid] = t

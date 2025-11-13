@@ -12,6 +12,18 @@ def logsumexp(x, axis=-1, keepdims=False):
     return y if keepdims else xp.squeeze(y, axis=axis)
 
 
+def _targets_to_indices(targets, num_samples):
+    """Normalize targets (class indices or one-hot) to int64 indices on active backend."""
+    t = xp.asarray(targets)
+    if t.ndim == 0:
+        t = t.reshape(1)
+    if t.ndim == 1 and t.size == num_samples and xp.issubdtype(t.dtype, xp.integer):
+        return t.astype(xp.int64, copy=False)
+    if t.ndim == 1:
+        t = t[None, :]
+    return xp.argmax(t, axis=1).astype(xp.int64, copy=False)
+
+
 def cross_entropy_from_logits(logits, targets, reduction="mean"):
     """Cross-entropy for multi-class from logits (stable).
 
@@ -27,21 +39,11 @@ def cross_entropy_from_logits(logits, targets, reduction="mean"):
     N, C = logits.shape
 
     # Convert targets to indices
-    t = _np.asarray(targets)
-    if t.ndim == 0:
-        t = _np.array([int(t)])
-    if t.ndim == 1 and t.size == N and _np.issubdtype(t.dtype, _np.integer):
-        target_idx = t.astype(_np.int64, copy=False)
-    else:
-        t = _np.asarray(t, dtype=_np.float64)
-        if t.ndim == 1:
-            t = t[None, :]
-        target_idx = t.argmax(axis=1).astype(_np.int64, copy=False)
-    target_idx_xp = backend.to_device(target_idx, dtype=xp.int64)
+    target_idx = _targets_to_indices(targets, N)
 
     # Stable CE: -z_y + logsumexp(z)
     lse = logsumexp(logits, axis=1)
-    z_y = logits[xp.arange(N), target_idx_xp]
+    z_y = logits[xp.arange(N), target_idx]
     losses = -z_y + lse
 
     if reduction == "mean":
@@ -62,20 +64,10 @@ def cross_entropy_grad_logits(logits, targets):
 
     N, C = probs.shape
 
-    t = _np.asarray(targets)
-    if t.ndim == 0:
-        t = _np.array([int(t)])
-    if t.ndim == 1 and t.size == N and _np.issubdtype(t.dtype, _np.integer):
-        target_idx = t.astype(_np.int64, copy=False)
-    else:
-        t = _np.asarray(t, dtype=_np.float64)
-        if t.ndim == 1:
-            t = t[None, :]
-        target_idx = t.argmax(axis=1).astype(_np.int64, copy=False)
-    target_idx_xp = backend.to_device(target_idx, dtype=xp.int64)
+    target_idx = _targets_to_indices(targets, N)
 
     one_hot = xp.zeros_like(probs)
-    one_hot[xp.arange(N), target_idx_xp] = 1.0
+    one_hot[xp.arange(N), target_idx] = 1.0
 
     grad = probs - one_hot
     return grad if logits.ndim > 1 else grad[0]

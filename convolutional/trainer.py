@@ -106,23 +106,35 @@ class ConvTrainer:
         plt.show(block=False)
         plt.pause(0.001)
 
-    def show_misclassifications(self, X_test, y_test, max_images=25, cols=5):
+
+    def show_misclassifications(self, X_test, y_test, max_images=25, cols=5, batch_size=512):
         if hasattr(self.model, "eval"):
             self.model.eval()
-        X = backend.to_device(X_test, dtype=xp.float32)
-        y = backend.to_device(y_test, dtype=xp.int64)
-        logits = self.model.forward(X)
-        preds = xp.argmax(logits, axis=1)
-        mis_idx = xp.where(preds != y)[0]
+        n = len(X_test)
+        if n == 0:
+            print("No samples provided for misclassification display.")
+            return _np.array([], dtype=_np.int64)
+
+        preds = xp.empty(n, dtype=xp.int64)
+        for start in range(0, n, batch_size):
+            end = min(start + batch_size, n)
+            xb = backend.to_device(X_test[start:end], dtype=xp.float32)
+            logits = self.model.forward(xb)
+            preds[start:end] = xp.argmax(logits, axis=1)
+
+        y_all = backend.to_device(y_test, dtype=xp.int64)
+        mis_idx = xp.where(preds != y_all)[0]
         mis_idx_cpu = backend.to_cpu(mis_idx).astype(_np.int64, copy=False)
         total = len(mis_idx_cpu)
         if total == 0:
-            print("No misclassifications 🎉")
+            print("No misclassifications dYZ%")
             return mis_idx_cpu
         mis_idx_cpu = mis_idx_cpu[:max_images]
-        imgs = backend.to_cpu(X[mis_idx_cpu])
-        preds_cpu = backend.to_cpu(preds[mis_idx_cpu])
-        y_cpu = backend.to_cpu(y[mis_idx_cpu])
+        imgs = _np.asarray(X_test)[mis_idx_cpu]
+        preds_cpu_all = backend.to_cpu(preds)
+        y_cpu_all = backend.to_cpu(y_all)
+        preds_cpu = preds_cpu_all[mis_idx_cpu]
+        y_cpu = y_cpu_all[mis_idx_cpu]
         rows = int(_np.ceil(len(mis_idx_cpu) / cols))
         fig, axes = plt.subplots(rows, cols, figsize=(cols * 2.2, rows * 2.2))
         axes = _np.atleast_1d(axes).ravel()

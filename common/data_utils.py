@@ -4,10 +4,18 @@ import matplotlib.pyplot as plt
 import math
 # moved to common package
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
 
 class DataUtility:
     def __init__(self, data_dir="data"):
-        self.data_dir = Path(data_dir)
+        data_path = Path(data_dir)
+
+        # allow callers to pass relative paths regardless of current working directory
+        if not data_path.is_absolute():
+            data_path = PROJECT_ROOT / data_path
+
+        self.data_dir = data_path
 
     def load_data(
         self,

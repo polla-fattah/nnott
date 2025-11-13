@@ -31,6 +31,9 @@ ARCH_REGISTRY = {
     "convnext_tiny": ConvNeXtTiny(),
 }
 
+ARCH_CHOICES = tuple(sorted(ARCH_REGISTRY.keys()))
+ARCH_HELP = "Architecture key ({0}).".format(", ".join(ARCH_CHOICES))
+
 
 def build_cnn(name="baseline", num_classes=10):
     name = name.lower()
@@ -42,7 +45,13 @@ def build_cnn(name="baseline", num_classes=10):
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Train/evaluate convolutional architectures.")
-    parser.add_argument("arch", nargs="?", default="baseline", help="Architecture key (e.g., baseline, lenet, resnet18).")
+    parser.add_argument(
+        "arch",
+        nargs="?",
+        default="baseline",
+        choices=ARCH_CHOICES,
+        help=ARCH_HELP,
+    )
     parser.add_argument("--epochs", type=int, default=8, help="Number of training epochs.")
     parser.add_argument("--batch-size", type=int, default=64, help="Mini-batch size.")
     parser.add_argument("--save", type=str, help="Path to save trained weights.")
