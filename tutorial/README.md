@@ -16,9 +16,23 @@ Welcome to the learning guide for the **Neural Networks From Scratch (NNFS)** sa
 | --- | --- |
 | [01. Project Tour](project-tour.md) | Repository structure, shared utilities, datasets, and helper scripts. |
 | [02. Implementations & Hardware](implementations-and-hardware.md) | Scalar vs. vectorized code paths, backend switching, and GPU diagnostics. |
-| [03. Running Experiments](running-experiments.md) | Step-by-step training commands, checkpointing workflows, and suggested investigations. |
+| [03. Running Experiments](running-experiments.md) | Step-by-step training commands, checkpointing workflows, quick-start scripts, and lab prompts. |
 | [04. Core Concepts](core-concepts.md) | Educational notes on neurons, activations, normalization, loss functions, optimizers, and convolution tricks. |
 | [05. Architecture Gallery](architecture-gallery.md) | Background on each CNN provided (LeNet, AlexNet, VGG16, ResNet18, EfficientNet-Lite0, ConvNeXt-Tiny) plus dataset considerations. |
+| [Debug Playbook](debug-playbook.md) | Troubleshooting recipes for environment, GPU, data, and training issues. |
+
+## Scenario Reference Table
+
+| Goal | Fastest Way to Try |
+| --- | --- |
+| Learn optimizer behavior | `python scripts/quickstart_vectorized.py --scenario optimizer-compare --plot` |
+| Compare CPU vs GPU throughput | `python scripts/quickstart_convolutional.py --scenario gpu-fast --epochs 1 --lookahead --plot` (run once with `--gpu`, once without) |
+| Practice checkpoint save/resume | `python scripts/quickstart_convolutional.py --scenario resume-demo --save-path checkpoints/demo.npz --plot` |
+| Swap in a new dataset | `python scripts/quickstart_scalar.py --scenario dataset-swap --plot --alt-train-images fashion_train_images.npy ...` |
+| Test gradient clipping/Lookahead | `python convolutional/main.py resnet18 --epochs 1 --batch-size 64 --gpu --grad-clip 5 --lookahead --lookahead-k 5 --lookahead-alpha 0.5` |
+| Visualize misclassifications | `python vectorized/main.py --epochs 2 --batch-size 64 --plot` (answer “y” when prompted) **or** `python convolutional/main.py baseline --plot --show-misclassified` (confirm the extra pass) |
+| Stress-test CuPy/GPU | `python scripts/test_cupy.py --stress-seconds 10 --stress-size 4096` |
+| Scalar loop walkthrough | `python scripts/quickstart_scalar.py --scenario basic --plot` |
 
 > Tip: Each module is self-contained. You can read them sequentially or jump directly to the section that matches your current work in the codebase.
 

@@ -34,7 +34,7 @@ def parse_args():
     parser.add_argument(
         "--plot",
         action="store_true",
-        help="Enable matplotlib plots (disabled by default).",
+        help="Enable matplotlib plots (disabled by default). Collecting misclassifications requires an extra full pass and can be slow.",
     )
     return parser.parse_args()
 
@@ -73,7 +73,8 @@ def main(opts=None):
     trainer.evaluate(X_test, y_test)
     imgs, preds, trues, total = trainer.misclassification_data(X_test, y_test, max_images=100)
     if args.plot and total:
-        plot_misclassifications(imgs, preds, trues, total)
+        if confirm_heavy_step("collect and plot misclassifications"):
+            plot_misclassifications(imgs, preds, trues, total)
 
 
 def plot_loss(loss_history):
@@ -112,6 +113,11 @@ def plot_misclassifications(imgs, preds, trues, total, cols=5):
     fig.suptitle(f"Misclassifications: showing {n} of {total}")
     plt.tight_layout()
     plt.show()
+
+
+def confirm_heavy_step(task):
+    response = input(f"\nAbout to {task}, which requires an extra pass and may take time. Continue? [y/N]: ").strip().lower()
+    return response in {"y", "yes"}
 
 
 if __name__ == "__main__":

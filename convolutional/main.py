@@ -86,12 +86,12 @@ def parse_args():
     parser.add_argument(
         "--plot",
         action="store_true",
-        help="Enable matplotlib plots (disabled by default).",
+        help="Enable matplotlib plots (disabled by default). Visualization requires an extra inference sweep.",
     )
     parser.add_argument(
         "--show-misclassified",
         action="store_true",
-        help="Collect misclassified samples after evaluation (uses extra GPU memory).",
+        help="Collect misclassified samples after evaluation; adds a full pass over the test set.",
     )
     return parser.parse_args()
 
@@ -141,12 +141,19 @@ def main(opts=None):
     if args.show_misclassified or args.plot:
         imgs, preds, trues, total = trainer.collect_misclassifications(X_test, y_test, max_images=25)
         if args.plot and total:
+            if not confirm_heavy_step("collect and plot misclassifications"):
+                return
             plot_misclassifications(imgs, preds, trues, total, cols=5)
 
     if args.save:
         metadata = {"arch": arch_name, "epochs": args.epochs}
         trainer.save_model(args.save, metadata=metadata)
         print(f"Saved weights to {args.save}")
+
+
+def confirm_heavy_step(action):
+    resp = input(f"\nAbout to {action}, which runs another full inference pass. Continue? [y/N]: ").strip().lower()
+    return resp in {"y", "yes"}
 
 
 def plot_loss(loss_history):

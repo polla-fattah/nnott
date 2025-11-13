@@ -56,3 +56,8 @@ You can dial up `--stress-seconds` or `--stress-size` to keep the GPU busy longe
 | GPU Health Check | `scripts/test_cupy.py` | Confirms CuPy can allocate, compute, and stress your GPU. |
 
 Understanding these tiers equips you to reason about both the *what* (network math) and the *how* (performance engineering).
+
+### Lab Challenges
+
+1. **Benchmark the tiers:** Time one epoch of the scalar, vectorized, and convolutional implementations (use `scripts/quickstart_*` if you prefer). Record the wall-clock duration and explain the speed differences in your own words.
+2. **Backend toggle drill:** Run `python convolutional/main.py resnet18 --epochs 1 --batch-size 64` twice—once with `--gpu`, once without. Note the runtime, GPU utilization (via `nvidia-smi`), and any startup warnings. Summarize the steps the backend layer took to select the device.

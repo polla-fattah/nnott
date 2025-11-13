@@ -71,7 +71,11 @@ def parse_args():
     parser.add_argument("--train-labels", default="train_labels.npy")
     parser.add_argument("--test-images", default="test_images.npy")
     parser.add_argument("--test-labels", default="test_labels.npy")
-    parser.add_argument("--plot", action="store_true", help="Display Matplotlib plots.")
+    parser.add_argument(
+        "--plot",
+        action="store_true",
+        help="Display Matplotlib plots. Collecting misclassifications runs another inference sweep and can be slow.",
+    )
     parser.add_argument("--alt-train-images", default="fashion_train_images.npy")
     parser.add_argument("--alt-train-labels", default="fashion_train_labels.npy")
     parser.add_argument("--alt-test-images", default="fashion_test_images.npy")

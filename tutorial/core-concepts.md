@@ -24,3 +24,8 @@ This hub links to detailed tutorials covering every foundational concept used th
 3. Modify the referenced code and run small experiments to solidify your understanding.
 
 With these guides, you can build a solid foundation before diving into the larger architectures and experiments.
+
+### Lab Challenges
+
+1. **Gradient trace:** Follow the scalar implementation through a single training example (set batch size to 1). Write down the value of each neuron’s activation and gradient, then verify they match the equations in the Fundamentals and Loss tutorials.
+2. **Optimizer swap experiment:** Using the Optimizer hub, implement both Adam and SGD+momentum for the same network, run each for 3 epochs, and plot/compare their loss histories. Summarize the behavioral differences you observed.

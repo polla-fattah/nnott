@@ -16,7 +16,11 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Train/evaluate scalar MLP on MNIST.")
     parser.add_argument("--epochs", type=int, default=20, help="Number of training epochs.")
     parser.add_argument("--batch-size", type=int, default=64, help="Mini-batch size.")
-    parser.add_argument("--no-plot", action="store_true", help="Disable plots for samples, loss, and predictions.")
+    parser.add_argument(
+        "--no-plot",
+        action="store_true",
+        help="Disable plotting; grids and misclassification checks add extra passes and slow things down.",
+    )
     return parser.parse_args()
 
 

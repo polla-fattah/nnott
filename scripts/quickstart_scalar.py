@@ -52,7 +52,11 @@ def parse_args():
     parser.add_argument("--train-labels", default="train_labels.npy")
     parser.add_argument("--test-images", default="test_images.npy")
     parser.add_argument("--test-labels", default="test_labels.npy")
-    parser.add_argument("--plot", action="store_true", help="Show matplotlib plots.")
+    parser.add_argument(
+        "--plot",
+        action="store_true",
+        help="Show matplotlib plots. Note: prediction grids/misclassification checks run additional passes and can be slow.",
+    )
     parser.add_argument(
         "--sample-count",
         type=int,

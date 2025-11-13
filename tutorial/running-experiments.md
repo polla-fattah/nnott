@@ -86,10 +86,10 @@ Prefer a guided walkthrough? Each module has a scenario-driven helper in `script
   Loads MNIST, previews a handful of samples, trains the scalar MLP, and optionally plots loss/prediction grids. Alternate scenarios compare optimizers or plug in Fashion-MNIST style `.npy` files.
 
 - `python scripts/quickstart_vectorized.py --scenario hidden-sweep --plot`  
-  Sweeps over several hidden-layer configurations, printing accuracies and (optionally) plotting curves. Use `--scenario optimizer-compare` to benchmark SGD vs Adam in minutes.
+  Sweeps over several hidden-layer configurations, printing accuracies and (optionally) plotting curves. Use `--scenario optimizer-compare` to benchmark SGD vs Adam in minutes. Answer “yes” to the prompt before misclassification plotting (it triggers an extra pass).
 
 - `python scripts/quickstart_convolutional.py --scenario gpu-fast --lookahead --plot`  
-  Trains ResNet18 with Lookahead + gradient clipping on GPU (falls back to CPU). Additional scenarios demonstrate CPU baselines, checkpoint resume flows, and dataset swaps (e.g., CIFAR-10 shaped data via `--image-shape 3,32,32`).
+  Trains ResNet18 with Lookahead + gradient clipping on GPU (falls back to CPU). Additional scenarios demonstrate CPU baselines, checkpoint resume flows, and dataset swaps (e.g., CIFAR-10 shaped data via `--image-shape 3,32,32`). You’ll be asked to confirm misclassification plotting; decline if you want to skip the extra inference sweep.
 
 Each script exposes flags (`--epochs`, `--batch-size`, dataset overrides, `--plot`, etc.) so students can experiment interactively without editing the main entrypoints.
 
@@ -106,6 +106,11 @@ Each script exposes flags (`--epochs`, `--batch-size`, dataset overrides, `--plo
 | **Dropout/normalization ablations** | Temporarily disable layers (e.g., comment out BatchNorm) to witness training instability or overfitting. |
 
 Document your findings—timing tables, accuracy plots, or misclassification grids make great lab reports.
+
+## Lab Challenges
+
+1. **Optimizer notebook:** Use `scripts/quickstart_vectorized.py --scenario optimizer-compare --plot` to capture loss curves for SGD and Adam on the same dataset. Write a short paragraph explaining which optimizer converged faster and why.
+2. **ResNet stress test:** Run `python scripts/quickstart_convolutional.py --scenario gpu-fast --lookahead --plot` on a GPU (or CPU fallback). Measure runtime, GPU memory usage, and final accuracy, then describe one tweak that could reduce memory pressure.
 
 ---
 

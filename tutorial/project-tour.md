@@ -51,10 +51,73 @@ You can drop additional datasets into the same folder as long as you convert the
 
 For any other dataset, follow the same pattern: convert to `.npy`, point `DataUtility` at the new filenames, and ensure model input shapes/first-layer channels match the data.
 
+##### Fashion-MNIST Walk-Through
+
+Convert and run:
+
+```python
+# convert_fashion_mnist.py
+import numpy as np
+from torchvision.datasets import FashionMNIST
+
+train = FashionMNIST(root="data/raw", train=True, download=True)
+test = FashionMNIST(root="data/raw", train=False, download=True)
+
+np.save("data/fashion_train_images.npy", train.data.numpy())
+np.save("data/fashion_train_labels.npy", train.targets.numpy())
+np.save("data/fashion_test_images.npy", test.data.numpy())
+np.save("data/fashion_test_labels.npy", test.targets.numpy())
+```
+
+```bash
+python scripts/quickstart_scalar.py --scenario dataset-swap --plot \
+    --alt-train-images fashion_train_images.npy \
+    --alt-train-labels fashion_train_labels.npy \
+    --alt-test-images fashion_test_images.npy \
+    --alt-test-labels fashion_test_labels.npy
+```
+
+No additional changes needed because the images are still 28×28×1.
+
+##### CIFAR-10 Walk-Through
+
+Convert RGB 32×32 data and reshape for CNNs:
+
+```python
+# convert_cifar10.py
+import numpy as np
+from torchvision.datasets import CIFAR10
+
+train = CIFAR10(root="data/raw", train=True, download=True)
+test = CIFAR10(root="data/raw", train=False, download=True)
+
+np.save("data/cifar10_train_images.npy", train.data.transpose(0, 3, 1, 2))
+np.save("data/cifar10_train_labels.npy", np.array(train.targets))
+np.save("data/cifar10_test_images.npy", test.data.transpose(0, 3, 1, 2))
+np.save("data/cifar10_test_labels.npy", np.array(test.targets))
+```
+
+```bash
+python scripts/quickstart_convolutional.py --scenario dataset-swap \
+    --arch resnet18 --epochs 1 --batch-size 64 --plot \
+    --alt-train-images cifar10_train_images.npy \
+    --alt-train-labels cifar10_train_labels.npy \
+    --alt-test-images cifar10_test_images.npy \
+    --alt-test-labels cifar10_test_labels.npy \
+    --image-shape 3,32,32
+```
+
+ResNet18 already handles 3-channel inputs when the data reshape matches `(3,32,32)`; confirm your custom architectures do the same.
+
 ### Helper Scripts (`scripts/`)
 
 - `test_cupy.py`: stress-tests your CUDA+CuPy setup with basic ops, matmuls, kernel launches, and configurable GEMM stress loops (`--stress-seconds`, `--stress-size`).
 - `test_system.py`, `sanity_linear_toy.py`, `experiments.py`: minimal scripts for system diagnostics or quick experiments.
+
+### Lab Challenges
+
+1. **Map the repo:** Create a diagram (digital or hand-drawn) showing each top-level folder, two representative files inside it, and one sentence about what they do. Share it with a peer or TA to verify you captured every component.
+2. **Dataset swap dry run:** Convert Fashion-MNIST to `.npy`, place the files in `data/`, and run `scripts/quickstart_scalar.py --scenario dataset-swap --plot`. Record the resulting accuracy and any code/config changes you had to make.
 
 ## Required Packages
 
