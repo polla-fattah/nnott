@@ -26,6 +26,12 @@ class VGG16(Architecture):
         in_ch = 1
         spatial = 28
         downsampled = 0
+        def pool_out(size, stride, kernel=2, padding=0, dilation=1):
+            return max(
+                1,
+                ((size + 2 * padding - dilation * (kernel - 1) - 1) // stride) + 1,
+            )
+
         for out_ch, reps in cfg:
             for _ in range(reps):
                 blocks.extend(
@@ -38,8 +44,8 @@ class VGG16(Architecture):
                 in_ch = out_ch
             stride = 2 if downsampled < 3 else 1
             blocks.append(MaxPool2D(kernel_size=2, stride=stride))
+            spatial = pool_out(spatial, stride=stride, kernel=2)
             if stride == 2:
-                spatial = max(1, spatial // 2)
                 downsampled += 1
         fc_in = in_ch * spatial * spatial
         blocks.extend(
