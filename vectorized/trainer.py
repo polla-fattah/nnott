@@ -7,12 +7,13 @@ from common.model_io import save_model, load_model as load_model_state
 
 
 class VTrainer:
-    def __init__(self, model, optimizer, num_classes=10):
+    def __init__(self, model, optimizer, num_classes=10, grad_clip_norm=None):
         self.model = model
         self.optimizer = optimizer
         self.criterion = CrossEntropyLoss(reduction="mean")
         self.num_classes = num_classes
         self.loss_history = []
+        self.grad_clip_norm = grad_clip_norm
 
     def train(self, X_train, y_train, epochs=10, batch_size=32, verbose=True, lr_schedule=True, augment=True):
         X = np.asarray(X_train, dtype=np.float32)
@@ -61,6 +62,7 @@ class VTrainer:
                 total += float(loss) * len(Xb)
                 grad_logits = self.criterion.backward(logits, yb)
                 self.model.backward(grad_logits)
+                self._clip_gradients(self.model.parameters())
                 self.optimizer.step(self.model.parameters(), batch_size=len(Xb))
 
             avg = total / n
@@ -190,3 +192,21 @@ class VTrainer:
         xi = np.clip(xi, 0, w - 1)
         yi = np.clip(yi, 0, h - 1)
         return img[yi, xi]
+
+    def _clip_gradients(self, params):
+        max_norm = self.grad_clip_norm
+        if not max_norm or max_norm <= 0:
+            return
+        total = 0.0
+        grads = []
+        for _, g in params:
+            if g is None:
+                continue
+            grads.append(g)
+            total += float(np.sum(g.astype(np.float32) ** 2))
+        norm = np.sqrt(total)
+        if norm <= max_norm:
+            return
+        scale = max_norm / (norm + 1e-8)
+        for g in grads:
+            g *= scale

@@ -9,7 +9,7 @@ This hub links to detailed tutorials covering every foundational concept used th
 | Fundamentals | Neurons, layers, and network composition in scalar vs vectorized code | [Study fundamentals](concepts/fundamentals.md) |
 | Activation functions | ReLU, LeakyReLU, SiLU, GELU, and softmax implementations | [Explore activations](concepts/activations.md) |
 | Loss & softmax | Numerically stable cross-entropy from logits and its gradients | [Understand loss](concepts/loss-and-softmax.md) |
-| Optimizers | SGD, momentum, Adam, and learning-rate schedules | [Review optimizers](concepts/optimizers.md) |
+| Optimizers | Hub for SGD, Adam, Lookahead, gradient clipping, and schedules | [Review optimizers](concepts/optimizers.md) |
 | Regularization | Dropout, weight decay, data augmentation, and batch-size effects | [Apply regularization](concepts/regularization.md) |
 | Normalization | BatchNorm vs LayerNorm, when to use each, and why | [Compare normalization](concepts/normalization.md) |
 | Convolution mechanics | im2col/col2im, depthwise conv, squeeze-excite, global pooling | [Decode convolution](concepts/convolution.md) |

@@ -18,7 +18,7 @@ from convolutional.architectures import (
     ConvNeXtTiny,
 )
 from convolutional.trainer import ConvTrainer
-from vectorized.optim import Adam
+from vectorized.optim import Adam, Lookahead
 
 
 ARCH_REGISTRY = {
@@ -59,6 +59,29 @@ def parse_args():
     parser.add_argument("--no-augment", action="store_true", help="Disable shift augmentation.")
     parser.add_argument("--skip-train", action="store_true", help="Skip training phase (use with --load).")
     parser.add_argument("--gpu", action="store_true", help="Use CuPy GPU backend if available.")
+    parser.add_argument(
+        "--grad-clip",
+        type=float,
+        default=None,
+        help="Clip global gradient norm to this value (disabled by default).",
+    )
+    parser.add_argument(
+        "--lookahead",
+        action="store_true",
+        help="Wrap the base optimizer with Lookahead (k-step).",
+    )
+    parser.add_argument(
+        "--lookahead-k",
+        type=int,
+        default=5,
+        help="Lookahead sync interval (k steps).",
+    )
+    parser.add_argument(
+        "--lookahead-alpha",
+        type=float,
+        default=0.5,
+        help="Lookahead interpolation factor alpha.",
+    )
     return parser.parse_args()
 
 
@@ -78,7 +101,9 @@ def main(opts=None):
 
     model = build_cnn(arch_name, num_classes=10)
     optim = Adam(lr=5e-4, weight_decay=1e-4)
-    trainer = ConvTrainer(model, optim, num_classes=10)
+    if args.lookahead:
+        optim = Lookahead(optim, k=args.lookahead_k, alpha=args.lookahead_alpha)
+    trainer = ConvTrainer(model, optim, num_classes=10, grad_clip_norm=args.grad_clip)
 
     if args.load:
         meta = trainer.load_model(args.load)

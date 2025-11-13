@@ -11,12 +11,13 @@ xp = backend.xp
 
 
 class ConvTrainer:
-    def __init__(self, model, optimizer, num_classes=10):
+    def __init__(self, model, optimizer, num_classes=10, grad_clip_norm=None):
         self.model = model
         self.optimizer = optimizer
         self.criterion = CrossEntropyLoss(reduction="mean")
         self.num_classes = num_classes
         self.loss_history = []
+        self.grad_clip_norm = grad_clip_norm
 
     def train(
         self,
@@ -67,6 +68,7 @@ class ConvTrainer:
                 running += float(loss) * len(xb)
                 grad = self.criterion.backward(logits, yb)
                 self.model.backward(grad)
+                self._clip_gradients(self.model.parameters())
                 self.optimizer.step(self.model.parameters(), batch_size=len(xb))
 
             avg = running / n
@@ -177,3 +179,21 @@ class ConvTrainer:
             dy = int(xp.random.randint(-max_shift, max_shift + 1))
             shifted[i] = xp.roll(xp.roll(xb[i], dy, axis=1), dx, axis=2)
         return shifted
+
+    def _clip_gradients(self, params):
+        max_norm = self.grad_clip_norm
+        if not max_norm or max_norm <= 0:
+            return
+        total = xp.asarray(0.0, dtype=xp.float32)
+        for _, g in params:
+            if g is None:
+                continue
+            total += xp.sum(g.astype(xp.float32) ** 2)
+        norm = xp.sqrt(total)
+        norm_val = float(backend.to_cpu(norm))
+        if norm_val <= max_norm:
+            return
+        scale = max_norm / (norm_val + 1e-8)
+        for _, g in params:
+            if g is not None:
+                g *= scale

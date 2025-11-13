@@ -74,3 +74,35 @@ class Adam(Optimizer):
             self._m[pid] = m
             self._v[pid] = v
             self._t[pid] = t
+
+
+class Lookahead(Optimizer):
+    """
+    Wrapper that applies Lookahead updates on top of a base optimizer.
+    See: Zhang et al., "Lookahead Optimizer: k steps forward, 1 step back".
+    """
+
+    def __init__(self, base_optimizer, k=5, alpha=0.5):
+        assert isinstance(base_optimizer, Optimizer), "base_optimizer must inherit Optimizer"
+        self.base_optimizer = base_optimizer
+        self.k = max(1, int(k))
+        self.alpha = float(alpha)
+        self._slow = {}
+        self._step = 0
+
+    def step(self, params, batch_size: int):
+        self.base_optimizer.step(params, batch_size)
+        self._step += 1
+        if self._step % self.k != 0:
+            return
+        for p, _ in params:
+            pid = id(p)
+            slow = self._slow.get(pid)
+            if slow is None:
+                slow = xp.array(p, copy=True)
+            slow += self.alpha * (p - slow)
+            p[...] = slow
+            self._slow[pid] = slow
+
+    def zero_grad(self, params):
+        self.base_optimizer.zero_grad(params)
