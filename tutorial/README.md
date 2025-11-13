@@ -1,10 +1,9 @@
----
-**NNOTT Tutorial Series**
----
+**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](..) | [Architectures](architecture-gallery.md)
 
-# Neural Networks From Scratch - Tutorial Hub
 
-Welcome to the learning guide for the **Neural Networks From Scratch (NNFS)** sandbox. This tutorial series walks through the entire project—why it exists, how it is organized, and how to run meaningful experiments. Use the navigation list below to jump to the relevant module.
+# Neural Networks Optimisations And Traingin Tests - Tutorial Hub
+
+Welcome to the learning guide for the **Neural Networks Optimisations And Traingin Tests (NNOTT)** sandbox. This tutorial series walks through the entire project—why it exists, how it is organized, and how to run meaningful experiments. Use the navigation list below to jump to the relevant module.
 
 ## How to Use This Tutorial
 

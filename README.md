@@ -1,4 +1,4 @@
-# Neural Networks From Scratch (NNFS)
+# Neural Networks Optimisations And Traingin Tests (NNOTT)
 
 This repository is an educational sandbox for implementing neural networks from first principles. You’ll find:
 

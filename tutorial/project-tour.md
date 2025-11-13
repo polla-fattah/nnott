@@ -1,6 +1,5 @@
----
-**NNOTT Tutorial Series**
----
+**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](..) | [Architectures](architecture-gallery.md)
+
 
 # 01 · Project Tour
 
