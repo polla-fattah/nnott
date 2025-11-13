@@ -12,12 +12,26 @@ from __future__ import annotations
 
 import argparse
 import numpy as np
+from pathlib import Path
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from common.data_utils import DataUtility
-from vectorized.modules import Sequential, Linear, ReLU
+
+from vectorized.modules import ACTIVATION_KINDS
 from vectorized.optim import Adam, SGD
 from vectorized.trainer import VTrainer
-from vectorized.main import plot_loss, plot_misclassifications
+from vectorized.main import (
+    plot_loss,
+    plot_misclassifications,
+    parse_hidden_sizes,
+    parse_activation_list,
+    parse_dropout_list,
+    build_mlp,
+)
 
 
 def parse_args():
@@ -35,8 +49,38 @@ def parse_args():
     parser.add_argument(
         "--hidden-sizes",
         type=str,
-        default="256,128",
+        default="256,128,64",
         help="Comma-separated hidden sizes for the basic scenario.",
+    )
+    parser.add_argument(
+        "--activation",
+        choices=sorted(k for k in ACTIVATION_KINDS if k != "linear"),
+        default="relu",
+        help="Default hidden-layer activation.",
+    )
+    parser.add_argument(
+        "--hidden-activations",
+        type=str,
+        default=None,
+        help="Comma-separated activation list per hidden layer.",
+    )
+    parser.add_argument(
+        "--dropout",
+        type=str,
+        default="0.2",
+        help="Dropout value(s) per hidden layer (single value or comma-separated).",
+    )
+    parser.add_argument(
+        "--batchnorm",
+        action="store_true",
+        help="Insert BatchNorm1D layers before each activation.",
+    )
+    parser.add_argument("--bn-momentum", type=float, default=0.1, help="BatchNorm momentum.")
+    parser.add_argument(
+        "--leaky-negative-slope",
+        type=float,
+        default=0.01,
+        help="Negative slope used when LeakyReLU appears in the activation list.",
     )
     parser.add_argument(
         "--hidden-options",
@@ -72,7 +116,7 @@ def main():
 
 def run_basic(args, data):
     print("== Basic vectorized MLP training ==")
-    model = build_model(args.hidden_sizes)
+    model = build_model(args)
     optim = Adam(lr=args.lr, weight_decay=args.weight_decay)
     trainer = VTrainer(model, optim, num_classes=10)
     trainer.train(
@@ -95,7 +139,7 @@ def run_optimizer_compare(args, data):
     results = {}
     for name in ("sgd", "adam"):
         print(f"\n--- Training with {name.upper()} ---")
-        model = build_model(args.hidden_sizes)
+        model = build_model(args)
         if name == "sgd":
             optim = SGD(lr=args.lr, momentum=0.9, weight_decay=args.weight_decay)
         else:
@@ -128,7 +172,9 @@ def run_hidden_sweep(args, data):
         configs = [(512, 256), (256, 128), (128, 64)]
     for cfg in configs:
         print(f"\n--- Hidden sizes: {cfg} ---")
-        model = build_model(",".join(str(c) for c in cfg))
+        sweep_args = argparse.Namespace(**vars(args))
+        sweep_args.hidden_sizes = ",".join(str(c) for c in cfg)
+        model = build_model(sweep_args)
         trainer = VTrainer(model, Adam(lr=args.lr, weight_decay=args.weight_decay), num_classes=10)
         trainer.train(
             data.X_train,
@@ -142,18 +188,18 @@ def run_hidden_sweep(args, data):
             plot_loss(trainer.loss_history)
 
 
-def build_model(hidden_sizes_str: str) -> Sequential:
-    hidden = tuple(int(h.strip()) for h in hidden_sizes_str.split(",") if h.strip())
-    if not hidden:
-        hidden = (256, 128)
-    layers = []
-    in_dim = 28 * 28
-    for h in hidden:
-        layers.append(Linear(in_dim, h, activation_hint="relu"))
-        layers.append(ReLU())
-        in_dim = h
-    layers.append(Linear(in_dim, 10, activation_hint=None))
-    return Sequential(*layers)
+def build_model(args) -> 'Sequential':
+    hidden = parse_hidden_sizes(args.hidden_sizes, default=(256, 128, 64))
+    hidden_acts = parse_activation_list(args.hidden_activations, len(hidden), default_act=args.activation)
+    dropout_list = parse_dropout_list(args.dropout, len(hidden))
+    return build_mlp(
+        hidden_sizes=hidden,
+        hidden_activations=hidden_acts,
+        dropout_list=dropout_list,
+        use_batchnorm=args.batchnorm,
+        bn_momentum=args.bn_momentum,
+        negative_slope=args.leaky_negative_slope,
+    )
 
 
 class DatasetBundle:

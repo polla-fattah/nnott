@@ -31,6 +31,8 @@ class Trainer:
         n = len(X_train)
         self.loss_history = []
         start_time = time.time()
+        if hasattr(self.network, "train"):
+            self.network.train()
 
         for epoch in range(1, epochs + 1):
             if verbose:
@@ -52,8 +54,11 @@ class Trainer:
                 bs = end - start
 
                 # zero accumulators
-                for layer in self.network.layers:
-                    layer.zero_grad()
+                if hasattr(self.network, "zero_grad"):
+                    self.network.zero_grad()
+                else:
+                    for layer in self.network.layers:
+                        layer.zero_grad()
 
                 # accumulate over batch
                 for i in range(start, end):
@@ -82,6 +87,9 @@ class Trainer:
               f"({elapsed / epochs:.2f} sec/epoch)")
 
     def evaluate(self, X_test, y_test):
+        prev_mode = getattr(self.network, "training", True)
+        if hasattr(self.network, "eval"):
+            self.network.eval()
         correct = 0
         total = len(X_test)
 
@@ -92,12 +100,18 @@ class Trainer:
 
         acc = correct / total
         print(f"Test accuracy: {acc * 100:.2f}%")
+        if prev_mode:
+            if hasattr(self.network, "train"):
+                self.network.train()
         return acc
 
     def get_random_predictions(self, X_test, y_test, num_samples=10):
         num_samples = min(num_samples, len(X_test))
         if num_samples == 0:
             return []
+        prev_mode = getattr(self.network, "training", True)
+        if hasattr(self.network, "eval"):
+            self.network.eval()
         idxs = np.random.choice(len(X_test), size=num_samples, replace=False)
         samples = []
         for idx in idxs:
@@ -105,4 +119,7 @@ class Trainer:
             true_label = int(y_test[idx])
             pred_label = self.network.predict(X_test[idx])
             samples.append((img, true_label, pred_label))
+        if prev_mode:
+            if hasattr(self.network, "train"):
+                self.network.train()
         return samples

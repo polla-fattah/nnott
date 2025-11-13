@@ -17,9 +17,33 @@ def parse_args():
     parser.add_argument("--epochs", type=int, default=20, help="Number of training epochs.")
     parser.add_argument("--batch-size", type=int, default=64, help="Mini-batch size.")
     parser.add_argument(
-        "--no-plot",
+        "--hidden-sizes",
+        type=str,
+        default="256,128,64",
+        help="Comma-separated hidden sizes (e.g., 256,128,64).",
+    )
+    parser.add_argument(
+        "--activation",
+        choices=["relu", "leaky_relu", "sigmoid", "tanh", "gelu"],
+        default="relu",
+        help="Default hidden activation when --hidden-activations is omitted.",
+    )
+    parser.add_argument(
+        "--hidden-activations",
+        type=str,
+        default=None,
+        help="Comma-separated activation per hidden layer (e.g., relu,tanh,sigmoid).",
+    )
+    parser.add_argument(
+        "--hidden-dropout",
+        type=str,
+        default="0.2",
+        help="Dropout probability per hidden layer (single value or comma list). Use 0 to disable.",
+    )
+    parser.add_argument(
+        "--plot",
         action="store_true",
-        help="Disable plotting; grids and misclassification checks add extra passes and slow things down.",
+        help="Enable plotting (sample grid, loss curve, prediction grid). These add extra passes and can slow runs.",
     )
     return parser.parse_args()
 
@@ -38,26 +62,32 @@ def main():
 
     # 1b. Show some of the training data visually
     sample_pairs = DataUtility.sample_images(X_train, y_train, num_samples=10)
-    if sample_pairs and not args.no_plot:
+    if sample_pairs and args.plot:
         plot_image_grid(sample_pairs, title="Training samples")
 
     # 2. Create network & trainer
     # for MNIST-like data: 28x28, 10 classes
     num_classes = 10  # labels 0-9
 
+    hidden_sizes = parse_hidden_sizes(args.hidden_sizes, default=(256, 128, 64))
+    hidden_acts = parse_hidden_activations(args.hidden_activations, len(hidden_sizes), default=args.activation)
+    dropout_values = parse_dropout(args.hidden_dropout, len(hidden_sizes))
+
     network = Network(
-        input_size=28 * 28,       # explicit, matches (28,28)
+        input_size=28 * 28,
         num_classes=num_classes,
-        hidden_sizes=(128, 64),
+        hidden_sizes=hidden_sizes,
         learning_rate=0.01,
-        activation='relu' #sigmoid
+        activation=args.activation,
+        hidden_activations=hidden_acts,
+        hidden_dropout=dropout_values,
     )
 
     trainer = Trainer(network, num_classes=num_classes)
 
     # 2. Start training (tip: start with 1–2 epochs to make it faster)
     trainer.train(X_train, y_train, epochs=args.epochs, batch_size=args.batch_size, verbose=True)
-    if not args.no_plot:
+    if args.plot:
         plot_loss(trainer.loss_history)
 
     # 3. Test the result (evaluate)
@@ -65,7 +95,7 @@ def main():
 
     # 3b. Show 10 random test images with true/pred labels
     pred_samples = trainer.get_random_predictions(X_test, y_test, num_samples=10)
-    if pred_samples and not args.no_plot:
+    if pred_samples and args.plot:
         plot_prediction_grid(pred_samples, title="Random Test Predictions")
 
 
@@ -113,6 +143,41 @@ def plot_prediction_grid(samples, title, cols=5):
     fig.suptitle(title)
     plt.tight_layout()
     plt.show()
+
+
+def parse_hidden_sizes(spec, default):
+    values = tuple(int(h.strip()) for h in (spec or "").split(",") if h.strip())
+    return values or tuple(default)
+
+
+def parse_hidden_activations(spec, length, default):
+    if spec:
+        acts = [a.strip().lower() for a in spec.split(",") if a.strip()]
+    else:
+        acts = []
+    if not acts:
+        acts = [default] * length
+    if len(acts) == 1 and length > 1:
+        acts = acts * length
+    if len(acts) != length:
+        raise ValueError("hidden_activations must match hidden layer count.")
+    return acts
+
+
+def parse_dropout(spec, length):
+    if not spec:
+        return [0.0] * length
+    vals = []
+    for token in (s.strip().lower() for s in spec.split(",") if s.strip()):
+        if token in {"none", "off"}:
+            vals.append(0.0)
+        else:
+            vals.append(max(0.0, min(0.95, float(token))))
+    if len(vals) == 1 and length > 1:
+        vals = vals * length
+    if len(vals) != length:
+        raise ValueError("hidden-dropout must have one value or match hidden layer count.")
+    return vals
 
 
 if __name__ == "__main__":

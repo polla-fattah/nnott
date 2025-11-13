@@ -16,12 +16,24 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
+import sys
 import numpy as np
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from common.data_utils import DataUtility
 from scalar.network import Network
 from scalar.trainer import Trainer
-from scalar.main import plot_image_grid, plot_loss, plot_prediction_grid
+from scalar.main import (
+    plot_image_grid,
+    plot_loss,
+    plot_prediction_grid,
+    parse_hidden_sizes,
+    parse_hidden_activations,
+    parse_dropout,
+)
 
 
 def parse_args():
@@ -38,14 +50,26 @@ def parse_args():
     parser.add_argument(
         "--hidden-sizes",
         type=str,
-        default="128,64",
+        default="256,128,64",
         help="Comma-separated hidden sizes (e.g., 256,64).",
     )
     parser.add_argument(
         "--activation",
-        choices=["relu", "sigmoid", "tanh"],
+        choices=["relu", "sigmoid", "tanh", "leaky_relu", "gelu"],
         default="relu",
         help="Hidden-layer activation.",
+    )
+    parser.add_argument(
+        "--hidden-activations",
+        type=str,
+        default=None,
+        help="Comma-separated activation list per hidden layer (e.g., relu,tanh).",
+    )
+    parser.add_argument(
+        "--hidden-dropout",
+        type=str,
+        default="0.2",
+        help="Dropout value(s) per hidden layer (single value or comma list).",
     )
     parser.add_argument("--data-dir", default="data", help="Directory containing .npy datasets.")
     parser.add_argument("--train-images", default="train_images.npy")
@@ -185,15 +209,17 @@ def maybe_plot_predictions(args, trainer, data):
 
 
 def build_network(args):
-    hidden = tuple(int(h.strip()) for h in args.hidden_sizes.split(",") if h.strip())
-    if not hidden:
-        hidden = (128, 64)
+    hidden = parse_hidden_sizes(args.hidden_sizes, default=(256, 128, 64))
+    activations = parse_hidden_activations(args.hidden_activations, len(hidden), default=args.activation)
+    dropout_vals = parse_dropout(args.hidden_dropout, len(hidden))
     return Network(
         input_size=28 * 28,
         num_classes=10,
         hidden_sizes=hidden,
         learning_rate=args.lr,
         activation=args.activation,
+        hidden_activations=activations,
+        hidden_dropout=dropout_vals,
     )
 
 

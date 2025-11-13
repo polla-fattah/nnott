@@ -9,10 +9,10 @@ Regularization techniques keep models from overfitting and improve generalizatio
 
 ## Dropout
 
-- **File:** `convolutional/modules.py` (`class Dropout`)
+- **Files:** `scalar/layer.py` (`DropoutLayer`), `vectorized/modules.py` (`class Dropout`), `convolutional/modules.py`.
 - **Mechanism:** During training, randomly zeroes activations with probability `p` and scales by `1 / (1 - p)` to keep expectations consistent.
-- **Usage:** Applied in BaselineCNN, AlexNet, VGG16, and EfficientNet heads.
-- **Experiment:** Train VGG16 with and without dropout to see how quickly it overfits MNIST.
+- **Usage:** Added after every hidden layer in the scalar/vectorized MLPs when you pass `--hidden-dropout ...` or `--dropout ...` from the CLI; also used inside the CNN heads (BaselineCNN, AlexNet, VGG16, EfficientNet).
+- **Experiment:** Train the vectorized MLP twice—once with `--dropout 0` and once with `--dropout 0.3`—to see how the loss curves diverge. Repeat in the scalar path with `--hidden-dropout 0.3,0.2,0.1` to match lecture exercises.
 
 ## Weight Decay (L2 Regularization)
 

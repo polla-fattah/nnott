@@ -37,6 +37,13 @@ Activations introduce non-linearity so networks can model complex decision bound
 - **Purpose:** Converts logits into probabilities for multi-class classifiers.
 - **Usage:** Final layer in MLPs and CNNs before cross-entropy loss.
 
+## Activation-Aware Initialization & CLI Hooks
+
+- **Files:** `scalar/neuron.py`, `vectorized/modules.py` (`class Linear`)
+- **Heuristics:** Hidden layers automatically switch between He initialization (ReLU, LeakyReLU, GELU) and Xavier/Glorot initialization (tanh, sigmoid) based on the activation you assign.
+- **How to control activations:** Pass `--hidden-activations` to `scalar/main.py`, `vectorized/main.py`, or their quick-start scripts. Provide a comma-separated list (e.g., `relu,gelu,tanh`) that matches the number of hidden layers; the code applies the right initializer and derivative for each layer.
+- **Mix-and-match demos:** Combine with `--leaky-negative-slope` (vectorized) to experiment with different slopes, or set one layer to `tanh` while others stay `relu` to observe convergence differences without touching the source files.
+
 ## Study Checklist
 
 1. Trace how each activation is implemented in `convolutional/modules.py`.

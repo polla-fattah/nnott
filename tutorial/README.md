@@ -34,6 +34,7 @@ Welcome to the learning guide for the **Neural Networks From Scratch (NNFS)** sa
 | Goal | Fastest Way to Try |
 | --- | --- |
 | Learn optimizer behavior | `python scripts/quickstart_vectorized.py --scenario optimizer-compare --plot` |
+| Explore MLP architecture toggles | `python scripts/quickstart_vectorized.py --scenario hidden-sweep --hidden-activations relu,gelu,tanh --dropout 0.2 --batchnorm` |
 | Compare CPU vs GPU throughput | `python scripts/quickstart_convolutional.py --scenario gpu-fast --epochs 1 --lookahead --plot` (run once with `--gpu`, once without) |
 | Practice checkpoint save/resume | `python scripts/quickstart_convolutional.py --scenario resume-demo --save-path checkpoints/demo.npz --plot` |
 | Swap in a new dataset | `python scripts/quickstart_scalar.py --scenario dataset-swap --plot --alt-train-images fashion_train_images.npy ...` |

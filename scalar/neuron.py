@@ -4,7 +4,7 @@ class Neuron:
     def __init__(self, num_inputs, activation='sigmoid', learning_rate=0.01):
         """Initialize neuron with activation-aware weights."""
         act = (activation or 'linear').lower()
-        if act in ('relu', 'leaky_relu'):
+        if act in ('relu', 'leaky_relu', 'gelu'):
             std = np.sqrt(2.0 / float(num_inputs))
             self.weights = np.random.randn(num_inputs).astype(np.float32) * std
             self.bias = 0.01 if act == 'relu' else 0.0
@@ -20,6 +20,7 @@ class Neuron:
         self.learning_rate = learning_rate
         self.last_input = None
         self.last_output = None
+        self.last_z = None
         # gradient accumulators for mini-batch updates
         self.grad_w = np.zeros_like(self.weights, dtype=np.float32)
         self.grad_b = 0.0
@@ -36,6 +37,9 @@ class Neuron:
             return np.where(x > 0.0, x, self.negative_slope * x)
         elif self.activation == 'tanh':
             return np.tanh(x)
+        elif self.activation == 'gelu':
+            coeff = np.sqrt(2.0 / np.pi)
+            return 0.5 * x * (1.0 + np.tanh(coeff * (x + 0.044715 * x ** 3)))
         else:
             return x  # linear fallback
 
@@ -47,6 +51,7 @@ class Neuron:
 
         self.last_input = inputs
         total = np.dot(inputs, self.weights) + self.bias
+        self.last_z = total
         self.last_output = self.activate(total)
         return self.last_output
 

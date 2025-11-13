@@ -1,36 +1,47 @@
-**Links:** [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
+**Links:** [MyHome](https://polla.dev) | [tutorialHub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
-# 01 · Project Tour
+# 01 - Project Tour
 
-**Breadcrumb:** [Home](README.md) / 01 · Project Tour
+**Breadcrumb:** [Home](README.md) / 01 - Project Tour
 
 
-This project is designed as a teaching sandbox. Each directory demonstrates a different perspective on neural networks—from slow-but-transparent scalar math to production-style CNN stacks. Use this tour to map the theoretical lectures to the exact files you should inspect.
+This project is designed as a teaching sandbox. Each directory demonstrates a different perspective on neural networksÃ¢â‚¬â€from slow-but-transparent scalar math to production-style CNN stacks. Use this tour to map the theoretical lectures to the exact files you should inspect.
 
 ## Top-Level Layout
 
 | Path | Why it matters |
 | --- | --- |
-| `scalar/` | Loop-based multilayer perceptron (MLP). Every neuron, gradient, and update is spelled out with Python `for` loops so you can follow the math line by line. |
-| `vectorized/` | NumPy/CuPy version of the same MLP. Shows how replacing loops with matrix operations unlocks massive speed-ups while keeping the math identical. |
+| `scalar/` | Loop-based multilayer perceptron (MLP). Every neuron, gradient, and update is spelled out with Python `for` loops so you can follow the math line by line. The default stack now uses a 256-128-64 topology with activation-aware (He/Xavier) initialization and optional dropout after each hidden layer. |
+| `vectorized/` | NumPy/CuPy version of the same MLP. Shows how replacing loops with matrix operations unlocks massive speed-ups while preserving feature parity: per-layer activation selection, dropout scheduling, and optional batch normalization. |
 | `convolutional/` | CNN modules (`convolutional/modules.py`), a unified trainer, and the architecture definitions living under `convolutional/architectures/`. |
 | `common/` | Shared backend selector, losses, softmax, model I/O, and data utilities. Every other package imports from here to stay consistent. |
 | `data/` | Stores the MNIST `.npy` files (`train_images.npy`, `train_labels.npy`, etc.) plus `data/readme.md` describing the dataset. |
 | `scripts/` | One-off tools such as GPU diagnostics (`test_cupy.py`), experiment helpers, and sanity checks. |
 | `checkpoints/` | Optional folder (create it as needed) where training runs can save `.npz` weight files. |
 
+### Fully Connected Feature Flags
+
+Both the scalar and vectorized entry points expose identical controls so you can prototype architectures from the CLI:
+
+- `--hidden-sizes 256,128,64` changes the per-layer width (defaults already match this expanded topology).
+- `--hidden-activations relu,tanh,gelu` mixes activations per layer; each layer automatically receives the matching He/Xavier initialization in `scalar/neuron.py` and `vectorized/modules.Linear`.
+- `--hidden-dropout 0.3,0.2,0.1` (scalar) or `--dropout 0.3,0.2,0.1` (vectorized) sets the keep probability after each hidden layer.
+- `--batchnorm` (vectorized) inserts `BatchNorm1D` modules between the Linear and activation stages; tweak `--bn-momentum` to adjust the running-stat update rate.
+
+The quick-start scripts forward the same flags, so you can stage tutorial without editing source files.
+
 ### Shared Utilities (`common/`)
 
 - **Backend selector** (`common/backend.py`): provides the `xp` alias that points to either NumPy (CPU) or CuPy (GPU) plus helper functions (`to_device`, `to_cpu`, `gpu_available`, etc.).
 - **Data loader** (`common/data_utils.py`): loads the MNIST `.npy` arrays, normalizes them (mean/std), reshapes images, and exposes quick sample-plotting helpers.
 - **Loss & softmax** (`common/cross_entropy.py`, `common/softmax.py`): numerically stable log-sum-exp implementation of cross-entropy and the associated gradients.
-- **Model I/O** (`common/model_io.py`): serialize weights/metadata to `.npz` files and reload them later—used by all trainers.
+- **Model I/O** (`common/model_io.py`): serialize weights/metadata to `.npz` files and reload them laterÃ¢â‚¬â€used by all trainers.
 
 ### Dataset Storage (`data/`)
 
 MNIST is packaged as NumPy arrays to keep the focus on neural-network mechanics. Files include:
 
-- `train_images.npy` / `train_labels.npy`: 60k training samples (28×28 grayscale digits).
+- `train_images.npy` / `train_labels.npy`: 60k training samples (28Ãƒâ€”28 grayscale digits).
 - `test_images.npy` / `test_labels.npy`: 10k evaluation samples.
 - `readme.md`: explains provenance, shapes, and how to create validation splits if desired.
 
@@ -46,9 +57,9 @@ You can drop additional datasets into the same folder as long as you convert the
      np.save("data/fashion_train_labels.npy", train_labels.numpy())
      ```  
   3. Run `DataUtility("data").load_data(train_images_file="fashion_train_images.npy", ...)`.
-  The scalar/vectorized/convolutional scripts will work without further changes because Fashion-MNIST shares MNIST’s 28×28×1 shape.
+  The scalar/vectorized/convolutional scripts will work without further changes because Fashion-MNIST shares MNISTÃ¢â‚¬â„¢s 28Ãƒâ€”28Ãƒâ€”1 shape.
 
-- **CIFAR-10 (RGB, 32×32)**  
+- **CIFAR-10 (RGB, 32Ãƒâ€”32)**  
   1. Convert the training/test splits to `.npy` (e.g., via `torchvision.datasets.CIFAR10`).  
   2. Update the reshape lines in `vectorized/main.py` and `convolutional/main.py` to use `(len(X), 3, 32, 32)` for CNNs or `len(X), -1` for MLPs.  
   3. Adjust the first convolutional layer to accept 3 input channels (e.g., modify the architecture builder or create a new entry in `ARCH_REGISTRY`).  
@@ -82,11 +93,11 @@ python scripts/quickstart_scalar.py --scenario dataset-swap --plot \
     --alt-test-labels fashion_test_labels.npy
 ```
 
-No additional changes needed because the images are still 28×28×1.
+No additional changes needed because the images are still 28Ãƒâ€”28Ãƒâ€”1.
 
 ##### CIFAR-10 Walk-Through
 
-Convert RGB 32×32 data and reshape for CNNs:
+Convert RGB 32Ãƒâ€”32 data and reshape for CNNs:
 
 ```python
 # convert_cifar10.py
@@ -128,7 +139,7 @@ ResNet18 already handles 3-channel inputs when the data reshape matches `(3,32,3
 
 The sandbox intentionally keeps dependencies light. Install the following inside your Conda/virtualenv:
 
-- [Python ≥ 3.10](https://docs.python.org/3/tutorial/)
+- [Python >= 3.10](https://docs.python.org/3/tutorial)
 - [NumPy](tools/numpy.md)
 - [CuPy](tools/cupy.md) (optional, for GPU acceleration)
 - [Matplotlib](tools/matplotlib.md) (for training curves + misclassification grids)
@@ -145,8 +156,13 @@ The directory split mirrors the learning journey:
 3. **Scale up to CNNs** in `convolutional/`.
 4. **Rely on shared utilities** in `common/` so all implementations behave the same.
 
-Refer back to this map whenever you encounter a concept in the tutorial—the table above tells you which file to inspect next.
+Refer back to this map whenever you encounter a concept in the tutorial; the table above tells you which file to inspect next.
 
 ---
 
 MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)
+
+
+
+
+

@@ -1,8 +1,8 @@
 **Links:** [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
-# 03 · Running Experiments
+# 03 - Running Experiments
 
-**Breadcrumb:** [Home](README.md) / 03 · Running Experiments
+**Breadcrumb:** [Home](README.md) / 03 - Running Experiments
 
 
 This guide walks you through training the provided models, timing CPU vs GPU runs, and saving/loading checkpoints. Mix and match the commands to design your own lab exercises.
@@ -20,22 +20,32 @@ This guide walks you through training the provided models, timing CPU vs GPU run
 ### Scalar Debug Mode
 
 ```bash
-python scalar/main.py
+python scalar/main.py --epochs 1 --batch-size 64 \
+    --hidden-sizes 256,128,64 \
+    --hidden-activations relu,leaky_relu,tanh \
+    --hidden-dropout 0.3,0.2,0.1 \
+    --plot
 ```
 
-- Trains a tiny MLP using pure Python loops.
-- Prints intermediate tensors and gradients so you can follow every step.
-- Ideal for tracing forward/backward propagation by hand.
+- Still the pure-Python teaching model, now with activation-aware initialization (He for ReLU/LeakyReLU/GELU, Xavier for tanh/sigmoid) tied to each layer's selected activation.
+- `--hidden-activations` lets you mix activations per layer without touching source files; provide a comma-separated list that matches `--hidden-sizes`.
+- `--hidden-dropout` inserts dropout after every hidden block so you can demo regularization directly in the scalar path.
+- `--plot` remains opt-in; leave it off whenever you want to skip matplotlib windows.
 
 ### Vectorized (NumPy/CuPy) Mode
 
 ```bash
-python vectorized/main.py --epochs 5 --batch-size 128      # add --gpu to use CuPy
+python vectorized/main.py --epochs 3 --batch-size 128 --gpu \
+    --hidden-sizes 512,256,128 \
+    --hidden-activations relu,gelu,tanh \
+    --dropout 0.2 \
+    --batchnorm
 ```
 
-- Uses batched matrix operations—orders of magnitude faster.
-- Displays per-epoch progress via `tqdm`.
-- Demonstrates that the vectorized math matches the scalar results.
+- Shares all scalar flags plus `--batchnorm` (adds `BatchNorm1D` between Linear and activation) and `--bn-momentum` to tune running-stat updates.
+- `--dropout` accepts either a single value or comma-separated list; semantics match `--hidden-dropout`.
+- `--leaky-negative-slope` controls the slope when you include LeakyReLU in the activation list.
+- Toggle `--gpu` to route every operation through CuPy without editing network code.
 
 ---
 
@@ -85,16 +95,16 @@ python convolutional/main.py resnet18 --epochs 1 --batch-size 64 --gpu \
 
 ## Quick-Start Scripts
 
-Prefer a guided walkthrough? Each module has a scenario-driven helper in `scripts/`:
+Prefer a guided walkthroughf Each module has a scenario-driven helper in `scripts/`:
 
-- `python scripts/quickstart_scalar.py --scenario basic --plot`  
-  Loads MNIST, previews a handful of samples, trains the scalar MLP, and optionally plots loss/prediction grids. Alternate scenarios compare optimizers or plug in Fashion-MNIST style `.npy` files.
+- `python scripts/quickstart_scalar.py --scenario basic --epochs 1 --hidden-activations relu,gelu,tanh --hidden-dropout 0.25 --plot`  
+  Loads MNIST, previews a handful of samples, trains the scalar MLP, and optionally plots loss/prediction grids. Alternate scenarios compare optimizers or plug in Fashion-MNIST style `.npy` files, and every scenario now honors the `--hidden-sizes`, `--hidden-activations`, and `--hidden-dropout` flags.
 
-- `python scripts/quickstart_vectorized.py --scenario hidden-sweep --plot`  
-  Sweeps over several hidden-layer configurations, printing accuracies and (optionally) plotting curves. Use `--scenario optimizer-compare` to benchmark SGD vs Adam in minutes. Answer “yes” to the prompt before misclassification plotting (it triggers an extra pass).
+- `python scripts/quickstart_vectorized.py --scenario hidden-sweep --batchnorm --dropout 0.2 --plot`  
+  Sweeps over several hidden-layer configurations, printing accuracies and (optionally) plotting curves. Use `--scenario optimizer-compare` to benchmark SGD vs Adam; mix activations via `--hidden-activations relu,tanh,gelu` or adjust `--bn-momentum` when studying normalization. Answer "yes" to the prompt before misclassification plotting (it triggers an extra pass).
 
 - `python scripts/quickstart_convolutional.py --scenario gpu-fast --lookahead --plot`  
-  Trains ResNet18 with Lookahead + gradient clipping on GPU (falls back to CPU). Additional scenarios demonstrate CPU baselines, checkpoint resume flows, and dataset swaps (e.g., CIFAR-10 shaped data via `--image-shape 3,32,32`). You’ll be asked to confirm misclassification plotting; decline if you want to skip the extra inference sweep.
+  Trains ResNet18 with Lookahead + gradient clipping on GPU (falls back to CPU). Additional scenarios cover CPU baselines, checkpoint resume flows, and dataset swaps (e.g., CIFAR-10 shaped data via `--image-shape 3,32,32`). You will be prompted before the misclassification plots run; decline if you want to skip the extra inference sweep.
 
 Each script exposes flags (`--epochs`, `--batch-size`, dataset overrides, `--plot`, etc.) so students can experiment interactively without editing the main entrypoints.
 
@@ -110,13 +120,12 @@ Each script exposes flags (`--epochs`, `--batch-size`, dataset overrides, `--plo
 | **Hyperparameter tweaks** | Modify `--batch-size`, learning rate (edit optimizer), or augmentation toggle (`--no-augment`) to see their effect. |
 | **Dropout/normalization ablations** | Temporarily disable layers (e.g., comment out BatchNorm) to witness training instability or overfitting. |
 
-Document your findings—timing tables, accuracy plots, or misclassification grids make great lab reports.
+Document your findings: timing tables, accuracy plots, or misclassification grids make great lab reports.
 
 ## Lab Challenges
 
 1. **Optimizer notebook:** Use `scripts/quickstart_vectorized.py --scenario optimizer-compare --plot` to capture loss curves for SGD and Adam on the same dataset. Write a short paragraph explaining which optimizer converged faster and why.
 2. **ResNet stress test:** Run `python scripts/quickstart_convolutional.py --scenario gpu-fast --lookahead --plot` on a GPU (or CPU fallback). Measure runtime, GPU memory usage, and final accuracy, then describe one tweak that could reduce memory pressure.
-
 ---
 
 ## Troubleshooting Checklist

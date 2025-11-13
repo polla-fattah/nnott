@@ -70,7 +70,7 @@ class VTrainer:
                 print(f"Epoch {epoch}/{epochs} - Avg Loss: {avg:.6f}")
 
         if verbose:
-        print(f"\nTotal training time: {time.time()-t0:.2f}s")
+            print(f"\nTotal training time: {time.time()-t0:.2f}s")
 
     def evaluate(self, X_test, y_test):
         if hasattr(self.model, 'eval'):

@@ -22,6 +22,13 @@ Normalization stabilizes activations, speeds up training, and often improves gen
 - **Where used:** ConvNeXt blocks, where transformer-style norms replace BatchNorm.
 - **Benefits:** Stable even with small batch sizes and fits architectures inspired by transformers.
 
+## BatchNorm for Fully Connected Layers
+
+- **File:** `vectorized/modules.py` (`class BatchNorm1D`)
+- **Behavior:** Mirrors the 2D version but operates on `[batch, features]` tensors, making it ideal for the fully connected MLP.
+- **How to enable:** Run `python vectorized/main.py --batchnorm ...` (or add `--batchnorm` to the quick-start script). The flag inserts `BatchNorm1D` between the Linear layer and its activation for every hidden block. Adjust `--bn-momentum` to control how quickly running statistics adapt.
+- **Experiment:** Train once with `--batchnorm` and once without, keeping `--dropout` constant. Compare convergence speed and test accuracy, especially with larger hidden sizes.
+
 ## Implementation Details
 
 - Both layers store intermediate state (`_cache`) for backward passes.
