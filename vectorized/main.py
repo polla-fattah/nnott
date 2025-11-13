@@ -69,6 +69,29 @@ def parse_args():
     parser.add_argument("--lr", type=float, default=1e-3, help="Learning rate.")
     parser.add_argument("--weight-decay", type=float, default=1e-4, help="Weight decay value.")
     parser.add_argument(
+        "--val-split",
+        type=float,
+        default=0.1,
+        help="Fraction of training data used for validation/early stopping (0 disables).",
+    )
+    parser.add_argument(
+        "--lr-schedule",
+        choices=["none", "cosine", "reduce_on_plateau"],
+        default="none",
+        help="Learning-rate schedule strategy.",
+    )
+    parser.add_argument("--min-lr", type=float, default=1e-5, help="Minimum LR for schedulers.")
+    parser.add_argument("--reduce-factor", type=float, default=0.5, help="LR reduction factor for plateau scheduler.")
+    parser.add_argument("--reduce-patience", type=int, default=3, help="Epochs to wait before reducing LR.")
+    parser.add_argument("--reduce-delta", type=float, default=1e-4, help="Minimum improvement for plateau scheduler.")
+    parser.add_argument(
+        "--early-stopping",
+        action="store_true",
+        help="Enable early stopping based on validation loss.",
+    )
+    parser.add_argument("--early-patience", type=int, default=5, help="Validation epochs without improvement before stopping.")
+    parser.add_argument("--early-delta", type=float, default=1e-4, help="Minimum validation loss improvement counted as better.")
+    parser.add_argument(
         "--plot",
         action="store_true",
         help="Enable matplotlib plots (disabled by default). Collecting misclassifications requires an extra full pass and can be slow.",
@@ -83,6 +106,16 @@ def main(opts=None):
     X_train, y_train, X_test, y_test = DataUtility("data").load_data()
     X_train = X_train.reshape(len(X_train), -1).astype(np.float32)
     X_test = X_test.reshape(len(X_test), -1).astype(np.float32)
+
+    val_split = min(max(args.val_split, 0.0), 0.4)
+    X_val = y_val = None
+    if val_split > 0.0:
+        n_val = max(1, int(len(X_train) * val_split))
+        X_val = X_train[-n_val:]
+        y_val = y_train[-n_val:]
+        X_train = X_train[:-n_val]
+        y_train = y_train[:-n_val]
+        print(f"[Data] Using {n_val} samples ({val_split*100:.1f}%) for validation. Training set size: {len(X_train)}")
 
     hidden_sizes = parse_hidden_sizes(args.hidden_sizes, default=(256, 128, 64))
     hidden_acts = parse_activation_list(
@@ -105,9 +138,26 @@ def main(opts=None):
         optim = SGD(lr=args.lr, momentum=0.9, weight_decay=args.weight_decay)
     else:
         optim = Adam(lr=args.lr, weight_decay=args.weight_decay)
-    trainer = VTrainer(model, optim, num_classes=10)
 
-    trainer.train(X_train, y_train, epochs=args.epochs, batch_size=args.batch_size, verbose=True)
+    scheduler_config = build_scheduler_config(args)
+    early_config = build_early_config(args)
+    trainer = VTrainer(
+        model,
+        optim,
+        num_classes=10,
+        lr_scheduler_config=scheduler_config,
+        early_stopping_config=early_config,
+    )
+
+    val_tuple = (X_val, y_val) if X_val is not None else None
+    trainer.train(
+        X_train,
+        y_train,
+        epochs=args.epochs,
+        batch_size=args.batch_size,
+        verbose=True,
+        val_data=val_tuple,
+    )
     if args.plot:
         plot_loss(trainer.loss_history)
 
@@ -173,10 +223,14 @@ def parse_activation_list(spec: str, length: int, default_act: str):
         acts = []
     if not acts:
         acts = [default_act] * length
-    if len(acts) == 1 and length > 1:
-        acts = acts * length
-    if len(acts) != length:
-        raise ValueError("hidden_activations must match number of hidden layers.")
+    if len(acts) < length:
+        if len(acts) == 1:
+            acts = acts * length
+        else:
+            reps = (length + len(acts) - 1) // len(acts)
+            acts = (acts * reps)[:length]
+    elif len(acts) > length:
+        acts = acts[:length]
     for act in acts:
         if act not in ACTIVATION_KINDS or act == "linear":
             raise ValueError(f"Unsupported hidden activation '{act}'.")
@@ -193,10 +247,14 @@ def parse_dropout_list(spec: str, length: int):
             vals.append(0.0)
         else:
             vals.append(max(0.0, min(0.95, float(item))))
-    if len(vals) == 1 and length > 1:
-        vals = vals * length
-    if len(vals) != length:
-        raise ValueError("Dropout list must have one value or match hidden layer count.")
+    if len(vals) < length:
+        if len(vals) == 1:
+            vals = vals * length
+        else:
+            reps = (length + len(vals) - 1) // len(vals)
+            vals = (vals * reps)[:length]
+    elif len(vals) > length:
+        vals = vals[:length]
     return vals
 
 
@@ -226,6 +284,36 @@ def build_mlp(
         in_dim = h
     layers.append(Linear(in_dim, 10, activation_hint=None))
     return Sequential(*layers)
+
+
+def build_scheduler_config(args):
+    schedule = args.lr_schedule
+    if schedule == "none":
+        return None
+    if schedule == "cosine":
+        return {
+            "type": "cosine",
+            "min_lr": args.min_lr,
+            "total_epochs": args.epochs,
+        }
+    if schedule == "reduce_on_plateau":
+        return {
+            "type": "reduce_on_plateau",
+            "factor": args.reduce_factor,
+            "patience": args.reduce_patience,
+            "min_lr": args.min_lr,
+            "min_delta": args.reduce_delta,
+        }
+    return None
+
+
+def build_early_config(args):
+    if not args.early_stopping:
+        return None
+    return {
+        "patience": args.early_patience,
+        "min_delta": args.early_delta,
+    }
 
 
 if __name__ == "__main__":

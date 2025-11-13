@@ -45,6 +45,7 @@ python vectorized/main.py --epochs 3 --batch-size 128 --gpu \
 - Shares all scalar flags plus `--batchnorm` (adds `BatchNorm1D` between Linear and activation) and `--bn-momentum` to tune running-stat updates.
 - `--dropout` accepts either a single value or comma-separated list; semantics match `--hidden-dropout`.
 - `--leaky-negative-slope` controls the slope when you include LeakyReLU in the activation list.
+- `--lr-schedule cosine` / `--lr-schedule reduce_on_plateau` plus `--min-lr`, `--reduce-factor`, `--reduce-patience`, and `--reduce-delta` let you test advanced learning-rate policies; pair them with `--early-stopping --early-patience 4 --early-delta 5e-4` to halt when validation loss stalls (validation split driven by `--val-split`, default 0.1).
 - Toggle `--gpu` to route every operation through CuPy without editing network code.
 
 ---
@@ -95,18 +96,34 @@ python convolutional/main.py resnet18 --epochs 1 --batch-size 64 --gpu \
 
 ## Quick-Start Scripts
 
-Prefer a guided walkthroughf Each module has a scenario-driven helper in `scripts/`:
+Prefer a guided walkthrough? Each module has a scenario-driven helper in `scripts/`:
 
 - `python scripts/quickstart_scalar.py --scenario basic --epochs 1 --hidden-activations relu,gelu,tanh --hidden-dropout 0.25 --plot`  
   Loads MNIST, previews a handful of samples, trains the scalar MLP, and optionally plots loss/prediction grids. Alternate scenarios compare optimizers or plug in Fashion-MNIST style `.npy` files, and every scenario now honors the `--hidden-sizes`, `--hidden-activations`, and `--hidden-dropout` flags.
 
-- `python scripts/quickstart_vectorized.py --scenario hidden-sweep --batchnorm --dropout 0.2 --plot`  
-  Sweeps over several hidden-layer configurations, printing accuracies and (optionally) plotting curves. Use `--scenario optimizer-compare` to benchmark SGD vs Adam; mix activations via `--hidden-activations relu,tanh,gelu` or adjust `--bn-momentum` when studying normalization. Answer "yes" to the prompt before misclassification plotting (it triggers an extra pass).
+- `python scripts/quickstart_vectorized.py --scenario hidden-sweep --batchnorm --dropout 0.2 --lr-schedule cosine --val-split 0.1 --early-stopping --plot`  
+  Sweeps over several hidden-layer configurations, printing accuracies and (optionally) plotting curves. Use `--scenario optimizer-compare` to benchmark SGD vs Adam; mix activations via `--hidden-activations relu,tanh,gelu`, tune learning-rate schedules via `--lr-schedule ...`, and enable early stopping without editing code. Answer "yes" to the prompt before misclassification plotting (it triggers an extra pass).
 
 - `python scripts/quickstart_convolutional.py --scenario gpu-fast --lookahead --plot`  
   Trains ResNet18 with Lookahead + gradient clipping on GPU (falls back to CPU). Additional scenarios cover CPU baselines, checkpoint resume flows, and dataset swaps (e.g., CIFAR-10 shaped data via `--image-shape 3,32,32`). You will be prompted before the misclassification plots run; decline if you want to skip the extra inference sweep.
 
 Each script exposes flags (`--epochs`, `--batch-size`, dataset overrides, `--plot`, etc.) so students can experiment interactively without editing the main entrypoints.
+
+---
+
+## Advanced Training Recipes
+
+| Goal | Command |
+| --- | --- |
+| Cosine LR + early stop on full MLP | `python vectorized/main.py --epochs 15 --batch-size 128 --hidden-sizes 512,256,128 --hidden-activations relu,gelu,tanh --dropout 0.2 --batchnorm --lr-schedule cosine --min-lr 5e-5 --val-split 0.1 --early-stopping --early-patience 4 --early-delta 5e-4 --gpu` |
+| Plateau LR schedule via quick-start | `python scripts/quickstart_vectorized.py --scenario optimizer-compare --epochs 6 --lr-schedule reduce_on_plateau --reduce-factor 0.4 --reduce-patience 2 --val-split 0.1 --early-stopping --plot` |
+| Compare stopping behavior across architectures | `python scripts/quickstart_vectorized.py --scenario hidden-sweep --epochs 8 --hidden-options "512,256;256,128,64" --hidden-activations relu,gelu,tanh --dropout 0.2 --batchnorm --lr-schedule cosine --val-split 0.1 --early-stopping` |
+| Resume CNN run with scheduler | `python convolutional/main.py resnet18 --epochs 3 --batch-size 128 --gpu --save checkpoints/resnet18_cosine.npz --lr-schedule cosine --lr-decay-min 1e-5` (then rerun with `--load checkpoints/resnet18_cosine.npz --epochs 2` to continue) |
+
+Tips:
+- Watch the printed LR each epoch to confirm the schedule is working.
+- Validation loss only appears when `--val-split > 0` (or the quick-start scenario carries a validation set); early stopping relies on that signal.
+- For rapid prototyping, drop `--epochs` to 2–3 and disable plotting. Once a schedule looks promising, bump epochs and re-enable visualizations.
 
 ---
 

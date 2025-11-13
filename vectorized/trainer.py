@@ -1,40 +1,96 @@
 import numpy as np
 from tqdm import tqdm
 import time
+from math import cos, pi
 from common.cross_entropy import CrossEntropyLoss
 from common.model_io import save_model, load_model as load_model_state
 
 
+class CosineScheduler:
+    def __init__(self, initial_lr, min_lr, total_epochs):
+        self.initial_lr = initial_lr
+        self.min_lr = min_lr
+        self.total_epochs = max(1, total_epochs)
+
+    def step(self, epoch, *_):
+        if self.initial_lr is None:
+            return None
+        progress = min(epoch, self.total_epochs) / self.total_epochs
+        return self.min_lr + 0.5 * (self.initial_lr - self.min_lr) * (1 + cos(pi * progress))
+
+
+class ReduceLROnPlateau:
+    def __init__(self, initial_lr, factor=0.5, patience=3, min_lr=1e-5, min_delta=1e-4):
+        self.initial_lr = initial_lr
+        self.factor = factor
+        self.patience = max(1, patience)
+        self.min_lr = min_lr
+        self.min_delta = min_delta
+        self.best = np.inf
+        self.wait = 0
+        self.current_lr = initial_lr
+
+    def step(self, _, metric):
+        if self.initial_lr is None or metric is None:
+            return None
+        if metric + self.min_delta < self.best:
+            self.best = metric
+            self.wait = 0
+            return None
+        self.wait += 1
+        if self.wait >= self.patience:
+            new_lr = max(self.min_lr, self.current_lr * self.factor)
+            if new_lr < self.current_lr:
+                self.current_lr = new_lr
+                self.wait = 0
+                return self.current_lr
+        return None
+
+
 class VTrainer:
-    def __init__(self, model, optimizer, num_classes=10, grad_clip_norm=None):
+    def __init__(
+        self,
+        model,
+        optimizer,
+        num_classes=10,
+        grad_clip_norm=None,
+        lr_scheduler_config=None,
+        early_stopping_config=None,
+    ):
         self.model = model
         self.optimizer = optimizer
         self.criterion = CrossEntropyLoss(reduction="mean")
         self.num_classes = num_classes
         self.loss_history = []
         self.grad_clip_norm = grad_clip_norm
+        self.scheduler = self._build_scheduler(lr_scheduler_config)
+        self.early_cfg = early_stopping_config or {}
+        self.early_best = np.inf
+        self.early_wait = 0
+        self.early_enabled = bool(self.early_cfg)
 
-    def train(self, X_train, y_train, epochs=10, batch_size=32, verbose=True, lr_schedule=True, augment=True):
+    def train(
+        self,
+        X_train,
+        y_train,
+        epochs=10,
+        batch_size=32,
+        verbose=True,
+        lr_schedule=True,
+        augment=True,
+        val_data=None,
+    ):
         X = np.asarray(X_train, dtype=np.float32)
         y = np.asarray(y_train, dtype=np.int64)
         n = len(X)
         self.loss_history = []
         t0 = time.time()
 
-        for epoch in range(1, epochs + 1):
-            # optional LR schedule
-            if lr_schedule:
-                if epoch == 10:
-                    if hasattr(self.optimizer, 'lr'):
-                        self.optimizer.lr = self.optimizer.lr * 0.3
-                        if verbose:
-                            print(f"[LR] set to {self.optimizer.lr}")
-                if epoch == 15:
-                    if hasattr(self.optimizer, 'lr'):
-                        self.optimizer.lr = self.optimizer.lr * (1.0/3.0)
-                        if verbose:
-                            print(f"[LR] set to {self.optimizer.lr}")
+        X_val, y_val = (None, None)
+        if val_data:
+            X_val, y_val = val_data
 
+        for epoch in range(1, epochs + 1):
             # training mode
             if hasattr(self.model, 'train'):
                 self.model.train()
@@ -66,8 +122,22 @@ class VTrainer:
 
             avg = total / n
             self.loss_history.append(avg)
+            val_loss = None
+            if X_val is not None and y_val is not None:
+                val_loss = self._evaluate_loss(X_val, y_val, batch_size)
+            self._maybe_adjust_lr(epoch, epochs, val_loss if val_loss is not None else avg)
+            stopped = self._maybe_early_stop(val_loss)
             if verbose:
-                print(f"Epoch {epoch}/{epochs} - Avg Loss: {avg:.6f}")
+                msg = f"Epoch {epoch}/{epochs} - Avg Loss: {avg:.6f}"
+                if val_loss is not None:
+                    msg += f" | Val Loss: {val_loss:.6f}"
+                if hasattr(self.optimizer, 'lr'):
+                    msg += f" | LR: {self.optimizer.lr:.6g}"
+                print(msg)
+            if stopped:
+                if verbose:
+                    print(f"[EarlyStopping] Triggered after epoch {epoch}.")
+                break
 
         if verbose:
             print(f"\nTotal training time: {time.time()-t0:.2f}s")
@@ -158,3 +228,64 @@ class VTrainer:
         scale = max_norm / (norm + 1e-8)
         for g in grads:
             g *= scale
+
+    # --- scheduler / early stopping helpers ---
+    def _build_scheduler(self, config):
+        if not config:
+            return None
+        sched_type = config.get("type")
+        base_lr = getattr(self.optimizer, "lr", None)
+        if sched_type == "cosine":
+            return CosineScheduler(
+                initial_lr=base_lr,
+                min_lr=config.get("min_lr", 1e-5),
+                total_epochs=config.get("total_epochs", 1),
+            )
+        if sched_type == "reduce_on_plateau":
+            return ReduceLROnPlateau(
+                initial_lr=base_lr,
+                factor=config.get("factor", 0.5),
+                patience=config.get("patience", 3),
+                min_lr=config.get("min_lr", 1e-5),
+                min_delta=config.get("min_delta", 1e-4),
+            )
+        return None
+
+    def _maybe_adjust_lr(self, epoch, total_epochs, metric):
+        if not self.scheduler or not hasattr(self.optimizer, "lr"):
+            return
+        if isinstance(self.scheduler, CosineScheduler):
+            self.scheduler.total_epochs = total_epochs
+        new_lr = self.scheduler.step(epoch, metric)
+        if new_lr is not None:
+            self.optimizer.lr = new_lr
+
+    def _maybe_early_stop(self, val_loss):
+        if not self.early_enabled or val_loss is None:
+            return False
+        min_delta = self.early_cfg.get("min_delta", 1e-4)
+        patience = max(1, self.early_cfg.get("patience", 5))
+        if val_loss + min_delta < self.early_best:
+            self.early_best = val_loss
+            self.early_wait = 0
+            return False
+        self.early_wait += 1
+        return self.early_wait >= patience
+
+    def _evaluate_loss(self, X, y, batch_size):
+        if hasattr(self.model, 'eval'):
+            self.model.eval()
+        X = np.asarray(X, dtype=np.float32)
+        y = np.asarray(y, dtype=np.int64)
+        n = len(X)
+        total = 0.0
+        for start in range(0, n, batch_size):
+            end = min(start + batch_size, n)
+            xb = X[start:end]
+            yb = y[start:end]
+            logits = self.model.forward(xb)
+            loss = self.criterion.forward(logits, yb)
+            total += float(loss) * len(xb)
+        if hasattr(self.model, 'train'):
+            self.model.train()
+        return total / n

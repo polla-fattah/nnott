@@ -31,6 +31,8 @@ from vectorized.main import (
     parse_activation_list,
     parse_dropout_list,
     build_mlp,
+    build_scheduler_config,
+    build_early_config,
 )
 
 
@@ -82,6 +84,24 @@ def parse_args():
         default=0.01,
         help="Negative slope used when LeakyReLU appears in the activation list.",
     )
+    parser.add_argument("--val-split", type=float, default=0.1, help="Fraction of training data for validation.")
+    parser.add_argument(
+        "--lr-schedule",
+        choices=["none", "cosine", "reduce_on_plateau"],
+        default="none",
+        help="Learning-rate schedule to apply.",
+    )
+    parser.add_argument("--min-lr", type=float, default=1e-5, help="Minimum learning rate for schedulers.")
+    parser.add_argument("--reduce-factor", type=float, default=0.5, help="LR factor for ReduceLROnPlateau.")
+    parser.add_argument("--reduce-patience", type=int, default=3, help="Patience for ReduceLROnPlateau.")
+    parser.add_argument("--reduce-delta", type=float, default=1e-4, help="Min improvement for ReduceLROnPlateau.")
+    parser.add_argument(
+        "--early-stopping",
+        action="store_true",
+        help="Enable early stopping on validation loss.",
+    )
+    parser.add_argument("--early-patience", type=int, default=5, help="Early stopping patience.")
+    parser.add_argument("--early-delta", type=float, default=1e-4, help="Minimum validation improvement.")
     parser.add_argument(
         "--hidden-options",
         type=str,
@@ -118,13 +138,14 @@ def run_basic(args, data):
     print("== Basic vectorized MLP training ==")
     model = build_model(args)
     optim = Adam(lr=args.lr, weight_decay=args.weight_decay)
-    trainer = VTrainer(model, optim, num_classes=10)
+    trainer = build_trainer(args, model, optim)
     trainer.train(
         data.X_train,
         data.y_train,
         epochs=args.epochs,
         batch_size=args.batch_size,
         verbose=True,
+        val_data=data.val_tuple,
     )
     if args.plot:
         plot_loss(trainer.loss_history)
@@ -144,13 +165,14 @@ def run_optimizer_compare(args, data):
             optim = SGD(lr=args.lr, momentum=0.9, weight_decay=args.weight_decay)
         else:
             optim = Adam(lr=args.lr, weight_decay=args.weight_decay)
-        trainer = VTrainer(model, optim, num_classes=10)
+        trainer = build_trainer(args, model, optim)
         trainer.train(
             data.X_train,
             data.y_train,
             epochs=max(1, args.epochs // 2),
             batch_size=args.batch_size,
             verbose=True,
+            val_data=data.val_tuple,
         )
         acc = trainer.evaluate(data.X_test, data.y_test)
         results[name] = acc
@@ -175,13 +197,14 @@ def run_hidden_sweep(args, data):
         sweep_args = argparse.Namespace(**vars(args))
         sweep_args.hidden_sizes = ",".join(str(c) for c in cfg)
         model = build_model(sweep_args)
-        trainer = VTrainer(model, Adam(lr=args.lr, weight_decay=args.weight_decay), num_classes=10)
+        trainer = build_trainer(args, model, Adam(lr=args.lr, weight_decay=args.weight_decay))
         trainer.train(
             data.X_train,
             data.y_train,
-            epochs=max(1, args.epochs // len(configs)),
+            epochs=max(1, args.epochs),
             batch_size=args.batch_size,
             verbose=True,
+            val_data=data.val_tuple,
         )
         trainer.evaluate(data.X_test, data.y_test)
         if args.plot:
@@ -203,11 +226,12 @@ def build_model(args) -> 'Sequential':
 
 
 class DatasetBundle:
-    def __init__(self, X_train, y_train, X_test, y_test):
+    def __init__(self, X_train, y_train, X_test, y_test, val_tuple=None):
         self.X_train = X_train
         self.y_train = y_train
         self.X_test = X_test
         self.y_test = y_test
+        self.val_tuple = val_tuple
 
 
 def load_dataset(args):
@@ -220,7 +244,27 @@ def load_dataset(args):
     )
     X_train = X_train.reshape(len(X_train), -1).astype(np.float32)
     X_test = X_test.reshape(len(X_test), -1).astype(np.float32)
-    return DatasetBundle(X_train, y_train, X_test, y_test)
+    val_split = min(max(args.val_split, 0.0), 0.4)
+    val_tuple = None
+    if val_split > 0.0:
+        n_val = max(1, int(len(X_train) * val_split))
+        val_tuple = (X_train[-n_val:], y_train[-n_val:])
+        X_train = X_train[:-n_val]
+        y_train = y_train[:-n_val]
+        print(f"[Data] Validation split: {n_val} samples ({val_split*100:.1f}%).")
+    return DatasetBundle(X_train, y_train, X_test, y_test, val_tuple=val_tuple)
+
+
+def build_trainer(args, model, optim):
+    scheduler = build_scheduler_config(args)
+    early = build_early_config(args)
+    return VTrainer(
+        model,
+        optim,
+        num_classes=10,
+        lr_scheduler_config=scheduler,
+        early_stopping_config=early,
+    )
 
 
 if __name__ == "__main__":
