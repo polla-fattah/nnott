@@ -1,5 +1,8 @@
 # Lookahead Optimizer
 
+**Breadcrumb:** [Home](../README.md) / [Optimizers Hub](../concepts/optimizers.md) / Lookahead Optimizer
+
+
 Lookahead (Zhang et al., 2019) is a meta-optimizer that wraps any base optimizer (SGD, Adam, etc.) with a slow/fast weight coupling. It improves stability and often yields better generalization with little overhead.
 
 ## Idea in a Nutshell

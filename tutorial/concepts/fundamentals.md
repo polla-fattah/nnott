@@ -1,5 +1,8 @@
 # Fundamentals: Neurons, Layers, Networks
 
+**Breadcrumb:** [Home](../README.md) / [Core Concepts](../core-concepts.md) / Fundamentals: Neurons, Layers, Networks
+
+
 Understanding neural networks starts with the simplest building block: a neuron that performs a weighted sum followed by a non-linearity. This section connects the theory to the code in the scalar and vectorized implementations.
 
 ## Neuron Mechanics

@@ -1,5 +1,8 @@
 # Optimizer Hub
 
+**Breadcrumb:** [Home](../README.md) / [Core Concepts](../core-concepts.md) / Optimizer Hub
+
+
 This hub links to dedicated tutorials for every optimization technique used in the sandbox. Each page covers the math, implementation details, CLI integration, and original references so you can understand *why* and *how* to tune training dynamics.
 
 ## Available Tutorials

@@ -1,5 +1,8 @@
 # 03 · Running Experiments
 
+**Breadcrumb:** [Home](README.md) / 03 · Running Experiments
+
+
 This guide walks you through training the provided models, timing CPU vs GPU runs, and saving/loading checkpoints. Mix and match the commands to design your own lab exercises.
 
 ## Prerequisites

@@ -1,5 +1,8 @@
 # NumPy Quick Notes
 
+**Breadcrumb:** [Home](../README.md) / [Project Tour](../project-tour.md) / NumPy Quick Notes
+
+
 ## Why You Need NumPy
 
 NumPy is the numerical backbone of this sandbox. Even when you run on GPU, the API surface mirrors NumPy semantics, so understanding it is essential.

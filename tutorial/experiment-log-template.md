@@ -1,5 +1,8 @@
 # Experiment Log Template
 
+**Breadcrumb:** [Home](README.md) / Experiment Log Template
+
+
 Use this template to record every meaningful run. Consistent notes help you reproduce results, compare hyperparameters, and communicate findings to classmates or your instructor.
 
 ```markdown

@@ -1,5 +1,8 @@
 # AlexNet (2012)
 
+**Breadcrumb:** [Home](../README.md) / [Architecture Gallery](../architecture-gallery.md) / AlexNet (2012)
+
+
 ![AlexNet schematic](https://upload.wikimedia.org/wikipedia/commons/2/29/AlexNet_layers.png)
 <sub>Figure credit: Alex Krizhevsky et al., via Wikipedia (CC BY-SA 4.0).</sub>
 

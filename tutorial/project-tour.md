@@ -1,5 +1,8 @@
 # 01 · Project Tour
 
+**Breadcrumb:** [Home](README.md) / 01 · Project Tour
+
+
 This project is designed as a teaching sandbox. Each directory demonstrates a different perspective on neural networks—from slow-but-transparent scalar math to production-style CNN stacks. Use this tour to map the theoretical lectures to the exact files you should inspect.
 
 ## Top-Level Layout

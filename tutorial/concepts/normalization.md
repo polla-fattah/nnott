@@ -1,5 +1,8 @@
 # Normalization Layers
 
+**Breadcrumb:** [Home](../README.md) / [Core Concepts](../core-concepts.md) / Normalization Layers
+
+
 Normalization stabilizes activations, speeds up training, and often improves generalization. This project provides both BatchNorm and LayerNorm variants tailored for CNNs.
 
 ## Batch Normalization (BatchNorm2D)

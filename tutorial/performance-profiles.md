@@ -1,5 +1,8 @@
 # Performance Profiles
 
+**Breadcrumb:** [Home](README.md) / Performance Profiles
+
+
 Use this page as a reference for typical training times and accuracies across architectures. The numbers below were collected on a representative development machine (Intel i7-11700K CPU, NVIDIA RTX 3060 GPU) using the default settings from the main scripts. Your hardware may differ, but these baselines help you spot configurations that are way off.
 
 > **Note:** Times include only the training loop (not plotting or misclassification collection). GPU runs use `--gpu` with CuPy installed.

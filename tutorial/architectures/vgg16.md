@@ -1,5 +1,8 @@
 # VGG-16 (2014)
 
+**Breadcrumb:** [Home](../README.md) / [Architecture Gallery](../architecture-gallery.md) / VGG-16 (2014)
+
+
 ![VGG16 block diagram](https://upload.wikimedia.org/wikipedia/commons/4/41/VGG16.png)
 <sub>Figure credit: Simonyan & Zisserman, via Wikipedia (CC BY 4.0).</sub>
 

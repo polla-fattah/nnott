@@ -1,5 +1,8 @@
 # tqdm Quick Notes
 
+**Breadcrumb:** [Home](../README.md) / [Project Tour](../project-tour.md) / tqdm Quick Notes
+
+
 ## Why You Need tqdm
 
 Training large datasets is more manageable when you can see progress. `tqdm` wraps iterables with a live progress bar so you can monitor batch throughput, ETA, and overall health of a run.

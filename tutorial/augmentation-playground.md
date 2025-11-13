@@ -1,5 +1,8 @@
 # Augmentation Playground
 
+**Breadcrumb:** [Home](README.md) / Augmentation Playground
+
+
 The convolutional trainer currently applies random pixel shifts (±2) to each batch via `ConvTrainer._augment_batch`. This page shows how to extend that mechanism with additional transforms—rotations, flips, noise, cutout—while emphasizing when such augmentations make sense (label semantics matter!).
 
 ## 1. Understanding the Existing Augmentor

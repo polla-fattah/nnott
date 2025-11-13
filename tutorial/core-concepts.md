@@ -1,5 +1,8 @@
 # 04 · Core Concepts Hub
 
+**Breadcrumb:** [Home](README.md) / 04 · Core Concepts Hub
+
+
 This hub links to detailed tutorials covering every foundational concept used throughout the sandbox. Read them sequentially for a full theory-to-code walkthrough or jump directly to the topic you need.
 
 ## Concept Index

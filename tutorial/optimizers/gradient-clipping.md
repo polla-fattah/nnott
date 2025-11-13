@@ -1,5 +1,8 @@
 # Gradient Clipping
 
+**Breadcrumb:** [Home](../README.md) / [Optimizers Hub](../concepts/optimizers.md) / Gradient Clipping
+
+
 Gradient clipping limits the magnitude of backpropagated gradients to prevent exploding updates. Originally popularized in recurrent networks (Pascanu et al., 2013), it’s also useful for CNNs and MLPs when experimenting with aggressive learning rates or new architectures.
 
 ## Global Norm Clipping

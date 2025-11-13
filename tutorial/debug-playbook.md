@@ -1,5 +1,8 @@
 # Debug Playbook
 
+**Breadcrumb:** [Home](README.md) / Debug Playbook
+
+
 When experiments go sideways, start here. Each section lists common symptoms, likely causes, and quick fixes so you can get back to learning instead of fighting the environment.
 
 ---

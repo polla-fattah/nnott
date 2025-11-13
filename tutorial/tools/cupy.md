@@ -1,5 +1,8 @@
 # CuPy Quick Notes
 
+**Breadcrumb:** [Home](../README.md) / [Project Tour](../project-tour.md) / CuPy Quick Notes
+
+
 ## Why You Need CuPy
 
 CuPy mirrors the NumPy API but executes on NVIDIA GPUs. By swapping the backend (`backend.use_gpu()` or `--gpu` flag), the project instantly accelerates heavy tensor ops without changing core logic.

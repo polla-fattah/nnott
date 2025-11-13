@@ -1,5 +1,8 @@
 # Baseline CNN
 
+**Breadcrumb:** [Home](../README.md) / [Architecture Gallery](../architecture-gallery.md) / Baseline CNN
+
+
 ## Why It Exists
 
 The BaselineCNN is a compact starter architecture built specifically for the sandbox. It bridges the gap between fully connected MNIST models and the more advanced historical networks. Its small size keeps iteration time low while still demonstrating convolution, pooling, and dropout in practice.

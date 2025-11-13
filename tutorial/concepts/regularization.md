@@ -1,5 +1,8 @@
 # Regularization & Augmentation
 
+**Breadcrumb:** [Home](../README.md) / [Core Concepts](../core-concepts.md) / Regularization & Augmentation
+
+
 Regularization techniques keep models from overfitting and improve generalization. This sandbox implements several classic methods that you can toggle or modify.
 
 ## Dropout

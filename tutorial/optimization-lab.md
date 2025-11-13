@@ -1,5 +1,8 @@
 # Optimization Lab (Jupyter Walkthrough)
 
+**Breadcrumb:** [Home](README.md) / Optimization Lab (Jupyter Walkthrough)
+
+
 This lab is designed to be run inside a Jupyter notebook so you can tweak hyperparameters interactively. The notebook uses the vectorized MLP (NumPy-based) so the code stays concise while still reflecting all the optimizer features available in the main project.
 
 ## Prerequisites

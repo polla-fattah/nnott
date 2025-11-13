@@ -1,5 +1,8 @@
 # ConvNeXt-Tiny (2022)
 
+**Breadcrumb:** [Home](../README.md) / [Architecture Gallery](../architecture-gallery.md) / ConvNeXt-Tiny (2022)
+
+
 ![ConvNeXt block](https://upload.wikimedia.org/wikipedia/commons/0/03/ConvNeXt_block.png)
 <sub>Figure credit: Liu et al., via Wikipedia (CC BY 4.0).</sub>
 

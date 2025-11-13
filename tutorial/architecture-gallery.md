@@ -1,5 +1,8 @@
 # 05 · Architecture Gallery & Dataset Notes
 
+**Breadcrumb:** [Home](README.md) / 05 · Architecture Gallery & Dataset Notes
+
+
 This page is the entry point to detailed write-ups for every convolutional network in the sandbox. Each model now has its own tutorial with block diagrams, teaching angles, experiment prompts, and references.
 
 ## Dataset: MNIST (Handwritten Digits)

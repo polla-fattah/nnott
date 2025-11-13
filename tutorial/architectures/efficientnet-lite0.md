@@ -1,5 +1,8 @@
 # EfficientNet-Lite0 (2019)
 
+**Breadcrumb:** [Home](../README.md) / [Architecture Gallery](../architecture-gallery.md) / EfficientNet-Lite0 (2019)
+
+
 ![EfficientNet MBConv + SE](https://upload.wikimedia.org/wikipedia/commons/e/e9/EfficientNet_block.png)
 <sub>Figure credit: Tan & Le, via Wikipedia (CC BY 4.0).</sub>
 

@@ -1,5 +1,8 @@
 # LeNet-5 (1998)
 
+**Breadcrumb:** [Home](../README.md) / [Architecture Gallery](../architecture-gallery.md) / LeNet-5 (1998)
+
+
 ![LeNet-5 diagram](https://upload.wikimedia.org/wikipedia/commons/6/6a/LeNet.png)
 <sub>Figure credit: Yann LeCun et al., via Wikipedia (CC BY-SA 3.0).</sub>
 

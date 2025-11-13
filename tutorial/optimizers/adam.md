@@ -1,5 +1,8 @@
 # Adam (Adaptive Moment Estimation)
 
+**Breadcrumb:** [Home](../README.md) / [Optimizers Hub](../concepts/optimizers.md) / Adam (Adaptive Moment Estimation)
+
+
 Adam combines momentum and adaptive learning rates by keeping first and second moment estimates of gradients. Introduced by Kingma & Ba (2014), it became the default optimizer for many deep-learning tasks thanks to its robustness and minimal tuning.
 
 ## Math Recap

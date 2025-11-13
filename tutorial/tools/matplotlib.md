@@ -1,5 +1,8 @@
 # Matplotlib Quick Notes
 
+**Breadcrumb:** [Home](../README.md) / [Project Tour](../project-tour.md) / Matplotlib Quick Notes
+
+
 ## Why You Need Matplotlib
 
 Training is more insightful when you can visualize learning curves and misclassified samples. Matplotlib powers all figures produced by the trainers.
