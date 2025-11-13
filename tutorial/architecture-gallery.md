@@ -46,20 +46,6 @@ Document observations—accuracy curves, loss plots, and timing tables make exce
 
 Pick any architecture above to dive into its dedicated tutorial and explore how the theoretical concepts translate into actual code.
 
-### Visual Lineage
-
-To see how ideas evolved, skim these external diagrams (each hosted on Wikipedia and licensed under Creative Commons):
-
-| Architecture | Diagram |
-| --- | --- |
-| LeNet-5 | ![LeNet-5 architecture](https://upload.wikimedia.org/wikipedia/commons/6/6a/LeNet.png) |
-| AlexNet | ![AlexNet schematic](https://upload.wikimedia.org/wikipedia/commons/2/29/AlexNet_layers.png) |
-| VGG16 | ![VGG16 block diagram](https://upload.wikimedia.org/wikipedia/commons/4/41/VGG16.png) |
-| ResNet (bottleneck) | ![ResNet residual block](https://upload.wikimedia.org/wikipedia/commons/5/5f/ResNet_module.svg) |
-| EfficientNet block | ![EfficientNet MBConv + SE](https://upload.wikimedia.org/wikipedia/commons/e/e9/EfficientNet_block.png) |
-| ConvNeXt block | ![ConvNeXt block](https://upload.wikimedia.org/wikipedia/commons/0/03/ConvNeXt_block.png) |
-
-These figures are credited to their original Wikipedia contributors and are provided under the licenses noted on each image page. Use them as a visual guide while reading the corresponding architecture tutorials.
 
 ### Lab Challenges
 

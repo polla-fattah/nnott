@@ -76,7 +76,7 @@ class ConvTrainer:
                 print(f"Epoch {epoch}: avg loss {avg:.5f}")
 
         if verbose:
-            print(f"\n⏱ Total training time: {time.time() - t0:.2f}s")
+            print(f"\nTotal training time: {time.time() - t0:.2f}s")
 
     def evaluate(self, X_test, y_test, batch_size=256):
         if hasattr(self.model, "eval"):

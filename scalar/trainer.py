@@ -78,7 +78,7 @@ class Trainer:
 
         end_time = time.time()
         elapsed = end_time - start_time
-        print(f"\n⏱ Total training time: {elapsed:.2f} seconds "
+        print(f"\nTotal training time: {elapsed:.2f} seconds "
               f"({elapsed / epochs:.2f} sec/epoch)")
 
     def evaluate(self, X_test, y_test):
