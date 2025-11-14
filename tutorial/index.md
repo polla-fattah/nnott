@@ -2,9 +2,9 @@
 title: Tutorial Hub
 ---
 
-# Neural Networks From Scratch - Tutorial Hub
+# Neural Networks Optimization and Training Tutorial - Hub
 
-Welcome to the learning guide for the **Neural Networks From Scratch (NNOTT)** sandbox. This tutorial series walks through the entire project—why it exists, how it is organized, and how to run meaningful experiments. Use the navigation list below to jump to the relevant module.
+Welcome to the learning guide for the **Neural Networks Optimization and Training Tutorial (NNOTT)** sandbox. This tutorial series walks through the entire project—why it exists, how it is organized, and how to run meaningful experiments. Use the navigation list below to jump to the relevant module.
 
 ## How to Use This Tutorial
 

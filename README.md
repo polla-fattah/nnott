@@ -41,18 +41,25 @@ Need more context? Jump to the [tutorial hub](tutorial/README.md) for the full w
 A new documentation portal is being built with [MkDocs Material](https://squidfunk.github.io/mkdocs-material/).
 
 1. Ensure **mkdocs** and **mkdocs-material** are installed in your environment:
+
    ```bash
    pip install mkdocs mkdocs-material
    ```
+
 2. Serve locally from the repository root:
+
    ```bash
    mkdocs serve
    ```
+
    Open the listed localhost URL to preview the docs.
+
 3. Build the static site:
+
    ```bash
    mkdocs build
    ```
+
    The generated HTML will be in the `site/` directory (ignored by git).
 
 The original markdown content is still available under `old_tutorial/` until the migration is complete.

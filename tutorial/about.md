@@ -2,11 +2,6 @@
 title: About
 ---
 
-
-
-# About This Tutorial
-
-
 This project is a guided sandbox for my students to learn deep learning from the ground up. Instead of jumping straight into a large framework, you build every concept gradually:
 
 - **Scalar implementations** show each neuron, gradient, and update explicitly.
@@ -25,6 +20,3 @@ This project is a guided sandbox for my students to learn deep learning from the
 - Share this page with new students as an overview of why the repository exists.
 - Reference it when explaining course structure or when introducing new sections (Optimizers, Architecture Gallery, etc.).
 - Pair it with the [Debug Playbook](debug-playbook.md) so learners know where to go when they get stuck.
-
----
-

@@ -4,8 +4,6 @@ title: Tqdm
 
 # tqdm Quick Notes
 
-
-
 ## Why You Need tqdm
 
 Training large datasets is more manageable when you can see progress. `tqdm` wraps iterables with a live progress bar so you can monitor batch throughput, ETA, and overall health of a run.
@@ -27,10 +25,3 @@ for idx in tqdm(range(0, len(data), batch_size), desc="Epoch 3", unit="batch"):
 - Combine with `leave=False` if you want the bar to disappear after completion in notebooks.
 
 Official docs: <https://tqdm.github.io/>
-
-[Previous (NumPy Quick Notes)](numpy.md) | [Back to Project Tour](../project-tour.md) | [Next (CuPy Quick Notes)](cupy.md)
-
-[Back to Project Tour](../project-tour.md)
-
----
-
