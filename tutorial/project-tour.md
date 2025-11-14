@@ -2,7 +2,7 @@
 title: Project Tour
 ---
 
-[MyHome](https://polla.dev) | [tutorialHub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
+[MyHome](https://polla.dev) | [tutorialHub](index.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # 01 - Project Tour
 
@@ -18,7 +18,7 @@ This project is designed as a teaching sandbox. Each directory demonstrates a di
 | `vectorized/` | NumPy/CuPy version of the same MLP. Shows how replacing loops with matrix operations unlocks massive speed-ups while preserving feature parity: per-layer activation selection, dropout scheduling, and optional batch normalization. |
 | `convolutional/` | CNN modules (`convolutional/modules.py`), a unified trainer, and the architecture definitions living under `convolutional/architectures/`. |
 | `common/` | Shared backend selector, losses, softmax, model I/O, and data utilities. Every other package imports from here to stay consistent. |
-| `data/` | Stores the MNIST `.npy` files (`train_images.npy`, `train_labels.npy`, etc.) plus `data/readme.md` describing the dataset. |
+| `data/` | Stores the MNIST `.npy` files (`train_images.npy`, `train_labels.npy`, etc.) plus a [data README](https://github.com/polla-fattah/nnott/tree/main/data#readme) describing the dataset. |
 | `scripts/` | One-off tools such as GPU diagnostics (`test_cupy.py`), experiment helpers, and sanity checks. |
 | `checkpoints/` | Optional folder (create it as needed) where training runs can save `.npz` weight files. |
 
@@ -46,7 +46,7 @@ MNIST is packaged as NumPy arrays to keep the focus on neural-network mechanics.
 
 - `train_images.npy` / `train_labels.npy`: 60k training samples (28Ãƒâ€”28 grayscale digits).
 - `test_images.npy` / `test_labels.npy`: 10k evaluation samples.
-- `readme.md`: explains provenance, shapes, and how to create validation splits if desired.
+- `index.md`: explains provenance, shapes, and how to create validation splits if desired.
 
 #### Swapping in Other Datasets
 
@@ -162,4 +162,3 @@ The directory split mirrors the learning journey:
 Refer back to this map whenever you encounter a concept in the tutorial; the table above tells you which file to inspect next.
 
 ---
-

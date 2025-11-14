@@ -2,13 +2,13 @@
 title: Augmentation Playground
 ---
 
-[MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
+
 
 # Augmentation Playground
 
 
 
-All three trainers now share the same augmentation stack via [`common/augment.py`](../common/augment.py). The CLI front-ends expose identical knobs (see the new [Augmentation Overview](augmentations/overview.md) plus detailed guides on [geometry](augmentations/geometry.md), [noise & cutout](augmentations/noise-and-cutout.md), and [CutMix/RandAugment](augmentations/cutmix-and-randaugment.md)).
+All three trainers now share the same augmentation stack via [`common/augment.py`](https://github.com/polla-fattah/nnott/blob/main/common/augment.py). The CLI front-ends expose identical knobs (see the new [Augmentation Overview](augmentations/overview.md) plus detailed guides on [geometry](augmentations/geometry.md), [noise & cutout](augmentations/noise-and-cutout.md), and [CutMix/RandAugment](augmentations/cutmix-and-randaugment.md)).
 
 ```bash
 # scalar MLP
@@ -185,4 +185,3 @@ Remember: augmentations are only beneficial when they preserve label semantics. 
 [Back to Project Tour](project-tour.md)
 
 ---
-

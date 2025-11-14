@@ -19,7 +19,7 @@ Use this step-by-step progression to work through the NNFS sandbox. Each stage l
    python scripts/test_cupy.py --stress-seconds 5 --stress-size 2048
    ```
 3. **Check dataset**
-   - Ensure `data/train_images.npy`, `data/train_labels.npy`, `data/test_images.npy`, `data/test_labels.npy` exist (see [`data/readme.md`](../data/readme.md) for details).
+   - Ensure `data/train_images.npy`, `data/train_labels.npy`, `data/test_images.npy`, `data/test_labels.npy` exist (see the [data README](https://github.com/polla-fattah/nnott/tree/main/data#readme) for details).
 
 ---
 
@@ -81,7 +81,7 @@ Use this step-by-step progression to work through the NNFS sandbox. Each stage l
 
 ## Stage 6 – Tools & Utilities 
 
-1. Dive into **[Tools Quick Notes](tools/README.md)** (NumPy, matplotlib, tqdm, CuPy) to ensure you understand the ecosystem.
+1. Dive into **[Tools Quick Notes](tools/index.md)** (NumPy, matplotlib, tqdm, CuPy) to ensure you understand the ecosystem.
 2. Explore `scripts/`:
    - `scripts/quickstart_scalar.py --scenario basic`
    - `scripts/quickstart_vectorized.py --scenario optimizer-compare`
@@ -99,4 +99,3 @@ Use this step-by-step progression to work through the NNFS sandbox. Each stage l
    - Automate metric logging (CSV/TensorBoard) or benchmarking.
 
 ---
-

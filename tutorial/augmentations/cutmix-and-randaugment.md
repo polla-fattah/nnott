@@ -2,7 +2,7 @@
 title: Cutmix And Randaugment
 ---
 
-[Overview](overview.md) | [Tutorial Hub](../README.md)
+[Overview](overview.md) | [Tutorial Hub](../index.md)
 
 # CutMix & RandAugment
 

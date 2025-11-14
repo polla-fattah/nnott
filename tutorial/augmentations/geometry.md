@@ -2,7 +2,7 @@
 title: Geometry
 ---
 
-[Overview](overview.md) | [Tutorial Hub](../README.md)
+[Overview](overview.md) | [Tutorial Hub](../index.md)
 
 # Geometric Augmentations
 

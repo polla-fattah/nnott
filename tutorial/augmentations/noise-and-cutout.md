@@ -2,7 +2,7 @@
 title: Noise And Cutout
 ---
 
-[Overview](overview.md) | [Tutorial Hub](../README.md)
+[Overview](overview.md) | [Tutorial Hub](../index.md)
 
 # Noise & Cutout
 

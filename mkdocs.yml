@@ -66,6 +66,7 @@ nav:
   - Lookahead: optimizers/lookahead.md
   - Gradient Clipping: optimizers/gradient-clipping.md
 - Tools:
+  - Overview: tools/index.md
   - NumPy: tools/numpy.md
   - Matplotlib: tools/matplotlib.md
   - tqdm: tools/tqdm.md

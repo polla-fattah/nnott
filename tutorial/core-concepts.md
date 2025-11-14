@@ -2,7 +2,7 @@
 title: Core Concepts
 ---
 
-[MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
+
 
 # 04 · Core Concepts Hub
 

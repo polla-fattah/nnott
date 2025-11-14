@@ -1,4 +1,4 @@
-# Neural Networks Optimisations And Traingin Tests (NNOTT)
+# Neural Networks Optimisations and Training Tutorial (NNOTT)
 
 **Links:** [Tutorial Hub](tutorial/README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [License](LICENSE)
 

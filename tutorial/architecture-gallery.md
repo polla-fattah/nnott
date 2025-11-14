@@ -2,7 +2,7 @@
 title: Architecture Gallery
 ---
 
-[MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
+
 
 # 05 · Architecture Gallery & Dataset Notes
 
@@ -15,7 +15,7 @@ This page is the entry point to detailed write-ups for every convolutional netwo
 - **Files:** `data/train_images.npy`, `data/train_labels.npy`, `data/test_images.npy`, `data/test_labels.npy`
 - **Shape:** 28×28 grayscale digits (0–9); 60k training + 10k test samples.
 - **Format:** Stored as NumPy arrays for direct loading by `common/data_utils.DataUtility`, which also handles float32 conversion, normalization, and reshaping to `(N, 1, 28, 28)`.
-- **Reference:** Read `data/readme.md` for provenance and tips on creating validation splits.
+- **Reference:** Read the [data README](https://github.com/polla-fattah/nnott/tree/main/data#readme) for provenance and tips on creating validation splits.
 
 MNIST is intentionally simple so you can compare architectures rapidly without long training cycles.
 
@@ -61,4 +61,3 @@ Pick any architecture above to dive into its dedicated tutorial and explore how 
 2. **Residual vs non-residual:** Train ResNet-18 for one epoch, then (for learning purposes only) comment out the skip connections in a single block and retrain. Document how loss and accuracy change, and explain why the skip path matters.
 
 ---
-
