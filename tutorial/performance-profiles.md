@@ -58,7 +58,7 @@ Use this page as a reference for typical training times and accuracies across ar
 3. Share your findings with classmates to build a classroom-wide performance reference.
 
 **Navigation:**
-[Back to Project Tour](../project-tour.md)
+[Back to Project Tour](project-tour.md)
 
 ---
 

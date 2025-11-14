@@ -96,7 +96,7 @@ y = gelu(x)
 Document your observations in the notebook so you can refer back when choosing activations for custom architectures.
 
 **Navigation:**
-[Back to Core Concepts](../core-concepts.md)
+[Back to Core Concepts](core-concepts.md)
 
 ---
 

@@ -141,7 +141,7 @@ imgs, preds, trues, total = trainer.misclassification_data(X_test, y_test, max_i
 Save the notebook as `notebooks/optimization_lab.ipynb` (or similar) so future students can open it, rerun the cells, and add their own observations.
 
 **Navigation:**
-[Back to Running Experiments](../running-experiments.md)
+[Back to Running Experiments](running-experiments.md)
 
 ---
 

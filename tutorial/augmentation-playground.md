@@ -180,7 +180,7 @@ Tune probabilities/thresholds per dataset and always visualize random batches to
 Remember: augmentations are only beneficial when they preserve label semantics. Evaluate carefully before enabling them in production runs.
 
 **Navigation:**
-[Back to Project Tour](../project-tour.md)
+[Back to Project Tour](project-tour.md)
 
 ---
 
