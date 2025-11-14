@@ -1,8 +1,9 @@
-[MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
+---
+title: Tqdm
+---
 
 # tqdm Quick Notes
 
-**Breadcrumb:** [Home](../README.md) / [Project Tour](../project-tour.md) / tqdm Quick Notes
 
 
 ## Why You Need tqdm
@@ -29,9 +30,7 @@ Official docs: <https://tqdm.github.io/>
 
 [Previous (NumPy Quick Notes)](numpy.md) | [Back to Project Tour](../project-tour.md) | [Next (CuPy Quick Notes)](cupy.md)
 
-**Navigation:**
 [Back to Project Tour](../project-tour.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

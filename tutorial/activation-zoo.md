@@ -1,8 +1,11 @@
+---
+title: Activation Zoo
+---
+
 [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # Activation Zoo
 
-**Breadcrumb:** [Home](README.md) / Activation Zoo
 
 
 This page compares the activation functions implemented across the project so you can see how they shape neuron outputs and gradients. Each section includes the definition, derivative, usage context, and a quick snippet for plotting in a notebook.
@@ -95,9 +98,7 @@ y = gelu(x)
 
 Document your observations in the notebook so you can refer back when choosing activations for custom architectures.
 
-**Navigation:**
 [Back to Core Concepts](core-concepts.md)
 
 ---
 
-MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

@@ -1,8 +1,9 @@
-[MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
+---
+title: Backend
+---
 
 # Backend & Device Utilities
 
-**Breadcrumb:** [Home](../README.md) / [Core Concepts](../core-concepts.md) / Backend & Device Utilities
 
 
 The sandbox abstracts CPU and GPU execution through a lightweight backend layer so the same code can run on either NumPy or CuPy. Understanding this layer helps you debug device issues and write backend-agnostic modules.
@@ -44,9 +45,7 @@ The sandbox abstracts CPU and GPU execution through a lightweight backend layer 
 
 [Previous (Activation Functions)](activations.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Convolution Mechanics & Advanced Blocks)](convolution.md)
 
-**Navigation:**
 [Back to Core Concepts](../core-concepts.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

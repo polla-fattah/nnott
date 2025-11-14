@@ -1,8 +1,9 @@
-[MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
+---
+title: Convnext Tiny
+---
 
 # ConvNeXt-Tiny (2022)
 
-**Breadcrumb:** [Home](../README.md) / [Architecture Gallery](../architecture-gallery.md) / ConvNeXt-Tiny (2022)
 
 
 ![ConvNeXt block](https://upload.wikimedia.org/wikipedia/commons/0/03/ConvNeXt_block.png)
@@ -47,9 +48,7 @@ Facebook AI’s ConvNeXt revisits CNN design in the age of Vision Transformers. 
 
 [Back to Architecture Gallery](../architecture-gallery.md)
 
-**Navigation:**
 [Previous (Baseline CNN)](baseline.md) | [Back to Gallery](../architecture-gallery.md) | [Next (EfficientNet-Lite0 (2019))](efficientnet-lite0.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

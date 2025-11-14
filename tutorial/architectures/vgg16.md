@@ -1,8 +1,9 @@
-[MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
+---
+title: Vgg16
+---
 
 # VGG-16 (2014)
 
-**Breadcrumb:** [Home](../README.md) / [Architecture Gallery](../architecture-gallery.md) / VGG-16 (2014)
 
 
 ![VGG16 block diagram](https://en.wikipedia.org/wiki/VGGNet#/media/File:VGG_module_architecture.svg)
@@ -46,9 +47,7 @@ K. Simonyan and A. Zisserman’s VGG-16 demonstrated that a deep network built f
 
 [Back to Architecture Gallery](../architecture-gallery.md)
 
-**Navigation:**
 [Previous (ResNet-18 (2015))](resnet18.md) | [Back to Gallery](../architecture-gallery.md) | [Next (AlexNet (2012))](alexnet.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

@@ -1,8 +1,9 @@
-[MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
+---
+title: Matplotlib
+---
 
 # Matplotlib Quick Notes
 
-**Breadcrumb:** [Home](../README.md) / [Project Tour](../project-tour.md) / Matplotlib Quick Notes
 
 
 ## Why You Need Matplotlib
@@ -24,9 +25,7 @@ Official docs: <https://matplotlib.org/stable/contents.html>
 
 [Previous (CuPy Quick Notes)](cupy.md) | [Back to Project Tour](../project-tour.md) | [Next (NumPy Quick Notes)](numpy.md)
 
-**Navigation:**
 [Back to Project Tour](../project-tour.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

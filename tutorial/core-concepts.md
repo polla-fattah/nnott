@@ -1,8 +1,11 @@
+---
+title: Core Concepts
+---
+
 [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # 04 · Core Concepts Hub
 
-**Breadcrumb:** [Home](README.md) / 04 · Core Concepts Hub
 
 
 This hub links to detailed tutorials covering every foundational concept used throughout the sandbox. Read them sequentially for a full theory-to-code walkthrough or jump directly to the topic you need.
@@ -37,4 +40,3 @@ With these guides, you can build a solid foundation before diving into the large
 
 ---
 
-MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

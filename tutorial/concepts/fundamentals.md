@@ -1,8 +1,9 @@
-[MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
+---
+title: Fundamentals
+---
 
 # Fundamentals: Neurons, Layers, Networks
 
-**Breadcrumb:** [Home](../README.md) / [Core Concepts](../core-concepts.md) / Fundamentals: Neurons, Layers, Networks
 
 
 Understanding neural networks starts with the simplest building block: a neuron that performs a weighted sum followed by a non-linearity. This section connects the theory to the code in the scalar and vectorized implementations.
@@ -38,9 +39,7 @@ Understanding neural networks starts with the simplest building block: a neuron 
 
 [Previous (Convolution Mechanics & Advanced Blocks)](convolution.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Loss & Softmax: Cross-Entropy from Logits)](loss-and-softmax.md)
 
-**Navigation:**
 [Back to Core Concepts](../core-concepts.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

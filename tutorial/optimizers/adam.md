@@ -1,8 +1,9 @@
-[MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
+---
+title: Adam
+---
 
 # Adam (Adaptive Moment Estimation)
 
-**Breadcrumb:** [Home](../README.md) / [Optimizers Hub](../concepts/optimizers.md) / Adam (Adaptive Moment Estimation)
 
 
 Adam combines momentum and adaptive learning rates by keeping first and second moment estimates of gradients. Introduced by Kingma & Ba (2014), it became the default optimizer for many deep-learning tasks thanks to its robustness and minimal tuning.
@@ -69,9 +70,7 @@ optim = Lookahead(Adam(lr=5e-4, weight_decay=1e-4), k=5, alpha=0.5)
 
 [Previous (Stochastic Gradient Descent (SGD) & Momentum)](sgd.md) | [Back to Optimizers Hub](../concepts/optimizers.md) | [Next (Gradient Clipping)](gradient-clipping.md)
 
-**Navigation:**
 [Back to Optimizers Hub](../concepts/optimizers.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

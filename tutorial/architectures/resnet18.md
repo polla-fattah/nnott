@@ -1,8 +1,9 @@
-[MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
+---
+title: Resnet18
+---
 
 # ResNet-18 (2015)
 
-**Breadcrumb:** [Home](../README.md) / [Architecture Gallery](../architecture-gallery.md) / ResNet-18 (2015)
 
 
 ![ResNet residual block](https://upload.wikimedia.org/wikipedia/commons/b/b3/ResNet_block.svg)
@@ -45,9 +46,7 @@ Residual Networks (ResNets) by He et al. solved the “degradation” problem: d
 
 [Back to Architecture Gallery](../architecture-gallery.md)
 
-**Navigation:**
 [Previous (LeNet-5 (1998))](lenet.md) | [Back to Gallery](../architecture-gallery.md) | [Next (VGG-16 (2014))](vgg16.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

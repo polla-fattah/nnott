@@ -1,8 +1,11 @@
+---
+title: Performance Profiles
+---
+
 [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # Performance Profiles
 
-**Breadcrumb:** [Home](README.md) / Performance Profiles
 
 
 Use this page as a reference for typical training times and accuracies across architectures. The numbers below were collected on a representative development machine (Intel i7-11700K CPU, NVIDIA RTX 3060 GPU) using the default settings from the main scripts. Your hardware may differ, but these baselines help you spot configurations that are way off.
@@ -57,9 +60,7 @@ Use this page as a reference for typical training times and accuracies across ar
 2. Explain any deviations from the table (e.g., slower GPU due to integrated graphics, faster CPU due to more cores).
 3. Share your findings with classmates to build a classroom-wide performance reference.
 
-**Navigation:**
 [Back to Project Tour](project-tour.md)
 
 ---
 
-MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

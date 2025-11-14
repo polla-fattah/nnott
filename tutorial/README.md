@@ -1,3 +1,7 @@
+---
+title: Readme
+---
+
 [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # Neural Networks From Scratch - Tutorial Hub
@@ -48,4 +52,3 @@ Welcome to the learning guide for the **Neural Networks From Scratch (NNFS)** sa
 
 ---
 
-MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

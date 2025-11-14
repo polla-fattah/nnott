@@ -1,8 +1,11 @@
+---
+title: Geometry
+---
+
 [Overview](overview.md) | [Tutorial Hub](../README.md)
 
 # Geometric Augmentations
 
-**Breadcrumb:** [Home](../README.md) / [Augmentation Playground](../augmentation-playground.md) / Geometry
 
 This page covers the spatial transforms supported by `common/augment.py`: pixel shifts, rotations, and flips.
 

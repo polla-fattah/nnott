@@ -1,8 +1,11 @@
+---
+title: About
+---
+
 [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # About This Tutorial
 
-**Breadcrumb:** [Home](README.md) / About This Tutorial
 
 This project is a guided sandbox for my students to learn deep learning from the ground up. Instead of jumping straight into a large framework, you build every concept gradually:
 
@@ -25,4 +28,3 @@ This project is a guided sandbox for my students to learn deep learning from the
 
 ---
 
-MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

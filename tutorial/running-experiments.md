@@ -1,8 +1,11 @@
+---
+title: Running Experiments
+---
+
 [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # 03 - Running Experiments
 
-**Breadcrumb:** [Home](README.md) / 03 - Running Experiments
 
 
 This guide walks you through training the provided models, timing CPU vs GPU runs, and saving/loading checkpoints. Mix and match the commands to design your own lab exercises.
@@ -185,4 +188,3 @@ With these commands and experiments, you can turn the sandbox into a full hands-
 
 ---
 
-MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

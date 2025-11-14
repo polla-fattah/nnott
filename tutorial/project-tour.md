@@ -1,8 +1,11 @@
+---
+title: Project Tour
+---
+
 [MyHome](https://polla.dev) | [tutorialHub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # 01 - Project Tour
 
-**Breadcrumb:** [Home](README.md) / 01 - Project Tour
 
 
 This project is designed as a teaching sandbox. Each directory demonstrates a different perspective on neural networksÃ¢â‚¬â€from slow-but-transparent scalar math to production-style CNN stacks. Use this tour to map the theoretical lectures to the exact files you should inspect.
@@ -159,10 +162,4 @@ The directory split mirrors the learning journey:
 Refer back to this map whenever you encounter a concept in the tutorial; the table above tells you which file to inspect next.
 
 ---
-
-MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)
-
-
-
-
 

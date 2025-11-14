@@ -1,8 +1,11 @@
+---
+title: Experiment Log Template
+---
+
 [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # Experiment Log Template
 
-**Breadcrumb:** [Home](README.md) / Experiment Log Template
 
 
 Use this template to record every meaningful run. Consistent notes help you reproduce results, compare hyperparameters, and communicate findings to classmates or your instructor.
@@ -57,9 +60,7 @@ Use this template to record every meaningful run. Consistent notes help you repr
 
 Fill in one template per experiment and store them under `experiments/` or a personal `notes/` folder. Reviewing these logs before exams or project milestones will save you hours of guesswork.
 
-**Navigation:**
 [Back to Running Experiments](running-experiments.md)
 
 ---
 
-MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

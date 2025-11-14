@@ -1,8 +1,9 @@
-[MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
+---
+title: Loss And Softmax
+---
 
 # Loss & Softmax: Cross-Entropy from Logits
 
-**Breadcrumb:** [Home](../README.md) / [Core Concepts](../core-concepts.md) / Loss & Softmax: Cross-Entropy from Logits
 
 
 Classification networks in this repo use the cross-entropy loss applied directly to raw logits. This ensures numerical stability and pairs cleanly with the softmax function.
@@ -44,9 +45,7 @@ Directly computing softmax can overflow when logits are large. The code uses the
 
 [Previous (Fundamentals: Neurons, Layers, Networks)](fundamentals.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Normalization Layers)](normalization.md)
 
-**Navigation:**
 [Back to Core Concepts](../core-concepts.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

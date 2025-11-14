@@ -1,8 +1,9 @@
-[MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
+---
+title: Numpy
+---
 
 # NumPy Quick Notes
 
-**Breadcrumb:** [Home](../README.md) / [Project Tour](../project-tour.md) / NumPy Quick Notes
 
 
 ## Why You Need NumPy
@@ -26,9 +27,7 @@ Brush up on NumPy and you’ll understand 100% of the CPU path in this repo. The
 
 [Previous (Matplotlib Quick Notes)](matplotlib.md) | [Back to Project Tour](../project-tour.md) | [Next (tqdm Quick Notes)](tqdm.md)
 
-**Navigation:**
 [Back to Project Tour](../project-tour.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

@@ -1,8 +1,9 @@
-**Links:** [Tutorial Hub](README.md) | [Project Tour](project-tour.md) | [Code Base](https://github.com/polla-fattah/nnott/)
+---
+title: Roadmap
+---
 
 # Learning Roadmap
 
-**Breadcrumb:** [Home](README.md) / Roadmap
 
 Use this step-by-step progression to work through the NNFS sandbox. Each stage links to the relevant tutorial page(s) and suggests commands to run before moving on.
 
@@ -99,4 +100,3 @@ Use this step-by-step progression to work through the NNFS sandbox. Each stage l
 
 ---
 
-MIT License | [Project Tour](project-tour.md) | [Code Base](https://github.com/polla-fattah/nnott/)

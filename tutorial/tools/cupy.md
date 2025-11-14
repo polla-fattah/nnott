@@ -1,8 +1,9 @@
-[MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
+---
+title: Cupy
+---
 
 # CuPy Quick Notes
 
-**Breadcrumb:** [Home](../README.md) / [Project Tour](../project-tour.md) / CuPy Quick Notes
 
 
 ## Why You Need CuPy
@@ -79,9 +80,7 @@ If `--gpu` raises `ModuleNotFoundError: cupy`, follow the installation steps abo
 
 [Previous (tqdm Quick Notes)](tqdm.md) | [Back to Project Tour](../project-tour.md) | [Next (Matplotlib Quick Notes)](matplotlib.md)
 
-**Navigation:**
 [Back to Project Tour](../project-tour.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

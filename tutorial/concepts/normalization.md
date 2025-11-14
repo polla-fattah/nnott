@@ -1,8 +1,9 @@
-[MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
+---
+title: Normalization
+---
 
 # Normalization Layers
 
-**Breadcrumb:** [Home](../README.md) / [Core Concepts](../core-concepts.md) / Normalization Layers
 
 
 Normalization stabilizes activations, speeds up training, and often improves generalization. This project provides both BatchNorm and LayerNorm variants tailored for CNNs.
@@ -43,9 +44,7 @@ Normalization stabilizes activations, speeds up training, and often improves gen
 
 [Previous (Loss & Softmax: Cross-Entropy from Logits)](loss-and-softmax.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Optimizer Hub)](optimizers.md)
 
-**Navigation:**
 [Back to Core Concepts](../core-concepts.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

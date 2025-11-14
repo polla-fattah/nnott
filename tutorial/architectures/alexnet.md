@@ -1,8 +1,11 @@
+---
+title: Alexnet
+---
+
 [MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
 
 # AlexNet (2012)
 
-**Breadcrumb:** [Home](../README.md) / [Architecture Gallery](../architecture-gallery.md) / AlexNet (2012)
 
 
 ![AlexNet schematic](https://en.wikipedia.org/wiki/AlexNet#/media/File:AlexNet_Original_block_diagram.svg)
@@ -45,9 +48,7 @@ AlexNet, created by Alex Krizhevsky, Ilya Sutskever, and Geoffrey Hinton, won th
 
 [Back to Architecture Gallery](../architecture-gallery.md)
 
-**Navigation:**
 [Previous (VGG-16 (2014))](vgg16.md) | [Back to Gallery](../architecture-gallery.md) | [Next (Baseline CNN)](baseline.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

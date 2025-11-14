@@ -1,8 +1,11 @@
+---
+title: Augmentation Playground
+---
+
 [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # Augmentation Playground
 
-**Breadcrumb:** [Home](README.md) / Augmentation Playground
 
 
 All three trainers now share the same augmentation stack via [`common/augment.py`](../common/augment.py). The CLI front-ends expose identical knobs (see the new [Augmentation Overview](augmentations/overview.md) plus detailed guides on [geometry](augmentations/geometry.md), [noise & cutout](augmentations/noise-and-cutout.md), and [CutMix/RandAugment](augmentations/cutmix-and-randaugment.md)).
@@ -179,9 +182,7 @@ Tune probabilities/thresholds per dataset and always visualize random batches to
 
 Remember: augmentations are only beneficial when they preserve label semantics. Evaluate carefully before enabling them in production runs.
 
-**Navigation:**
 [Back to Project Tour](project-tour.md)
 
 ---
 
-MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

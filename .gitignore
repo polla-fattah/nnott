@@ -33,3 +33,5 @@ __pycache__/layer.cpython-313.pyc
 __pycache__/network.cpython-313.pyc
 __pycache__/neuron.cpython-313.pyc
 __pycache__/trainer.cpython-313.pyc
+site/
+*.iml

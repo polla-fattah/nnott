@@ -1,0 +1,25 @@
+:root {
+  --nav-section-bg: rgba(176, 190, 197, 0.25);
+  --nav-section-hover: rgba(176, 190, 197, 0.45);
+}
+
+.md-nav--primary > .md-nav__list > .md-nav__item--nested > .md-nav__link {
+  background-color: var(--nav-section-bg);
+  border-radius: 0.4rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  transition: background-color 0.2s ease;
+}
+
+.md-nav--primary > .md-nav__list > .md-nav__item--nested > .md-nav__link:hover,
+.md-nav--primary > .md-nav__list > .md-nav__item--nested > .md-nav__link:focus {
+  background-color: var(--nav-section-hover);
+}
+
+.md-nav--primary > .md-nav__list > .md-nav__item--nested > .md-nav__toggle + .md-nav__link {
+  padding-left: 0.6rem;
+}
+
+.md-nav--primary .md-nav__item--nested > .md-nav__link .md-nav__icon {
+  color: var(--md-accent-fg-color);
+}

@@ -1,8 +1,11 @@
+---
+title: Noise And Cutout
+---
+
 [Overview](overview.md) | [Tutorial Hub](../README.md)
 
 # Noise & Cutout
 
-**Breadcrumb:** [Home](../README.md) / [Augmentation Playground](../augmentation-playground.md) / Noise & Cutout
 
 Two powerful regularizers live in `common/augment.py`: additive Gaussian noise and cutout masks. Both are dataset-friendly when tuned carefully.
 

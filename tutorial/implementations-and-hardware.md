@@ -1,8 +1,11 @@
+---
+title: Implementations And Hardware
+---
+
 [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # 02 · Implementations & Hardware
 
-**Breadcrumb:** [Home](README.md) / 02 · Implementations & Hardware
 
 
 One of the sandbox’s teaching pillars is showing how the same neural network evolves from naïve loops to GPU-accelerated kernels. This module explains each stage and how to toggle between CPU and GPU execution.
@@ -69,4 +72,3 @@ Understanding these tiers equips you to reason about both the *what* (network ma
 
 ---
 
-MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

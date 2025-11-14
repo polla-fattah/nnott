@@ -1,8 +1,9 @@
-[MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
+---
+title: Regularization
+---
 
 # Regularization & Augmentation
 
-**Breadcrumb:** [Home](../README.md) / [Core Concepts](../core-concepts.md) / Regularization & Augmentation
 
 
 Regularization techniques keep models from overfitting and improve generalization. This sandbox implements several classic methods that you can toggle or modify.
@@ -43,9 +44,7 @@ Regularization techniques keep models from overfitting and improve generalizatio
 
 [Previous (Optimizer Hub)](optimizers.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Activation Functions)](activations.md)
 
-**Navigation:**
 [Back to Core Concepts](../core-concepts.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

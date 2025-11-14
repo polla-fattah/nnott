@@ -1,8 +1,9 @@
-[MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
+---
+title: Efficientnet Lite0
+---
 
 # EfficientNet-Lite0 (2019)
 
-**Breadcrumb:** [Home](../README.md) / [Architecture Gallery](../architecture-gallery.md) / EfficientNet-Lite0 (2019)
 
 
 ![EfficientNet MBConv + SE](https://upload.wikimedia.org/wikipedia/commons/e/e9/EfficientNet_block.png)
@@ -46,9 +47,7 @@ EfficientNet (Tan & Le) introduced a family of models that scale depth, width, a
 
 [Back to Architecture Gallery](../architecture-gallery.md)
 
-**Navigation:**
 [Previous (ConvNeXt-Tiny (2022))](convnext-tiny.md) | [Back to Gallery](../architecture-gallery.md) | [Next (LeNet-5 (1998))](lenet.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

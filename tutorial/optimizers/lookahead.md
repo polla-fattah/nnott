@@ -1,8 +1,9 @@
-[MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
+---
+title: Lookahead
+---
 
 # Lookahead Optimizer
 
-**Breadcrumb:** [Home](../README.md) / [Optimizers Hub](../concepts/optimizers.md) / Lookahead Optimizer
 
 
 Lookahead (Zhang et al., 2019) is a meta-optimizer that wraps any base optimizer (SGD, Adam, etc.) with a slow/fast weight coupling. It improves stability and often yields better generalization with little overhead.
@@ -65,9 +66,7 @@ Vectorized MLPs currently require a code edit (wrap the optimizer manually as in
 
 [Previous (Gradient Clipping)](gradient-clipping.md) | [Back to Optimizers Hub](../concepts/optimizers.md) | [Next (Stochastic Gradient Descent (SGD) & Momentum)](sgd.md)
 
-**Navigation:**
 [Back to Optimizers Hub](../concepts/optimizers.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

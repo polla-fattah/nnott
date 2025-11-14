@@ -1,8 +1,9 @@
-[MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
+---
+title: Gradient Clipping
+---
 
 # Gradient Clipping
 
-**Breadcrumb:** [Home](../README.md) / [Optimizers Hub](../concepts/optimizers.md) / Gradient Clipping
 
 
 Gradient clipping limits the magnitude of backpropagated gradients to prevent exploding updates. Originally popularized in recurrent networks (Pascanu et al., 2013), it’s also useful for CNNs and MLPs when experimenting with aggressive learning rates or new architectures.
@@ -59,9 +60,7 @@ trainer = VTrainer(model, Adam(lr=1e-3), grad_clip_norm=1.0)
 
 [Previous (Adam (Adaptive Moment Estimation))](adam.md) | [Back to Optimizers Hub](../concepts/optimizers.md) | [Next (Lookahead Optimizer)](lookahead.md)
 
-**Navigation:**
 [Back to Optimizers Hub](../concepts/optimizers.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

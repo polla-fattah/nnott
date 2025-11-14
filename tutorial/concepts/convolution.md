@@ -1,8 +1,9 @@
-[MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
+---
+title: Convolution
+---
 
 # Convolution Mechanics & Advanced Blocks
 
-**Breadcrumb:** [Home](../README.md) / [Core Concepts](../core-concepts.md) / Convolution Mechanics & Advanced Blocks
 
 
 Convolutional layers are the backbone of the CNN architectures in this sandbox. This note explains how they’re implemented via `im2col`, and how advanced blocks build on top of them.
@@ -50,9 +51,7 @@ Convolutional layers are the backbone of the CNN architectures in this sandbox. 
 
 [Previous (Backend & Device Utilities)](backend.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Fundamentals: Neurons, Layers, Networks)](fundamentals.md)
 
-**Navigation:**
 [Back to Core Concepts](../core-concepts.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

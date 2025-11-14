@@ -1,8 +1,9 @@
-[MyHome](https://polla.dev) | [Tutorial Hub](../README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](../architecture-gallery.md)
+---
+title: Activations
+---
 
 # Activation Functions
 
-**Breadcrumb:** [Home](../README.md) / [Core Concepts](../core-concepts.md) / Activation Functions
 
 
 Activations introduce non-linearity so networks can model complex decision boundaries. This project implements several classics and modern favorites. All activation modules live in `convolutional/modules.py`, and simpler scalar versions appear in `scalar/neuron.py`.
@@ -52,9 +53,7 @@ Activations introduce non-linearity so networks can model complex decision bound
 
 [Previous (Regularization & Augmentation)](regularization.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Backend & Device Utilities)](backend.md)
 
-**Navigation:**
 [Back to Core Concepts](../core-concepts.md)
 
 ---
 
-MIT License | [About](../about.md) | [Code Base](https://github.com/polla-fattah/nnott/)

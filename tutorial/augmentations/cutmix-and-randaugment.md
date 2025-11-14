@@ -1,8 +1,11 @@
+---
+title: Cutmix And Randaugment
+---
+
 [Overview](overview.md) | [Tutorial Hub](../README.md)
 
 # CutMix & RandAugment
 
-**Breadcrumb:** [Home](../README.md) / [Augmentation Playground](../augmentation-playground.md) / CutMix & RandAugment
 
 Advanced policies such as CutMix and RandAugment are now first-class citizens inside `common/augment.py`. This page explains how to configure and validate them.
 

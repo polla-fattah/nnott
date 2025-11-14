@@ -1,6 +1,6 @@
 # Neural Networks Optimisations And Traingin Tests (NNOTT)
 
-[Tutorial Hub](tutorial/README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [License](LICENSE)
+**Links:** [Tutorial Hub](tutorial/README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [License](LICENSE)
 
 This repository is an educational sandbox for implementing neural networks from first principles. You’ll find:
 
@@ -33,6 +33,29 @@ python convolutional/main.py resnet18 --epochs 2 --batch-size 64 --gpu
 ```
 
 Need more context? Jump to the [tutorial hub](tutorial/README.md) for the full walkthrough.
+
+---
+
+## MkDocs Documentation
+
+A new documentation portal is being built with [MkDocs Material](https://squidfunk.github.io/mkdocs-material/).
+
+1. Ensure **mkdocs** and **mkdocs-material** are installed in your environment:
+   ```bash
+   pip install mkdocs mkdocs-material
+   ```
+2. Serve locally from the repository root:
+   ```bash
+   mkdocs serve
+   ```
+   Open the listed localhost URL to preview the docs.
+3. Build the static site:
+   ```bash
+   mkdocs build
+   ```
+   The generated HTML will be in the `site/` directory (ignored by git).
+
+The original markdown content is still available under `old_tutorial/` until the migration is complete.
 
 ---
 

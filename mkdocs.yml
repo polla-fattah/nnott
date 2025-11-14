@@ -1,0 +1,101 @@
+site_name: NNOTT Tutorial
+docs_dir: tutorial
+site_url: https://example.com
+repo_url: https://github.com/polla-fattah/nnott
+repo_name: NNOTT
+copyright: MIT License
+extra:
+  announcement: '<a href="https://polla.dev">MyHome</a> |
+
+    <a href="README.md">Tutorial Hub</a> |
+
+    <a href="https://github.com/polla-fattah/nnott/">Code Base</a> |
+
+    <a href="architecture-gallery.md">Architectures</a>
+
+    '
+  social:
+  - icon: fontawesome/brands/github
+    link: https://github.com/polla-fattah/nnott
+  generator: false
+  footer: "<div class=\"md-footer-meta__inner\">\n  <div class=\"md-footer-meta__item\"\
+    >\n    MIT License \xA9 <a href=\"https://polla.dev\">Polla</a>\n  </div>\n  <div\
+    \ class=\"md-footer-meta__item\">\n    <a href=\"architecture-gallery.md\">Architectures</a>\
+    \ \xB7\n    <a href=\"README.md\">Tutorial Hub</a> \xB7\n    <a href=\"https://github.com/polla-fattah/nnott/\"\
+    >Code Base</a>\n  </div>\n</div>\n"
+nav:
+- Home: index.md
+- Getting Started:
+  - Project Tour: project-tour.md
+  - Implementations & Hardware: implementations-and-hardware.md
+  - Running Experiments: running-experiments.md
+  - Roadmap: roadmap.md
+- Core Concepts:
+  - Overview: core-concepts.md
+  - Activations: concepts/activations.md
+  - Loss & Softmax: concepts/loss-and-softmax.md
+  - Optimizers (Overview): concepts/optimizers.md
+  - Regularization: concepts/regularization.md
+  - Normalization: concepts/normalization.md
+  - Fundamentals: concepts/fundamentals.md
+  - Backend Selector: concepts/backend.md
+  - Convolution Basics: concepts/convolution.md
+- Scalar & Vectorized Labs:
+  - Activation Zoo: activation-zoo.md
+  - Experiment Log Template: experiment-log-template.md
+  - Optimization Lab: optimization-lab.md
+  - Debug Playbook: debug-playbook.md
+- Architectures:
+  - Gallery: architecture-gallery.md
+  - Baseline CNN: architectures/baseline.md
+  - LeNet: architectures/lenet.md
+  - AlexNet: architectures/alexnet.md
+  - VGG16: architectures/vgg16.md
+  - ResNet18: architectures/resnet18.md
+  - EfficientNet-Lite0: architectures/efficientnet-lite0.md
+  - ConvNeXt Tiny: architectures/convnext-tiny.md
+- Augmentation:
+  - Playground: augmentation-playground.md
+  - Overview: augmentations/overview.md
+  - Geometry: augmentations/geometry.md
+  - Noise & Cutout: augmentations/noise-and-cutout.md
+  - CutMix & RandAugment: augmentations/cutmix-and-randaugment.md
+- Optimizers:
+  - SGD: optimizers/sgd.md
+  - Adam: optimizers/adam.md
+  - Lookahead: optimizers/lookahead.md
+  - Gradient Clipping: optimizers/gradient-clipping.md
+- Tools:
+  - NumPy: tools/numpy.md
+  - Matplotlib: tools/matplotlib.md
+  - tqdm: tools/tqdm.md
+  - CuPy: tools/cupy.md
+- Performance & About:
+  - Performance Profiles: performance-profiles.md
+  - About This Tutorial: about.md
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: blue grey
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to soft daylight
+    - scheme: default
+      primary: grey
+      accent: light blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to moonlit mode
+  font:
+    text: Inter
+    code: Fira Code
+  features:
+    - navigation.instant
+    - navigation.sections
+    - content.code.copy
+    - navigation.expand
+    - navigation.footer
+extra_css:
+- stylesheets/extra.css

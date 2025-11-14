@@ -1,8 +1,11 @@
+---
+title: Optimization Lab
+---
+
 [MyHome](https://polla.dev) | [Tutorial Hub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # Optimization Lab (Jupyter Walkthrough)
 
-**Breadcrumb:** [Home](README.md) / Optimization Lab (Jupyter Walkthrough)
 
 
 This lab is designed to be run inside a Jupyter notebook so you can tweak hyperparameters interactively. The notebook uses the vectorized MLP (NumPy-based) so the code stays concise while still reflecting all the optimizer features available in the main project.
@@ -140,9 +143,7 @@ imgs, preds, trues, total = trainer.misclassification_data(X_test, y_test, max_i
 
 Save the notebook as `notebooks/optimization_lab.ipynb` (or similar) so future students can open it, rerun the cells, and add their own observations.
 
-**Navigation:**
 [Back to Running Experiments](running-experiments.md)
 
 ---
 
-MIT License | [About](about.md) | [Code Base](https://github.com/polla-fattah/nnott/)
