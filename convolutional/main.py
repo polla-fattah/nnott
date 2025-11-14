@@ -8,6 +8,7 @@ if __package__ is None or __package__ == "":
     sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from common.data_utils import DataUtility
+from common.augment import build_augment_config
 import common.backend as backend
 from convolutional.architectures import (
     LeNet,
@@ -66,6 +67,12 @@ def parse_args():
     parser.add_argument("--augment-noise-std", type=float, default=0.02, help="Stddev for Gaussian noise (0 disables).")
     parser.add_argument("--augment-noise-prob", type=float, default=0.3, help="Probability of injecting noise.")
     parser.add_argument("--augment-noise-clip", type=float, default=3.0, help="Clamp magnitude after noise.")
+    parser.add_argument("--augment-cutout-prob", type=float, default=0.0, help="Probability of applying cutout masks.")
+    parser.add_argument("--augment-cutout-size", type=int, default=4, help="Cutout square size in pixels.")
+    parser.add_argument("--augment-cutmix-prob", type=float, default=0.0, help="Probability of CutMix (mix labels).")
+    parser.add_argument("--augment-cutmix-alpha", type=float, default=1.0, help="Beta alpha for CutMix lambda.")
+    parser.add_argument("--augment-randaug-layers", type=int, default=0, help="Number of RandAugment layers (0 disables).")
+    parser.add_argument("--augment-randaug-magnitude", type=float, default=0.0, help="RandAugment magnitude (0-1).")
     parser.add_argument("--skip-train", action="store_true", help="Skip training phase (use with --load).")
     parser.add_argument("--gpu", action="store_true", help="Use CuPy GPU backend if available.")
     parser.add_argument(
@@ -122,7 +129,22 @@ def main(opts=None):
     optim = Adam(lr=5e-4, weight_decay=1e-4)
     if args.lookahead:
         optim = Lookahead(optim, k=args.lookahead_k, alpha=args.lookahead_alpha)
-    augment_config = build_augment_config(args)
+    augment_config = build_augment_config(
+        max_shift=args.augment_max_shift,
+        rotate_deg=args.augment_rotate_deg,
+        rotate_prob=args.augment_rotate_prob,
+        hflip_prob=args.augment_hflip_prob,
+        vflip_prob=args.augment_vflip_prob,
+        noise_std=args.augment_noise_std,
+        noise_prob=args.augment_noise_prob,
+        noise_clip=args.augment_noise_clip,
+        cutout_prob=args.augment_cutout_prob,
+        cutout_size=args.augment_cutout_size,
+        cutmix_prob=args.augment_cutmix_prob,
+        cutmix_alpha=args.augment_cutmix_alpha,
+        randaugment_layers=args.augment_randaug_layers,
+        randaugment_magnitude=args.augment_randaug_magnitude,
+    )
     trainer = ConvTrainer(
         model,
         optim,
@@ -203,22 +225,6 @@ def plot_misclassifications(imgs, preds, trues, total, cols=5):
     fig.suptitle(f"Misclassifications: showing {n} of {total}")
     plt.tight_layout()
     plt.show()
-
-
-def build_augment_config(args):
-    def clamp(v):
-        return max(0.0, min(1.0, float(v)))
-
-    return {
-        "max_shift": max(0, int(args.augment_max_shift)),
-        "rotate_deg": max(0.0, float(args.augment_rotate_deg)),
-        "rotate_prob": clamp(args.augment_rotate_prob),
-        "hflip_prob": clamp(args.augment_hflip_prob),
-        "vflip_prob": clamp(args.augment_vflip_prob),
-        "noise_std": max(0.0, float(args.augment_noise_std)),
-        "noise_prob": clamp(args.augment_noise_prob),
-        "noise_clip": max(0.0, float(args.augment_noise_clip)),
-    }
 
 
 if __name__ == "__main__":

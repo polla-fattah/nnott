@@ -4,14 +4,24 @@ from tqdm import tqdm  # <- ALWAYS use tqdm now
 import time  # at the top of trainer.py
 from common.cross_entropy import CrossEntropyLoss
 from scalar.optimizer import SGD, Adam
+from common.augment import build_augment_config, augment_image_batch
 
 
 class Trainer:
-    def __init__(self, network, num_classes=10, optimizer="adam", lr=0.001, weight_decay=0.0):
+    def __init__(
+        self,
+        network,
+        num_classes=10,
+        optimizer="adam",
+        lr=0.001,
+        weight_decay=0.0,
+        augment_config=None,
+    ):
         self.network = network
         self.num_classes = num_classes
         self.loss_history = []
         self.criterion = CrossEntropyLoss(reduction="mean")
+        self.augment_cfg = build_augment_config(augment_config)
         if isinstance(optimizer, str):
             if optimizer.lower() == "sgd":
                 self.optimizer = SGD(lr=lr, momentum=0.0, weight_decay=weight_decay)
@@ -27,7 +37,7 @@ class Trainer:
         v[int(label)] = 1.0
         return v
 
-    def train(self, X_train, y_train, epochs=5, batch_size=64, verbose=True):
+    def train(self, X_train, y_train, epochs=5, batch_size=64, verbose=True, augment=True):
         y_train = ensure_label_format(y_train, self.num_classes)
         n = len(X_train)
         self.loss_history = []
@@ -53,6 +63,19 @@ class Trainer:
             for start in tqdm(range(0, n, batch_size), desc=f"Epoch {epoch}", unit="batch"):
                 end = min(start + batch_size, n)
                 bs = end - start
+                batch_inputs = X_shuf[start:end]
+                batch_labels = y_shuf[start:end]
+                flat_inputs = batch_inputs.reshape(bs, -1).astype(np.float32, copy=False)
+                if augment and batch_inputs.ndim == 3:
+                    imgs = batch_inputs[:, None, :, :].astype(np.float32, copy=False)
+                    aug_imgs, _ = augment_image_batch(
+                        imgs,
+                        self.augment_cfg,
+                        xp_module=np,
+                        labels=None,
+                        allow_label_mix=False,
+                    )
+                    flat_inputs = aug_imgs.reshape(bs, -1)
 
                 # zero accumulators
                 if hasattr(self.network, "zero_grad"):
@@ -62,9 +85,9 @@ class Trainer:
                         layer.zero_grad()
 
                 # accumulate over batch
-                for i in range(start, end):
-                    x = X_shuf[i]
-                    y = y_shuf[i]
+                for idx in range(bs):
+                    x = flat_inputs[idx]
+                    y = batch_labels[idx]
 
                     logits = self.network.forward(x)
                     loss = self.criterion.forward(logits, int(y))

@@ -6,6 +6,7 @@ import common.backend as backend
 from common.cross_entropy import CrossEntropyLoss
 from common.model_io import save_model, load_model as load_model_state
 from common.data_utils import ensure_label_format
+from common.augment import augment_image_batch, build_augment_config as shared_augment_config
 
 xp = backend.xp
 
@@ -15,6 +16,7 @@ class ConvTrainer:
         self.model = model
         self.optimizer = optimizer
         self.criterion = CrossEntropyLoss(reduction="mean")
+        self.criterion_per_sample = CrossEntropyLoss(reduction="none")
         self.num_classes = num_classes
         self.loss_history = []
         self.grad_clip_norm = grad_clip_norm
@@ -62,13 +64,19 @@ class ConvTrainer:
                 end = min(start + batch_size, n)
                 xb = Xs[start:end]
                 yb = ys[start:end]
+                mix_meta = None
                 if augment:
-                    xb = self._augment_batch(xb)
+                    xb, mix_meta = augment_image_batch(
+                        xb,
+                        self.augment_cfg,
+                        xp_module=xp,
+                        labels=yb,
+                        allow_label_mix=True,
+                    )
                 self.model.zero_grad()
                 logits = self.model.forward(xb)
-                loss = self.criterion.forward(logits, yb)
+                loss, grad = self._compute_loss_and_grad(logits, yb, mix_meta)
                 running += float(loss) * len(xb)
-                grad = self.criterion.backward(logits, yb)
                 self.model.backward(grad)
                 self._clip_gradients(self.model.parameters())
                 self.optimizer.step(self.model.parameters(), batch_size=len(xb))
@@ -143,53 +151,22 @@ class ConvTrainer:
         late = max(mid + 1, int(epochs * 0.75))
         return {mid: base_lr * 0.5, late: base_lr * 0.1}
 
-    def _augment_batch(self, xb):
-        if xb.ndim != 4:
-            return xb
-        cfg = self.augment_cfg
-        if cfg["max_shift"] == 0 and cfg["rotate_deg"] == 0 and cfg["hflip_prob"] == 0 \
-                and cfg["vflip_prob"] == 0 and cfg["noise_std"] == 0:
-            return xb
-        batch = xp.empty_like(xb)
-        for i in range(len(xb)):
-            img = xb[i]
-            if cfg["max_shift"] > 0:
-                dx = int(xp.random.randint(-cfg["max_shift"], cfg["max_shift"] + 1))
-                dy = int(xp.random.randint(-cfg["max_shift"], cfg["max_shift"] + 1))
-                img = xp.roll(xp.roll(img, dy, axis=1), dx, axis=2)
-            if cfg["rotate_deg"] > 0 and float(xp.random.rand()) < cfg["rotate_prob"]:
-                angle = float(xp.random.uniform(-cfg["rotate_deg"], cfg["rotate_deg"]))
-                img = self._rotate_image(img, _np.deg2rad(angle))
-            if cfg["hflip_prob"] > 0 and float(xp.random.rand()) < cfg["hflip_prob"]:
-                img = img[:, :, ::-1]
-            if cfg["vflip_prob"] > 0 and float(xp.random.rand()) < cfg["vflip_prob"]:
-                img = img[:, ::-1, :]
-            if cfg["noise_std"] > 0 and float(xp.random.rand()) < cfg["noise_prob"]:
-                noise = xp.random.normal(0.0, cfg["noise_std"], size=img.shape).astype(img.dtype, copy=False)
-                img = img + noise
-            if cfg["noise_clip"] > 0:
-                img = xp.clip(img, -cfg["noise_clip"], cfg["noise_clip"])
-            batch[i] = img
-        return batch
-
-    def _rotate_image(self, img, angle_rad):
-        c, h, w = img.shape
-        cy = (h - 1) / 2.0
-        cx = (w - 1) / 2.0
-        yy, xx = xp.meshgrid(
-            xp.arange(h, dtype=xp.float32),
-            xp.arange(w, dtype=xp.float32),
-            indexing='ij'
-        )
-        x0 = xx - cx
-        y0 = yy - cy
-        cos_a = xp.cos(angle_rad)
-        sin_a = xp.sin(angle_rad)
-        xr = cos_a * x0 + sin_a * y0 + cx
-        yr = -sin_a * x0 + cos_a * y0 + cy
-        xi = xp.clip(xp.rint(xr), 0, w - 1).astype(xp.int32)
-        yi = xp.clip(xp.rint(yr), 0, h - 1).astype(xp.int32)
-        return img[:, yi, xi]
+    def _compute_loss_and_grad(self, logits, targets, mix_meta):
+        if not mix_meta:
+            loss = self.criterion.forward(logits, targets)
+            grad = self.criterion.backward(logits, targets)
+            return loss, grad
+        lam = mix_meta["lam"].reshape(-1, 1)
+        ta = mix_meta["targets_a"]
+        tb = mix_meta["targets_b"]
+        loss_a = self.criterion_per_sample.forward(logits, ta)
+        loss_b = self.criterion_per_sample.forward(logits, tb)
+        combined = lam[:, 0] * loss_a + (1.0 - lam[:, 0]) * loss_b
+        loss = float(backend.to_cpu(combined.mean()))
+        grad_a = self.criterion.backward(logits, ta)
+        grad_b = self.criterion.backward(logits, tb)
+        grad = lam * grad_a + (1.0 - lam) * grad_b
+        return loss, grad
 
     def _clip_gradients(self, params):
         max_norm = self.grad_clip_norm
@@ -210,28 +187,6 @@ class ConvTrainer:
                 g *= scale
 
     def _build_augment_cfg(self, config):
-        cfg = {
-            "max_shift": 2,
-            "rotate_deg": 10.0,
-            "rotate_prob": 0.5,
-            "hflip_prob": 0.5,
-            "vflip_prob": 0.0,
-            "noise_std": 0.02,
-            "noise_prob": 0.3,
-            "noise_clip": 3.0,
-        }
         if config:
-            for key in cfg:
-                if key in config and config[key] is not None:
-                    cfg[key] = config[key]
-        def clamp(v):
-            return float(max(0.0, min(1.0, v)))
-        cfg["max_shift"] = max(0, int(cfg["max_shift"]))
-        cfg["rotate_deg"] = max(0.0, float(cfg["rotate_deg"]))
-        cfg["rotate_prob"] = clamp(cfg["rotate_prob"])
-        cfg["hflip_prob"] = clamp(cfg["hflip_prob"])
-        cfg["vflip_prob"] = clamp(cfg["vflip_prob"])
-        cfg["noise_std"] = max(0.0, float(cfg["noise_std"]))
-        cfg["noise_prob"] = clamp(cfg["noise_prob"])
-        cfg["noise_clip"] = max(0.0, float(cfg["noise_clip"]))
-        return cfg
+            return shared_augment_config(config)
+        return shared_augment_config(None)

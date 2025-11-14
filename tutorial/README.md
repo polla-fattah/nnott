@@ -26,7 +26,7 @@ Welcome to the learning guide for the **Neural Networks From Scratch (NNFS)** sa
 | [Activation Zoo](activation-zoo.md) | Side-by-side comparison of ReLU, LeakyReLU, SiLU, and GELU with sample plots. |
 | [Experiment Log Template](experiment-log-template.md) | Markdown template for recording dataset, hyperparameters, results, and observations. |
 | [Performance Profiles](performance-profiles.md) | Typical training times and accuracies (CPU vs GPU) for each architecture. |
-| [Augmentation Playground](augmentation-playground.md) | Guide for extending `_augment_batch` with rotations, flips, noise, and cutout. |
+| [Augmentation Playground](augmentation-playground.md) | Central entry point for augmentation CLI flags plus deep dives on geometry, noise/cutout, CutMix, and RandAugment. |
 | [About This Tutorial](about.md) | Overview of the teaching goals and how students should progress through the codebase. |
 
 ## Scenario Reference Table

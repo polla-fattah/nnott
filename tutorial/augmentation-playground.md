@@ -5,24 +5,47 @@
 **Breadcrumb:** [Home](README.md) / Augmentation Playground
 
 
-The convolutional trainer currently applies random pixel shifts (±2) to each batch via `ConvTrainer._augment_batch`. This page shows how to extend that mechanism with additional transforms—rotations, flips, noise, cutout—while emphasizing when such augmentations make sense (label semantics matter!).
+All three trainers now share the same augmentation stack via [`common/augment.py`](../common/augment.py). The CLI front-ends expose identical knobs (see the new [Augmentation Overview](augmentations/overview.md) plus detailed guides on [geometry](augmentations/geometry.md), [noise & cutout](augmentations/noise-and-cutout.md), and [CutMix/RandAugment](augmentations/cutmix-and-randaugment.md)).
+
+```bash
+# scalar MLP
+python scalar/main.py --epochs 5 --augment-rotate-deg 12 --augment-cutout-prob 0.2
+
+# vectorized MLP
+python vectorized/main.py --epochs 2 --augment-cutmix-prob 0.5 --augment-cutmix-alpha 0.75
+
+# convolutional CNNs
+python convolutional/main.py resnet18 --augment-randaug-layers 2 --augment-randaug-magnitude 0.5
+```
+
+Every flag maps directly to the shared config (`max_shift`, `rotate_deg`, `noise_std`, `cutout_prob`, `cutmix_prob`, `randaugment_layers`, etc.). The scalar trainer disables CutMix internally to keep labels single-class, but it otherwise runs the same codepath as the higher-performance pipelines.
+
+Use `--no-augment` on any entry point to run with raw data (useful for ablations or unit tests).
 
 ## 1. Understanding the Existing Augmentor
 
 ```python
-def _augment_batch(self, xb, max_shift=2):
-    if xb.ndim != 4:
-        return xb
-    shifted = xp.empty_like(xb)
-    for i in range(len(xb)):
-        dx = int(xp.random.randint(-max_shift, max_shift + 1))
-        dy = int(xp.random.randint(-max_shift, max_shift + 1))
-        shifted[i] = xp.roll(xp.roll(xb[i], dy, axis=1), dx, axis=2)
-    return shifted
+def augment_image_batch(batch, cfg, xp_module=None, labels=None, allow_label_mix=True):
+    if batch.ndim not in (3, 4):
+        return batch, None
+    ...
 ```
 
-- Inputs are `(N, C, H, W)` arrays; the code uses `xp` to support NumPy or CuPy.
-- Augmentation is applied *per batch* after shuffling but before the forward pass.
+- Inputs can be `(N, C, H, W)` (conv/vectorized) or `(N, H, W)` (scalar) and the helper automatically reshapes as needed.
+- Image ops (shift, rotate, flips, noise, cutout) run per-sample; CutMix optionally mixes labels if `allow_label_mix=True`.
+- `augment_flat_batch` reshapes `(N, 784)` vectors into `28×28` grids for the vectorized trainer.
+
+Under the hood the trainers call:
+
+```python
+xb, mix_meta = augment_image_batch(xb, cfg, xp_module=xp, labels=yb)
+logits = model.forward(xb)
+loss, grad = combine_losses(logits, yb, mix_meta)
+```
+
+- When `mix_meta` is `None`, the loss behaves like standard cross-entropy.
+- When `mix_meta` contains CutMix metadata, both targets are blended during forward/backward passes.
+- Scalar training requests `allow_label_mix=False`, so CutMix is skipped while other transforms still apply.
 
 ---
 
@@ -116,44 +139,43 @@ def apply_cutout(img, size=5):
 
 ---
 
-## 6. Putting It Together
+## 6. CutMix and RandAugment
 
-Combine the above snippets:
+**CutMix (vectorized + convolutional trainers):**
+
+- Controlled by `--augment-cutmix-prob` (probability per sample) and `--augment-cutmix-alpha` (Beta distribution for mixing ratio).
+- Two images share a rectangular patch and the labels are blended using the CutMix ratio.
+- The trainers compute `λ * CE(y_a) + (1 - λ) * CE(y_b)` and combine gradients accordingly.
+- Disabled automatically for the scalar trainer (labels stay single-class there).
+
+**RandAugment:**
+
+- `--augment-randaug-layers` picks how many random ops to stack per sample.
+- `--augment-randaug-magnitude` acts as a 0–1 scaling factor for those ops.
+- Available primitives: rotate, X/Y translations, flips, additive noise, cutout. Each layer randomly chooses one operation and scales its magnitude.
+- Combine with the deterministic knobs (e.g., keep `--augment-rotate-deg` small so RandAugment explores meaningful ranges).
+
+Example:
 
 ```python
-def _augment_batch(self, xb, max_shift=2, max_rotate_deg=10, noise_std=0.05, cutout_size=5):
-    if xb.ndim != 4:
-        return xb
-    out = xp.empty_like(xb)
-    for i in range(len(xb)):
-        img = xb[i]
-        # shifts
-        dx = int(xp.random.randint(-max_shift, max_shift + 1))
-        dy = int(xp.random.randint(-max_shift, max_shift + 1))
-        img = xp.roll(xp.roll(img, dy, axis=1), dx, axis=2)
-        # rotation
-        if max_rotate_deg > 0 and xp.random.rand() < 0.5:
-            angle = float(xp.random.uniform(-max_rotate_deg, max_rotate_deg))
-            img = rotate_nearest(img, math.radians(angle))
-        # noise
-        if noise_std > 0:
-            img = img + noise_std * xp.random.randn(*img.shape).astype(img.dtype)
-        # optional cutout
-        if cutout_size > 0 and xp.random.rand() < 0.3:
-            img = apply_cutout(img, cutout_size)
-        out[i] = img
-    return xp.clip(out, -3, 3)
+# more aggressive digits run
+python vectorized/main.py \
+  --epochs 5 \
+  --augment-randaug-layers 2 \
+  --augment-randaug-magnitude 0.6 \
+  --augment-cutout-prob 0.3 \
+  --augment-cutmix-prob 0.2
 ```
 
-Tune probabilities/thresholds per dataset.
+Tune probabilities/thresholds per dataset and always visualize random batches to ensure semantics hold.
 
 ---
 
 ## Lab Challenge
 
-1. Clone `ConvTrainer._augment_batch` into a branch, add one new transform (rotation, noise, flip, or cutout), and train BaselineCNN for 2 epochs. Does it help or hurt accuracy?
-2. Visualize 10 augmented samples using `plot_image_grid` to ensure labels still make sense. Document your findings in the [Experiment Log](experiment-log-template.md).
-3. For CIFAR-10, try combining horizontal flips and color jitter (via additive noise). Note how training time or stability changes.
+1. Use `--no-augment` as a baseline, then enable rotations + flips on each trainer. Record accuracy changes in the [Experiment Log](experiment-log-template.md).
+2. Enable CutMix on the vectorized or convolutional trainer (`--augment-cutmix-prob 0.4`). Plot 10 mixed samples and explain why the label mixing math is required.
+3. Experiment with RandAugment (layers/magnitude sweep) and discuss whether it helps small digit datasets or if it simply injects too much randomness.
 
 Remember: augmentations are only beneficial when they preserve label semantics. Evaluate carefully before enabling them in production runs.
 

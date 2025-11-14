@@ -8,6 +8,7 @@ if __package__ is None or __package__ == "":
     sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from common.data_utils import DataUtility
+from common.augment import build_augment_config
 from scalar.network import Network
 from scalar.trainer import Trainer
 
@@ -40,6 +41,23 @@ def parse_args():
         default="0.2",
         help="Dropout probability per hidden layer (single value or comma list). Use 0 to disable.",
     )
+    parser.add_argument(
+        "--no-augment",
+        action="store_true",
+        help="Disable training-time data augmentations.",
+    )
+    parser.add_argument("--augment-max-shift", type=int, default=2, help="Pixel shift radius for jitter augmentation.")
+    parser.add_argument("--augment-rotate-deg", type=float, default=10.0, help="Max rotation degrees (0 disables).")
+    parser.add_argument("--augment-rotate-prob", type=float, default=0.5, help="Probability of applying rotation.")
+    parser.add_argument("--augment-hflip-prob", type=float, default=0.5, help="Probability of horizontal flip.")
+    parser.add_argument("--augment-vflip-prob", type=float, default=0.0, help="Probability of vertical flip.")
+    parser.add_argument("--augment-noise-std", type=float, default=0.02, help="Stddev for Gaussian noise (0 disables).")
+    parser.add_argument("--augment-noise-prob", type=float, default=0.3, help="Probability of injecting noise.")
+    parser.add_argument("--augment-noise-clip", type=float, default=3.0, help="Clamp magnitude after noise.")
+    parser.add_argument("--augment-cutout-prob", type=float, default=0.0, help="Probability of applying cutout masks.")
+    parser.add_argument("--augment-cutout-size", type=int, default=4, help="Cutout square size.")
+    parser.add_argument("--augment-randaug-layers", type=int, default=0, help="RandAugment layers (0 disables).")
+    parser.add_argument("--augment-randaug-magnitude", type=float, default=0.0, help="RandAugment magnitude (0-1).")
     parser.add_argument(
         "--plot",
         action="store_true",
@@ -83,10 +101,33 @@ def main():
         hidden_dropout=dropout_values,
     )
 
-    trainer = Trainer(network, num_classes=num_classes)
+    augment_config = build_augment_config(
+        max_shift=args.augment_max_shift,
+        rotate_deg=args.augment_rotate_deg,
+        rotate_prob=args.augment_rotate_prob,
+        hflip_prob=args.augment_hflip_prob,
+        vflip_prob=args.augment_vflip_prob,
+        noise_std=args.augment_noise_std,
+        noise_prob=args.augment_noise_prob,
+        noise_clip=args.augment_noise_clip,
+        cutout_prob=args.augment_cutout_prob,
+        cutout_size=args.augment_cutout_size,
+        randaugment_layers=args.augment_randaug_layers,
+        randaugment_magnitude=args.augment_randaug_magnitude,
+        cutmix_prob=0.0,  # scalar trainer keeps labels single-hot
+    )
+
+    trainer = Trainer(network, num_classes=num_classes, augment_config=augment_config)
 
     # 2. Start training (tip: start with 1–2 epochs to make it faster)
-    trainer.train(X_train, y_train, epochs=args.epochs, batch_size=args.batch_size, verbose=True)
+    trainer.train(
+        X_train,
+        y_train,
+        epochs=args.epochs,
+        batch_size=args.batch_size,
+        verbose=True,
+        augment=not args.no_augment,
+    )
     if args.plot:
         plot_loss(trainer.loss_history)
 

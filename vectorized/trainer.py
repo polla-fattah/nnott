@@ -5,6 +5,7 @@ from math import cos, pi
 from common.cross_entropy import CrossEntropyLoss
 from common.model_io import save_model, load_model as load_model_state
 from common.data_utils import ensure_label_format
+from common.augment import augment_flat_batch, build_augment_config as shared_augment_config
 
 
 class CosineScheduler:
@@ -62,6 +63,7 @@ class VTrainer:
         self.model = model
         self.optimizer = optimizer
         self.criterion = CrossEntropyLoss(reduction="mean")
+        self.criterion_per_sample = CrossEntropyLoss(reduction="none")
         self.num_classes = num_classes
         self.loss_history = []
         self.grad_clip_norm = grad_clip_norm
@@ -113,13 +115,18 @@ class VTrainer:
                 yb = ys[start:end]
 
                 self.model.zero_grad()
+                mix_meta = None
                 if augment:
-                    logits = self.model.forward(self._augment_batch(Xb))
-                else:
-                    logits = self.model.forward(Xb)
-                loss = self.criterion.forward(logits, yb)
+                    Xb, mix_meta = augment_flat_batch(
+                        Xb,
+                        self.augment_cfg,
+                        xp_module=np,
+                        labels=yb,
+                        image_side=28,
+                    )
+                logits = self.model.forward(Xb)
+                loss, grad_logits = self._compute_loss_and_grad(logits, yb, mix_meta)
                 total += float(loss) * len(Xb)
-                grad_logits = self.criterion.backward(logits, yb)
                 self.model.backward(grad_logits)
                 self._clip_gradients(self.model.parameters())
                 self.optimizer.step(self.model.parameters(), batch_size=len(Xb))
@@ -180,49 +187,22 @@ class VTrainer:
         return load_model_state(self.model, path)
 
     # --- augmentation utilities ---
-    def _augment_batch(self, Xb_flat, side=28):
-        cfg = self.augment_cfg
-        B, D = Xb_flat.shape
-        if side * side != D:
-            return Xb_flat
-        Xb = Xb_flat.reshape(B, side, side)
-        out = np.empty_like(Xb)
-        for i in range(B):
-            img = Xb[i]
-            if cfg["max_shift"] > 0:
-                dx = np.random.randint(-cfg["max_shift"], cfg["max_shift"] + 1)
-                dy = np.random.randint(-cfg["max_shift"], cfg["max_shift"] + 1)
-                img = np.roll(np.roll(img, dy, axis=0), dx, axis=1)
-            if cfg["rotate_deg"] > 0 and np.random.rand() < cfg["rotate_prob"]:
-                angle = np.deg2rad(np.random.uniform(-cfg["rotate_deg"], cfg["rotate_deg"]))
-                img = self._rotate_nearest(img, angle)
-            if cfg["hflip_prob"] > 0 and np.random.rand() < cfg["hflip_prob"]:
-                img = np.flip(img, axis=1)
-            if cfg["vflip_prob"] > 0 and np.random.rand() < cfg["vflip_prob"]:
-                img = np.flip(img, axis=0)
-            if cfg["noise_std"] > 0 and np.random.rand() < cfg["noise_prob"]:
-                noise = np.random.normal(0.0, cfg["noise_std"], size=img.shape).astype(np.float32)
-                img = img + noise
-            if cfg["noise_clip"] > 0:
-                img = np.clip(img, -cfg["noise_clip"], cfg["noise_clip"])
-            out[i] = img
-        return out.reshape(B, D)
-
-    @staticmethod
-    def _rotate_nearest(img, angle_rad):
-        h, w = img.shape
-        cy, cx = (h - 1) / 2.0, (w - 1) / 2.0
-        yy, xx = np.meshgrid(np.arange(h), np.arange(w), indexing='ij')
-        x0 = xx - cx
-        y0 = yy - cy
-        c, s = np.cos(angle_rad), np.sin(angle_rad)
-        xr = c * x0 + s * y0 + cx
-        yr = -s * x0 + c * y0 + cy
-        xi = np.rint(xr).astype(int)
-        yi = np.rint(yr).astype(int)
-        xi = np.clip(xi, 0, w - 1)
-        yi = np.clip(yi, 0, h - 1)
-        return img[yi, xi]
+    def _compute_loss_and_grad(self, logits, targets, mix_meta):
+        if not mix_meta:
+            loss = self.criterion.forward(logits, targets)
+            grad = self.criterion.backward(logits, targets)
+            return loss, grad
+        lam = np.asarray(mix_meta["lam"], dtype=np.float32).reshape(-1, 1)
+        ta = mix_meta["targets_a"]
+        tb = mix_meta["targets_b"]
+        loss_a = self.criterion_per_sample.forward(logits, ta)
+        loss_b = self.criterion_per_sample.forward(logits, tb)
+        combined = lam[:, 0] * loss_a + (1.0 - lam[:, 0]) * loss_b
+        loss = float(np.mean(combined))
+        grad_a = self.criterion.backward(logits, ta)
+        grad_b = self.criterion.backward(logits, tb)
+        grad = lam * grad_a + (1.0 - lam) * grad_b
+        return loss, grad
 
     def _clip_gradients(self, params):
         max_norm = self.grad_clip_norm
@@ -304,29 +284,9 @@ class VTrainer:
         return total / n
 
     def _build_augment_cfg(self, config):
-        cfg = {
-            "max_shift": 2,
-            "rotate_deg": 10.0,
-            "rotate_prob": 0.5,
-            "hflip_prob": 0.5,
-            "vflip_prob": 0.0,
-            "noise_std": 0.02,
-            "noise_prob": 0.3,
-            "noise_clip": 3.0,
-        }
         if config:
-            for key in cfg:
-                if key in config and config[key] is not None:
-                    cfg[key] = config[key]
-        cfg["max_shift"] = max(0, int(cfg["max_shift"]))
-        cfg["rotate_deg"] = max(0.0, float(cfg["rotate_deg"]))
-        cfg["rotate_prob"] = float(np.clip(cfg["rotate_prob"], 0.0, 1.0))
-        cfg["hflip_prob"] = float(np.clip(cfg["hflip_prob"], 0.0, 1.0))
-        cfg["vflip_prob"] = float(np.clip(cfg["vflip_prob"], 0.0, 1.0))
-        cfg["noise_std"] = max(0.0, float(cfg["noise_std"]))
-        cfg["noise_prob"] = float(np.clip(cfg["noise_prob"], 0.0, 1.0))
-        cfg["noise_clip"] = max(0.0, float(cfg["noise_clip"]))
-        return cfg
+            return shared_augment_config(config)
+        return shared_augment_config(None)
 
     def _prepare_labels(self, labels):
         return ensure_label_format(labels, self.num_classes)
