@@ -1,5 +1,7 @@
 # Neural Networks Optimisations And Traingin Tests (NNOTT)
 
+[Tutorial Hub](tutorial/README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [License](LICENSE)
+
 This repository is an educational sandbox for implementing neural networks from first principles. You’ll find:
 
 - **Scalar MLPs** built entirely with Python loops for maximum transparency.
@@ -31,3 +33,7 @@ python convolutional/main.py resnet18 --epochs 2 --batch-size 64 --gpu
 ```
 
 Need more context? Jump to the [tutorial hub](tutorial/README.md) for the full walkthrough.
+
+---
+
+MIT License | [Tutorial Hub](tutorial/README.md) | [Code Base](https://github.com/polla-fattah/nnott/)

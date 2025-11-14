@@ -1,4 +1,4 @@
-**Links:** [Overview](overview.md) | [Tutorial Hub](../README.md)
+[Overview](overview.md) | [Tutorial Hub](../README.md)
 
 # Geometric Augmentations
 

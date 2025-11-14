@@ -1,4 +1,4 @@
-**Links:** [Tutorial Hub](../README.md) | [Augmentation Playground](../augmentation-playground.md)
+[Tutorial Hub](../README.md) | [Augmentation Playground](../augmentation-playground.md)
 
 # Augmentation Overview
 

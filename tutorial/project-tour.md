@@ -1,4 +1,4 @@
-**Links:** [MyHome](https://polla.dev) | [tutorialHub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
+[MyHome](https://polla.dev) | [tutorialHub](README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
 
 # 01 - Project Tour
 
