@@ -28,6 +28,7 @@ Welcome to the learning guide for the **Neural Networks From Scratch (NNFS)** sa
 | [Performance Profiles](performance-profiles.md) | Typical training times and accuracies (CPU vs GPU) for each architecture. |
 | [Augmentation Playground](augmentation-playground.md) | Central entry point for augmentation CLI flags plus deep dives on geometry, noise/cutout, CutMix, and RandAugment. |
 | [About This Tutorial](about.md) | Overview of the teaching goals and how students should progress through the codebase. |
+| [Roadmap](roadmap.md) | Step-by-step learning path that suggests what to read/run at each stage. |
 
 ## Scenario Reference Table
 
