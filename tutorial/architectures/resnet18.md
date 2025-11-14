@@ -5,7 +5,7 @@
 **Breadcrumb:** [Home](../README.md) / [Architecture Gallery](../architecture-gallery.md) / ResNet-18 (2015)
 
 
-![ResNet residual block](https://upload.wikimedia.org/wikipedia/commons/5/5f/ResNet_module.svg)
+![ResNet residual block](https://upload.wikimedia.org/wikipedia/commons/b/b3/ResNet_block.svg)
 <sub>Figure credit: He et al., via Wikipedia (CC BY 4.0).</sub>
 
 ## Historical Context
