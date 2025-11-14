@@ -1,10 +1,6 @@
 ---
-title: Loss And Softmax
+title: Loss & Softmax
 ---
-
-# Loss & Softmax: Cross-Entropy from Logits
-
-
 
 Classification networks in this repo use the cross-entropy loss applied directly to raw logits. This ensures numerical stability and pairs cleanly with the softmax function.
 
@@ -46,6 +42,3 @@ Directly computing softmax can overflow when logits are large. The code uses the
 [Previous (Fundamentals: Neurons, Layers, Networks)](fundamentals.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Normalization Layers)](normalization.md)
 
 [Back to Core Concepts](../core-concepts.md)
-
----
-

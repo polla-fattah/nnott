@@ -2,12 +2,6 @@
 title: Optimization Lab
 ---
 
-
-
-# Optimization Lab (Jupyter Walkthrough)
-
-
-
 This lab is designed to be run inside a Jupyter notebook so you can tweak hyperparameters interactively. The notebook uses the vectorized MLP (NumPy-based) so the code stays concise while still reflecting all the optimizer features available in the main project.
 
 ## Prerequisites
@@ -17,8 +11,6 @@ This lab is designed to be run inside a Jupyter notebook so you can tweak hyperp
 3. Create a new notebook and copy increasingly complex cells from the sections below.
 
 > Tip: Keep the repo’s virtual environment activated before launching Jupyter so it can import project modules.
-
----
 
 ## 1. Setup & Data Loading
 
@@ -38,8 +30,6 @@ X_test = X_test.reshape(len(X_test), -1).astype(np.float32)
 ```
 
 - **Why:** Loads MNIST, standardizes it, and flattens the images for the MLP.
-
----
 
 ## 2. Baseline Model
 
@@ -64,8 +54,6 @@ print(f"Baseline accuracy: {acc*100:.2f}%")
 
 - **Experiment:** Vary `hidden_sizes`, `epochs`, or `batch_size` to see how capacity and training time change.
 
----
-
 ## 3. Learning Rate Sweep
 
 Use a small loop to try several learning rates quickly:
@@ -85,8 +73,6 @@ for lr in [1e-4, 5e-4, 1e-3, 5e-3]:
 
 - **Observation:** A learning rate that’s too high may explode; too low converges slowly. Plot `loss_history` to visualize this.
 
----
-
 ## 4. Gradient Clipping Demo
 
 ```python
@@ -97,8 +83,6 @@ trainer.train(X_train, y_train, epochs=3, batch_size=64, verbose=True)
 ```
 
 - **Challenge:** Try `grad_clip_norm=None` vs `grad_clip_norm=1.0` and note whether loss spikes disappear.
-
----
 
 ## 5. Lookahead Wrapper
 
@@ -112,8 +96,6 @@ trainer.evaluate(X_test, y_test)
 ```
 
 - **Activity:** Adjust `k` and `alpha`, then compare loss curves to plain Adam. Does Lookahead smooth convergence?
-
----
 
 ## 6. Visualization (Optional)
 
@@ -132,8 +114,6 @@ imgs, preds, trues, total = trainer.misclassification_data(X_test, y_test, max_i
 
 - **Warning:** Collecting misclassifications requires another forward pass; only do this when necessary.
 
----
-
 ## Suggested Notebook Challenges
 
 1. **Optimizer grid:** For learning rates `[1e-4, 1e-3, 5e-3]` and optimizers `{SGD+momentum, Adam, Lookahead(Adam)}`, fill in an accuracy table and highlight the best combo.
@@ -144,6 +124,3 @@ imgs, preds, trues, total = trainer.misclassification_data(X_test, y_test, max_i
 Save the notebook as `notebooks/optimization_lab.ipynb` (or similar) so future students can open it, rerun the cells, and add their own observations.
 
 [Back to Running Experiments](running-experiments.md)
-
----
-

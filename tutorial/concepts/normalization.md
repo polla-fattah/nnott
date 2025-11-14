@@ -1,10 +1,6 @@
 ---
-title: Normalization
+title: Normalization Layers
 ---
-
-# Normalization Layers
-
-
 
 Normalization stabilizes activations, speeds up training, and often improves generalization. This project provides both BatchNorm and LayerNorm variants tailored for CNNs.
 
@@ -45,6 +41,3 @@ Normalization stabilizes activations, speeds up training, and often improves gen
 [Previous (Loss & Softmax: Cross-Entropy from Logits)](loss-and-softmax.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Optimizer Hub)](optimizers.md)
 
 [Back to Core Concepts](../core-concepts.md)
-
----
-

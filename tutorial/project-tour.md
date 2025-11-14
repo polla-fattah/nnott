@@ -2,12 +2,6 @@
 title: Project Tour
 ---
 
-[MyHome](https://polla.dev) | [tutorialHub](index.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [Architectures](architecture-gallery.md)
-
-# 01 - Project Tour
-
-
-
 This project is designed as a teaching sandbox. Each directory demonstrates a different perspective on neural networksÃ¢â‚¬â€from slow-but-transparent scalar math to production-style CNN stacks. Use this tour to map the theoretical lectures to the exact files you should inspect.
 
 ## Top-Level Layout
@@ -55,10 +49,12 @@ You can drop additional datasets into the same folder as long as you convert the
 - **Fashion-MNIST (drop-in replacement)**  
   1. Download via `torchvision.datasets.FashionMNIST` or the official website.  
   2. Save the tensors to `.npy`:
+
      ```python
      np.save("data/fashion_train_images.npy", train_images.numpy())
      np.save("data/fashion_train_labels.npy", train_labels.numpy())
-     ```  
+     ```
+
   3. Run `DataUtility("data").load_data(train_images_file="fashion_train_images.npy", ...)`.
   The scalar/vectorized/convolutional scripts will work without further changes because Fashion-MNIST shares MNISTÃ¢â‚¬â„¢s 28Ãƒâ€”28Ãƒâ€”1 shape.
 

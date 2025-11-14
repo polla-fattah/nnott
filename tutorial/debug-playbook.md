@@ -2,15 +2,7 @@
 title: Debug Playbook
 ---
 
-
-
-# Debug Playbook
-
-
-
 When experiments go sideways, start here. Each section lists common symptoms, likely causes, and quick fixes so you can get back to learning instead of fighting the environment.
-
----
 
 ## 1. Environment & Installation
 
@@ -25,17 +17,17 @@ When experiments go sideways, start here. Each section lists common symptoms, li
 - `python scripts/test_system.py`: Basic sanity check of Python packages.
 - `python scripts/test_cupy.py --stress-seconds 5 --stress-size 2048`: Verifies CuPy can allocate memory, run kernels, and synchronize.
 
----
-
 ## 2. GPU-Specific Issues
 
 ### A. GPU OOM (Out-Of-Memory)
 
-**Symptoms**
+#### Symptoms
+
 - Training runs crash with `cupy.cuda.memory.OutOfMemoryError`.
 - GPU utilization stays high after training (e.g., misclassification pass still computing).
 
-**Fixes**
+#### Fixes
+
 1. Reduce batch size (`--batch-size` flag) or switch to a smaller architecture.
 2. Disable optional post-processing (e.g., run `convolutional/main.py` without `--plot`/`--show-misclassified` to skip large visualization buffers).
 3. Clear lingering CuPy arrays by allowing scripts to exit, or manually call `backend.use_cpu()` when post-processing on CPU.
@@ -48,10 +40,9 @@ Likely cause: The script is still running a heavy pass (e.g., collecting misclas
 ### C. CuPy Fallback
 
 If `--gpu` prints `[WARN] CuPy is not installed` and continues on CPU:
+
 - Ensure `pip show cupy` returns a version matching your CUDA drivers.
 - Test with `python scripts/test_cupy.py`; if it fails, reinstall CuPy or update drivers.
-
----
 
 ## 3. Data & Shape Mismatches
 
@@ -65,8 +56,6 @@ If `--gpu` prints `[WARN] CuPy is not installed` and continues on CPU:
 
 - Print tensor shapes after each major step (especially before Dense layers).
 - Use `scripts/quickstart_* --scenario dataset-swap` to validate new datasets end-to-end.
-
----
 
 ## 4. Training Instability
 
@@ -82,8 +71,6 @@ If `--gpu` prints `[WARN] CuPy is not installed` and continues on CPU:
 2. Move to the **convolutional** script once the dataset + optimizer combination is stable.
 3. Only then enable `--gpu`, `--lookahead`, or other advanced flags.
 
----
-
 ## 5. Checkpoint & Serialization Problems
 
 | Symptom | Likely Cause | Quick Fix |
@@ -95,8 +82,6 @@ If `--gpu` prints `[WARN] CuPy is not installed` and continues on CPU:
 
 - Save after an initial run (`--save checkpoints/demo.npz`).
 - Later, resume with `--load checkpoints/demo.npz --skip-train` to evaluate or `--epochs 1` to continue training.
-
----
 
 ## 6. Quick Reference Commands
 
@@ -110,6 +95,3 @@ If `--gpu` prints `[WARN] CuPy is not installed` and continues on CPU:
 | Fashion-MNIST swap smoke test | `python scripts/quickstart_scalar.py --scenario dataset-swap --plot` |
 
 Keep this playbook handy whenever you run into trouble—most issues trace back to one of the scenarios above. If you discover a new pitfall, add it here (noting the symptoms, cause, and fix) to help the next learner.
-
----
-

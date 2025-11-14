@@ -2,10 +2,6 @@
 title: Numpy
 ---
 
-# NumPy Quick Notes
-
-
-
 ## Why You Need NumPy
 
 NumPy is the numerical backbone of this sandbox. Even when you run on GPU, the API surface mirrors NumPy semantics, so understanding it is essential.
@@ -28,6 +24,3 @@ Brush up on NumPy and you’ll understand 100% of the CPU path in this repo. The
 [Previous (Matplotlib Quick Notes)](matplotlib.md) | [Back to Project Tour](../project-tour.md) | [Next (tqdm Quick Notes)](tqdm.md)
 
 [Back to Project Tour](../project-tour.md)
-
----
-

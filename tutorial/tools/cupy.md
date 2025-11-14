@@ -2,10 +2,6 @@
 title: Cupy
 ---
 
-# CuPy Quick Notes
-
-
-
 ## Why You Need CuPy
 
 CuPy mirrors the NumPy API but executes on NVIDIA GPUs. By swapping the backend (`backend.use_gpu()` or `--gpu` flag), the project instantly accelerates heavy tensor ops without changing core logic.
@@ -58,6 +54,7 @@ Save as `scripts/install_cupy.sh`, run `bash scripts/install_cupy.sh 12x`, and y
 
 1. **Driver check:** `nvidia-smi` should report utilization and driver versions.
 2. **Minimal CuPy test:**
+
    ```bash
    python - <<'PY'
    import cupy as cp
@@ -67,6 +64,7 @@ Save as `scripts/install_cupy.sh`, run `bash scripts/install_cupy.sh 12x`, and y
    print("Result checksum:", float(b.sum()))
    PY
    ```
+
    If this succeeds, the CUDA runtime and CuPy wheel match.
 3. **Project stress test:** `python scripts/test_cupy.py --stress-seconds 10 --stress-size 4096` pounds on GEMMs, reductions, and random kernels. Increase `--stress-seconds` if you suspect thermal throttling or unstable overclocks.
 
@@ -79,8 +77,3 @@ Save as `scripts/install_cupy.sh`, run `bash scripts/install_cupy.sh 12x`, and y
 If `--gpu` raises `ModuleNotFoundError: cupy`, follow the installation steps above, then rerun the training command.
 
 [Previous (tqdm Quick Notes)](tqdm.md) | [Back to Project Tour](../project-tour.md) | [Next (Matplotlib Quick Notes)](matplotlib.md)
-
-[Back to Project Tour](../project-tour.md)
-
----
-

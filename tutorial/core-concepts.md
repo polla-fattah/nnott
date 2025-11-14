@@ -2,12 +2,6 @@
 title: Core Concepts
 ---
 
-
-
-# 04 · Core Concepts Hub
-
-
-
 This hub links to detailed tutorials covering every foundational concept used throughout the sandbox. Read them sequentially for a full theory-to-code walkthrough or jump directly to the topic you need.
 
 ## Concept Index
@@ -23,9 +17,7 @@ This hub links to detailed tutorials covering every foundational concept used th
 | Convolution mechanics | im2col/col2im, depthwise conv, squeeze-excite, global pooling | [Decode convolution](concepts/convolution.md) |
 | Backend utilities | NumPy ↔ CuPy switching, device helpers, diagnostics | [Manage backends](concepts/backend.md) |
 
----
-
-**How to use this hub**
+### How to use this hub
 
 1. Pick the concept you’re studying in lecture.
 2. Read the linked tutorial to see the theory mapped onto exact files/functions.
@@ -37,6 +29,3 @@ With these guides, you can build a solid foundation before diving into the large
 
 1. **Gradient trace:** Follow the scalar implementation through a single training example (set batch size to 1). Write down the value of each neuron’s activation and gradient, then verify they match the equations in the Fundamentals and Loss tutorials.
 2. **Optimizer swap experiment:** Using the Optimizer hub, implement both Adam and SGD+momentum for the same network, run each for 3 epochs, and plot/compare their loss histories. Summarize the behavioral differences you observed.
-
----
-

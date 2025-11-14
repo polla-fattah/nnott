@@ -1,11 +1,6 @@
 ---
-title: Activation Zoo
+title: Activation Functions
 ---
-
-
-
-# Activation Zoo
-
 
 
 This page compares the activation functions implemented across the project so you can see how they shape neuron outputs and gradients. Each section includes the definition, derivative, usage context, and a quick snippet for plotting in a notebook.
@@ -77,8 +72,6 @@ def gelu(x):
 y = gelu(x)
 ```
 
----
-
 ## Quick Comparison Table
 
 | Activation | Pros | Cons | Typical Use |
@@ -87,8 +80,6 @@ y = gelu(x)
 | Leaky ReLU | Keeps a gradient on negative side | Extra hyperparameter \( \alpha \) | Experimental variants of CNN/MLP |
 | SiLU / Swish | Smooth, empirically strong in small nets | Slightly more compute (sigmoid) | EfficientNet-style blocks |
 | GELU | Smooth, transformer-friendly | More expensive to compute, derivative complicated | ConvNeXt, transformer-inspired CNNs |
-
----
 
 ## Suggested Notebook Exercise
 
@@ -99,6 +90,3 @@ y = gelu(x)
 Document your observations in the notebook so you can refer back when choosing activations for custom architectures.
 
 [Back to Core Concepts](core-concepts.md)
-
----
-

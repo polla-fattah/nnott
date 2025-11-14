@@ -1,12 +1,6 @@
 ---
-title: Implementations And Hardware
+title: Implementations & Hardware
 ---
-
-
-
-# 02 · Implementations & Hardware
-
-
 
 One of the sandbox’s teaching pillars is showing how the same neural network evolves from naïve loops to GPU-accelerated kernels. This module explains each stage and how to toggle between CPU and GPU execution.
 
@@ -69,6 +63,3 @@ Understanding these tiers equips you to reason about both the *what* (network ma
 
 1. **Benchmark the tiers:** Time one epoch of the scalar, vectorized, and convolutional implementations (use `scripts/quickstart_*` if you prefer). Record the wall-clock duration and explain the speed differences in your own words.
 2. **Backend toggle drill:** Run `python convolutional/main.py resnet18 --epochs 1 --batch-size 64` twice—once with `--gpu`, once without. Note the runtime, GPU utilization (via `nvidia-smi`), and any startup warnings. Summarize the steps the backend layer took to select the device.
-
----
-

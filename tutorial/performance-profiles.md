@@ -2,17 +2,9 @@
 title: Performance Profiles
 ---
 
-
-
-# Performance Profiles
-
-
-
 Use this page as a reference for typical training times and accuracies across architectures. The numbers below were collected on a representative development machine (Intel i7-11700K CPU, NVIDIA RTX 3060 GPU) using the default settings from the main scripts. Your hardware may differ, but these baselines help you spot configurations that are way off.
 
 > **Note:** Times include only the training loop (not plotting or misclassification collection). GPU runs use `--gpu` with CuPy installed.
-
----
 
 ## Scalar & Vectorized MLPs
 
@@ -24,8 +16,6 @@ Use this page as a reference for typical training times and accuracies across ar
 | Vectorized MLP `(256,128)` | 5 | 128 | ~3 min | ~40 sec | 97–98% |
 
 **Checklist:** If your vectorized run takes 10× longer than the table, double-check that NumPy is built for your CPU, or switch to `--gpu`.
-
----
 
 ## Convolutional Architectures (CPU vs GPU)
 
@@ -40,19 +30,16 @@ Use this page as a reference for typical training times and accuracies across ar
 | ConvNeXt-Tiny | 1 | 64 | ~30 min | ~4 min | 99% |
 
 **Notes:**
+
 - Times scale roughly linearly with epochs. Multiply by 5 for a 5-epoch estimate.
 - GPU speedup varies with architecture depth; bigger models benefit more.
 - For ResNet/ConvNeXt, consider enabling gradient clipping (`--grad-clip 5`) to avoid rare divergence.
-
----
 
 ## Quick Guidance
 
 - **CPU vs GPU delta:** Expect 4–8× speedups for CNNs. If the GPU run is slower than CPU, check that CuPy is actually active (look for “GPU backend enabled via CuPy” message).
 - **Accuracy sanity check:** All networks should exceed 98% on MNIST after 1–2 epochs. Significantly lower accuracy usually indicates missing normalization, mislabeled data, or an incorrect architecture configuration.
 - **Batch size impact:** Doubling the batch size roughly halves the number of steps per epoch but may hurt generalization slightly. Monitor accuracy when changing it.
-
----
 
 ## Lab Exercise
 
@@ -61,6 +48,3 @@ Use this page as a reference for typical training times and accuracies across ar
 3. Share your findings with classmates to build a classroom-wide performance reference.
 
 [Back to Project Tour](project-tour.md)
-
----
-

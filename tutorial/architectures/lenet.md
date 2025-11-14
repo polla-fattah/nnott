@@ -1,13 +1,10 @@
 ---
-title: Lenet
+title: LeNet-5 (1998)
 ---
-
-# LeNet-5 (1998)
-
 
 
 ![LeNet-5 diagram](https://en.wikipedia.org/wiki/LeNet#/media/File:LeNet-5_architecture.svg)
-<sub>Figure credit: Yann LeCun et al., via Wikipedia (CC BY-SA 3.0).</sub>
+Figure credit: Yann LeCun et al., via Wikipedia (CC BY-SA 3.0).
 
 ## Historical Context
 
@@ -42,12 +39,8 @@ In this project, the implementation mirrors the original layout but uses ReLU ac
 
 - [LeNet on Wikipedia](https://en.wikipedia.org/wiki/LeNet)
 
-
 [Previous (EfficientNet-Lite0 (2019))](efficientnet-lite0.md) | [Back to Gallery](../architecture-gallery.md) | [Next (ResNet-18 (2015))](resnet18.md)
 
 [Back to Architecture Gallery](../architecture-gallery.md)
 
 [Previous (EfficientNet-Lite0 (2019))](efficientnet-lite0.md) | [Back to Gallery](../architecture-gallery.md) | [Next (ResNet-18 (2015))](resnet18.md)
-
----
-

@@ -1,13 +1,10 @@
 ---
-title: Convnext Tiny
+title: ConvNeXt-Tiny (2022)
+
 ---
 
-# ConvNeXt-Tiny (2022)
-
-
-
 ![ConvNeXt block](https://upload.wikimedia.org/wikipedia/commons/0/03/ConvNeXt_block.png)
-<sub>Figure credit: Liu et al., via Wikipedia (CC BY 4.0).</sub>
+Figure credit: Liu et al., via Wikipedia (CC BY 4.0).
 
 ## Historical Context
 
@@ -43,12 +40,8 @@ Facebook AI’s ConvNeXt revisits CNN design in the age of Vision Transformers. 
 - [ConvNeXt summary (Emergent Mind)](https://www.emergentmind.com/topics/convnext-backbone)
 - [“A ConvNet for the 2020s” paper](https://arxiv.org/abs/2201.03545)
 
-
 [Previous (Baseline CNN)](baseline.md) | [Back to Gallery](../architecture-gallery.md) | [Next (EfficientNet-Lite0 (2019))](efficientnet-lite0.md)
 
 [Back to Architecture Gallery](../architecture-gallery.md)
 
 [Previous (Baseline CNN)](baseline.md) | [Back to Gallery](../architecture-gallery.md) | [Next (EfficientNet-Lite0 (2019))](efficientnet-lite0.md)
-
----
-

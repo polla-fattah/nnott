@@ -2,12 +2,6 @@
 title: Architecture Gallery
 ---
 
-
-
-# 05 · Architecture Gallery & Dataset Notes
-
-
-
 This page is the entry point to detailed write-ups for every convolutional network in the sandbox. Each model now has its own tutorial with block diagrams, teaching angles, experiment prompts, and references.
 
 ## Dataset: MNIST (Handwritten Digits)
@@ -18,8 +12,6 @@ This page is the entry point to detailed write-ups for every convolutional netwo
 - **Reference:** Read the [data README](https://github.com/polla-fattah/nnott/tree/main/data#readme) for provenance and tips on creating validation splits.
 
 MNIST is intentionally simple so you can compare architectures rapidly without long training cycles.
-
----
 
 ## Architecture Index
 
@@ -32,8 +24,6 @@ MNIST is intentionally simple so you can compare architectures rapidly without l
 | ResNet-18 | 2015 residual learning | [Read notes](architectures/resnet18.md) |
 | EfficientNet-Lite0 | 2019 MBConv + SE efficiency | [Read notes](architectures/efficientnet-lite0.md) |
 | ConvNeXt-Tiny | 2022 transformer-inspired CNN | [Read notes](architectures/convnext-tiny.md) |
-
----
 
 ## Comparing Architectures
 
@@ -50,14 +40,9 @@ Use this quick matrix to guide experiments:
 
 Document observations—accuracy curves, loss plots, and timing tables make excellent lab artifacts.
 
----
-
 Pick any architecture above to dive into its dedicated tutorial and explore how the theoretical concepts translate into actual code.
-
 
 ### Lab Challenges
 
 1. **Historical timeline:** Choose three architectures from different eras (e.g., LeNet, VGG16, ConvNeXt) and create a comparison table that lists their parameter counts, training tricks, and MNIST accuracy after 2 epochs. Highlight one design idea that evolved between each pair.
 2. **Residual vs non-residual:** Train ResNet-18 for one epoch, then (for learning purposes only) comment out the skip connections in a single block and retrain. Document how loss and accuracy change, and explain why the skip path matters.
-
----

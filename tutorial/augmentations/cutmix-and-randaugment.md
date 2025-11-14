@@ -1,11 +1,6 @@
 ---
-title: Cutmix And Randaugment
+title: CutMix & RandAugment
 ---
-
-[Overview](overview.md) | [Tutorial Hub](../index.md)
-
-# CutMix & RandAugment
-
 
 Advanced policies such as CutMix and RandAugment are now first-class citizens inside `common/augment.py`. This page explains how to configure and validate them.
 

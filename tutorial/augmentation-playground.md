@@ -2,12 +2,6 @@
 title: Augmentation Playground
 ---
 
-
-
-# Augmentation Playground
-
-
-
 All three trainers now share the same augmentation stack via [`common/augment.py`](https://github.com/polla-fattah/nnott/blob/main/common/augment.py). The CLI front-ends expose identical knobs (see the new [Augmentation Overview](augmentations/overview.md) plus detailed guides on [geometry](augmentations/geometry.md), [noise & cutout](augmentations/noise-and-cutout.md), and [CutMix/RandAugment](augmentations/cutmix-and-randaugment.md)).
 
 ```bash
@@ -50,8 +44,6 @@ loss, grad = combine_losses(logits, yb, mix_meta)
 - When `mix_meta` contains CutMix metadata, both targets are blended during forward/backward passes.
 - Scalar training requests `allow_label_mix=False`, so CutMix is skipped while other transforms still apply.
 
----
-
 ## 2. Adding Rotations (Small Angles)
 
 For MNIST, minor rotations (±10°) keep label semantics intact. You can extend `_augment_batch`:
@@ -92,8 +84,6 @@ def rotate_nearest(img, angle):
 
 **Warning:** Rotations beyond ~15° may distort digits into different classes (e.g., “6” vs “9”). Always sanity-check a few augmented images using `plot_image_grid`.
 
----
-
 ## 3. Horizontal/Vertical Flips (Use with Care)
 
 - **Digits:** Horizontal flips can change semantics (“2” vs mirrored “2”). Avoid flips unless labels and dataset allow it.
@@ -108,8 +98,6 @@ if xp.random.rand() < 0.1:
 
 Always ask: *Does a flipped image still belong to the same class?* If not, skip the augmentation.
 
----
-
 ## 4. Additive Noise
 
 ```python
@@ -120,8 +108,6 @@ if noise_std > 0:
 ```
 
 - Works well when data are standardized (mean≈0, std≈1). Adjust clipping bounds accordingly.
-
----
 
 ## 5. Cutout (Random Occlusion)
 
@@ -139,8 +125,6 @@ def apply_cutout(img, size=5):
 ```
 
 - **Caution:** On small digits, large cutouts might erase the entire number. Start with size 3–5.
-
----
 
 ## 6. CutMix and RandAugment
 
@@ -172,8 +156,6 @@ python vectorized/main.py \
 
 Tune probabilities/thresholds per dataset and always visualize random batches to ensure semantics hold.
 
----
-
 ## Lab Challenge
 
 1. Use `--no-augment` as a baseline, then enable rotations + flips on each trainer. Record accuracy changes in the [Experiment Log](experiment-log-template.md).
@@ -183,5 +165,3 @@ Tune probabilities/thresholds per dataset and always visualize random batches to
 Remember: augmentations are only beneficial when they preserve label semantics. Evaluate carefully before enabling them in production runs.
 
 [Back to Project Tour](project-tour.md)
-
----

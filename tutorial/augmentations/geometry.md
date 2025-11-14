@@ -1,11 +1,6 @@
 ---
-title: Geometry
+title: Geometric Augmentations
 ---
-
-[Overview](overview.md) | [Tutorial Hub](../index.md)
-
-# Geometric Augmentations
-
 
 This page covers the spatial transforms supported by `common/augment.py`: pixel shifts, rotations, and flips.
 

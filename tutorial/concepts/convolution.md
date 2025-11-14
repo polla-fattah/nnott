@@ -1,10 +1,6 @@
 ---
-title: Convolution
+title: Convolution Mechanics & Advanced Blocks
 ---
-
-# Convolution Mechanics & Advanced Blocks
-
-
 
 Convolutional layers are the backbone of the CNN architectures in this sandbox. This note explains how they’re implemented via `im2col`, and how advanced blocks build on top of them.
 
@@ -52,6 +48,3 @@ Convolutional layers are the backbone of the CNN architectures in this sandbox. 
 [Previous (Backend & Device Utilities)](backend.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Fundamentals: Neurons, Layers, Networks)](fundamentals.md)
 
 [Back to Core Concepts](../core-concepts.md)
-
----
-

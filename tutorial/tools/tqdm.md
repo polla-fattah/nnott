@@ -1,8 +1,6 @@
 ---
-title: Tqdm
+title: TQDM
 ---
-
-# tqdm Quick Notes
 
 ## Why You Need tqdm
 

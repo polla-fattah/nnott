@@ -1,9 +1,6 @@
 ---
-title: Lookahead
+title: Lookahead Optimizer
 ---
-
-# Lookahead Optimizer
-
 
 
 Lookahead (Zhang et al., 2019) is a meta-optimizer that wraps any base optimizer (SGD, Adam, etc.) with a slow/fast weight coupling. It improves stability and often yields better generalization with little overhead.
@@ -19,6 +16,7 @@ Lookahead (Zhang et al., 2019) is a meta-optimizer that wraps any base optimizer
 3. Fast weights continue training from the interpolated position.
 
 Parameters:
+
 - \( k \): number of inner steps before synchronization (default 5).
 - \( \alpha \): interpolation factor (default 0.5).
 
@@ -67,6 +65,3 @@ Vectorized MLPs currently require a code edit (wrap the optimizer manually as in
 [Previous (Gradient Clipping)](gradient-clipping.md) | [Back to Optimizers Hub](../concepts/optimizers.md) | [Next (Stochastic Gradient Descent (SGD) & Momentum)](sgd.md)
 
 [Back to Optimizers Hub](../concepts/optimizers.md)
-
----
-

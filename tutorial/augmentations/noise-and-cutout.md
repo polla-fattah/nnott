@@ -1,11 +1,6 @@
 ---
-title: Noise And Cutout
+title: Noise & Cutout
 ---
-
-[Overview](overview.md) | [Tutorial Hub](../index.md)
-
-# Noise & Cutout
-
 
 Two powerful regularizers live in `common/augment.py`: additive Gaussian noise and cutout masks. Both are dataset-friendly when tuned carefully.
 
@@ -24,6 +19,7 @@ python3 vectorized/main.py --epochs 1 --batch-size 64 \
 ```
 
 Tips:
+
 - Standardize inputs first (the default `DataUtility.load_data()` already zero-centers and scales MNIST images).
 - Use `plot_loss` to monitor whether noise slows convergence; reduce `noise_prob` if the model struggles early on.
 

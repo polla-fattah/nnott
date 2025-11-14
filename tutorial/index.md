@@ -1,8 +1,6 @@
 ---
-title: Tutorial Hub
+title: Neural Networks Optimization and Training Tutorial - Hub
 ---
-
-# Neural Networks Optimization and Training Tutorial - Hub
 
 Welcome to the learning guide for the **Neural Networks Optimization and Training Tutorial (NNOTT)** sandbox. This tutorial series walks through the entire project—why it exists, how it is organized, and how to run meaningful experiments. Use the navigation list below to jump to the relevant module.
 
@@ -25,7 +23,7 @@ Welcome to the learning guide for the **Neural Networks Optimization and Trainin
 | [Architecture Gallery](architecture-gallery.md) | Background on each CNN (LeNet, AlexNet, VGG16, ResNet18, EfficientNet-Lite0, ConvNeXt-Tiny) plus dataset considerations. |
 | [Debug Playbook](debug-playbook.md) | Troubleshooting recipes for environment, GPU, data, and training issues. |
 | [Optimization Lab](optimization-lab.md) | Jupyter walkthrough for tuning learning rate, gradient clipping, Lookahead, and batch sizes. |
-| [Activation Zoo](activation-zoo.md) | Side-by-side comparison of ReLU, LeakyReLU, SiLU, and GELU with sample plots. |
+| [Activation Functions](activation-functions.md) | Side-by-side comparison of ReLU, LeakyReLU, SiLU, and GELU with sample plots. |
 | [Experiment Log Template](experiment-log-template.md) | Markdown template for recording dataset, hyperparameters, results, and observations. |
 | [Performance Profiles](performance-profiles.md) | Typical training times and accuracies (CPU vs GPU) for each architecture. |
 | [Augmentation Playground](augmentation-playground.md) | Central entry point for augmentation CLI flags plus deep dives on geometry, noise/cutout, CutMix, and RandAugment. |
@@ -47,5 +45,3 @@ Welcome to the learning guide for the **Neural Networks Optimization and Trainin
 | Scalar loop walkthrough | `python scripts/quickstart_scalar.py --scenario basic --plot` |
 
 > Tip: Each module is self-contained. Read them in order or jump directly to the section that matches your current work.
-
----

@@ -1,10 +1,6 @@
 ---
-title: Regularization
+title: Regularization & Augmentation
 ---
-
-# Regularization & Augmentation
-
-
 
 Regularization techniques keep models from overfitting and improve generalization. This sandbox implements several classic methods that you can toggle or modify.
 
@@ -45,6 +41,3 @@ Regularization techniques keep models from overfitting and improve generalizatio
 [Previous (Optimizer Hub)](optimizers.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Activation Functions)](activations.md)
 
 [Back to Core Concepts](../core-concepts.md)
-
----
-

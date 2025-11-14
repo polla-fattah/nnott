@@ -2,12 +2,6 @@
 title: Experiment Log Template
 ---
 
-
-
-# Experiment Log Template
-
-
-
 Use this template to record every meaningful run. Consistent notes help you reproduce results, compare hyperparameters, and communicate findings to classmates or your instructor.
 
 ```markdown
@@ -61,6 +55,3 @@ Use this template to record every meaningful run. Consistent notes help you repr
 Fill in one template per experiment and store them under `experiments/` or a personal `notes/` folder. Reviewing these logs before exams or project milestones will save you hours of guesswork.
 
 [Back to Running Experiments](running-experiments.md)
-
----
-

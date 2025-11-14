@@ -1,10 +1,6 @@
 ---
-title: Backend
+title: Backend & Device Utilities
 ---
-
-# Backend & Device Utilities
-
-
 
 The sandbox abstracts CPU and GPU execution through a lightweight backend layer so the same code can run on either NumPy or CuPy. Understanding this layer helps you debug device issues and write backend-agnostic modules.
 
@@ -46,6 +42,3 @@ The sandbox abstracts CPU and GPU execution through a lightweight backend layer 
 [Previous (Activation Functions)](activations.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Convolution Mechanics & Advanced Blocks)](convolution.md)
 
 [Back to Core Concepts](../core-concepts.md)
-
----
-

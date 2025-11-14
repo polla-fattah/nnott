@@ -2,12 +2,6 @@
 title: Running Experiments
 ---
 
-
-
-# 03 - Running Experiments
-
-
-
 This guide walks you through training the provided models, timing CPU vs GPU runs, and saving/loading checkpoints. Mix and match the commands to design your own lab exercises.
 
 ## Prerequisites
@@ -17,8 +11,6 @@ This guide walks you through training the provided models, timing CPU vs GPU run
 3. From the project root, run the commands below.
 
 > Label sanity checks now run automatically. If your labels are one-hot matrices or include values outside `[0, 9]`, the trainer raises a descriptive error before training starts.
-
----
 
 ## Reproducibility & Monitoring
 
@@ -42,8 +34,6 @@ python vectorized/main.py --epochs 3 --batch-size 128 --gpu \
 python convolutional/main.py baseline --epochs 3 --batch-size 64 --gpu \
     --seed 99 --val-split 0.1 --confusion-matrix
 ```
-
----
 
 ## Fully Connected Networks
 
@@ -85,8 +75,8 @@ python vectorized/main.py --epochs 3 --batch-size 128 --gpu \
 
 All CNNs share the entry point `convolutional/main.py`. The `arch` positional argument selects the model:
 
-```
-baseline, lenet, alexnet, vgg16, resnet18, efficientnet_lite0, convnext_tiny
+```bash
+    baseline, lenet, alexnet, vgg16, resnet18, efficientnet_lite0, convnext_tiny
 ```
 
 ### Quick Comparison (2 epochs each)
@@ -153,11 +143,10 @@ Each script exposes flags (`--epochs`, `--batch-size`, dataset overrides, `--plo
 | Resume CNN run with scheduler | `python convolutional/main.py resnet18 --epochs 3 --batch-size 128 --gpu --save checkpoints/resnet18_cosine.npz --lr-schedule cosine --lr-decay-min 1e-5` (then rerun with `--load checkpoints/resnet18_cosine.npz --epochs 2` to continue) |
 
 Tips:
+
 - Watch the printed LR each epoch to confirm the schedule is working.
 - Validation loss only appears when `--val-split > 0` (or the quick-start scenario carries a validation set); early stopping relies on that signal.
 - For rapid prototyping, drop `--epochs` to 2–3 and disable plotting. Once a schedule looks promising, bump epochs and re-enable visualizations.
-
----
 
 ## Suggested Experiments
 
@@ -174,8 +163,8 @@ Document your findings: timing tables, accuracy plots, or misclassification grid
 ## Lab Challenges
 
 1. **Optimizer notebook:** Use `scripts/quickstart_vectorized.py --scenario optimizer-compare --plot` to capture loss curves for SGD and Adam on the same dataset. Write a short paragraph explaining which optimizer converged faster and why.
+
 2. **ResNet stress test:** Run `python scripts/quickstart_convolutional.py --scenario gpu-fast --lookahead --plot` on a GPU (or CPU fallback). Measure runtime, GPU memory usage, and final accuracy, then describe one tweak that could reduce memory pressure.
----
 
 ## Troubleshooting Checklist
 
@@ -185,6 +174,3 @@ Document your findings: timing tables, accuracy plots, or misclassification grid
 - **Long training time on large nets:** start with `--epochs 1` to smoke-test your setup before longer runs.
 
 With these commands and experiments, you can turn the sandbox into a full hands-on lab sequence.
-
----
-

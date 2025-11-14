@@ -2,12 +2,9 @@
 title: Vgg16
 ---
 
-# VGG-16 (2014)
-
-
-
 ![VGG16 block diagram](https://en.wikipedia.org/wiki/VGGNet#/media/File:VGG_module_architecture.svg)
-<sub>Figure credit: Simonyan & Zisserman, via Wikipedia (CC BY 4.0).</sub>
+
+Figure credit: Simonyan & Zisserman, via Wikipedia (CC BY 4.0).
 
 ## Historical Context
 
@@ -42,12 +39,8 @@ K. Simonyan and A. Zisserman’s VGG-16 demonstrated that a deep network built f
 - [“Very Deep Convolutional Networks for Large-Scale Image Recognition”](https://arxiv.org/abs/1409.1556)
 - [VGG16 overview (Great Learning blog)](https://medium.com/@mygreatlearning/everything-you-need-to-know-about-vgg16-7315defb5918)
 
-
 [Previous (ResNet-18 (2015))](resnet18.md) | [Back to Gallery](../architecture-gallery.md) | [Next (AlexNet (2012))](alexnet.md)
 
 [Back to Architecture Gallery](../architecture-gallery.md)
 
 [Previous (ResNet-18 (2015))](resnet18.md) | [Back to Gallery](../architecture-gallery.md) | [Next (AlexNet (2012))](alexnet.md)
-
----
-

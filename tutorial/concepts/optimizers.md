@@ -2,10 +2,6 @@
 title: Optimizers
 ---
 
-# Optimizer Hub
-
-
-
 This hub links to dedicated tutorials for every optimization technique used in the sandbox. Each page covers the math, implementation details, CLI integration, and original references so you can understand *why* and *how* to tune training dynamics.
 
 ## Available Tutorials
@@ -22,6 +18,3 @@ Use these references when you need to justify optimizer choices in lab reports o
 [Previous (Normalization Layers)](normalization.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Regularization & Augmentation)](regularization.md)
 
 [Back to Core Concepts](../core-concepts.md)
-
----
-

@@ -41,7 +41,7 @@ nav:
   - Backend Selector: concepts/backend.md
   - Convolution Basics: concepts/convolution.md
 - Scalar & Vectorized Labs:
-  - Activation Zoo: activation-zoo.md
+  - Activation Functions: activation-Functions.md
   - Experiment Log Template: experiment-log-template.md
   - Optimization Lab: optimization-lab.md
   - Debug Playbook: debug-playbook.md

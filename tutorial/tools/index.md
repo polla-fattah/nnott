@@ -2,8 +2,6 @@
 title: Tools Overview
 ---
 
-# Tools Quick Notes
-
 This section collects short references for the utility libraries used throughout the project. Jump directly to the page you need:
 
 - [NumPy](numpy.md) — array operations, broadcasting, and tips for writing vectorized code.

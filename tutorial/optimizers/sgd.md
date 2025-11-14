@@ -1,10 +1,6 @@
 ---
-title: Sgd
+title: Stochastic Gradient Descent (SGD) & Momentum
 ---
-
-# Stochastic Gradient Descent (SGD) & Momentum
-
-
 
 SGD is the workhorse of neural-network training. This note covers the math behind plain SGD, Polyak momentum, and Nesterov accelerated gradient (NAG), shows how they’re implemented in this repo, and explains how to wire them into the CLI.
 
@@ -78,6 +74,3 @@ trainer.train(X_train, y_train, epochs=20, batch_size=128)
 [Previous (Lookahead Optimizer)](lookahead.md) | [Back to Optimizers Hub](../concepts/optimizers.md) | [Next (Adam (Adaptive Moment Estimation))](adam.md)
 
 [Back to Optimizers Hub](../concepts/optimizers.md)
-
----
-

@@ -1,10 +1,6 @@
 ---
-title: Adam
+title: Adam (Adaptive Moment Estimation)
 ---
-
-# Adam (Adaptive Moment Estimation)
-
-
 
 Adam combines momentum and adaptive learning rates by keeping first and second moment estimates of gradients. Introduced by Kingma & Ba (2014), it became the default optimizer for many deep-learning tasks thanks to its robustness and minimal tuning.
 
@@ -41,18 +37,21 @@ Default hyperparameters: \( \beta_1 = 0.9 \), \( \beta_2 = 0.999 \), \( \epsilon
 ### Usage Examples
 
 **Convolutional CLI (default)**:
+
 ```python
 optim = Adam(lr=5e-4, weight_decay=1e-4)
 trainer = ConvTrainer(model, optim, num_classes=10, grad_clip_norm=args.grad_clip)
 ```
 
 **Vectorized MLP**:
+
 ```python
 trainer = VTrainer(model, Adam(lr=1e-3), grad_clip_norm=1.0)
 trainer.train(X_train, y_train, epochs=10, batch_size=128)
 ```
 
 **With Lookahead wrapper**:
+
 ```python
 from vectorized.optim import Adam, Lookahead
 optim = Lookahead(Adam(lr=5e-4, weight_decay=1e-4), k=5, alpha=0.5)
@@ -71,6 +70,3 @@ optim = Lookahead(Adam(lr=5e-4, weight_decay=1e-4), k=5, alpha=0.5)
 [Previous (Stochastic Gradient Descent (SGD) & Momentum)](sgd.md) | [Back to Optimizers Hub](../concepts/optimizers.md) | [Next (Gradient Clipping)](gradient-clipping.md)
 
 [Back to Optimizers Hub](../concepts/optimizers.md)
-
----
-

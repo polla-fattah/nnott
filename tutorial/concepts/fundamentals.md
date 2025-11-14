@@ -1,10 +1,6 @@
 ---
-title: Fundamentals
+title: "Fundamentals: Neurons, Layers, Networks"
 ---
-
-# Fundamentals: Neurons, Layers, Networks
-
-
 
 Understanding neural networks starts with the simplest building block: a neuron that performs a weighted sum followed by a non-linearity. This section connects the theory to the code in the scalar and vectorized implementations.
 
@@ -40,6 +36,3 @@ Understanding neural networks starts with the simplest building block: a neuron 
 [Previous (Convolution Mechanics & Advanced Blocks)](convolution.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Loss & Softmax: Cross-Entropy from Logits)](loss-and-softmax.md)
 
 [Back to Core Concepts](../core-concepts.md)
-
----
-

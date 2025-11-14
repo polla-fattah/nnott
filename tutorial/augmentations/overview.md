@@ -1,11 +1,6 @@
 ---
-title: Overview
+title: Augmentation Overview
 ---
-
-[Tutorial Hub](../index.md) | [Augmentation Playground](../augmentation-playground.md)
-
-# Augmentation Overview
-
 
 All three training stacks (scalar, vectorized, convolutional) now consume a shared configuration from `common/augment.py`. That means every CLI exposes the same switches—once you learn a flag, you can use it everywhere.
 
