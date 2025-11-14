@@ -17,6 +17,31 @@ This guide walks you through training the provided models, timing CPU vs GPU run
 
 ---
 
+## Reproducibility & Monitoring
+
+- All entry points accept `--seed` (default `42`). Set it explicitly (`--seed 1337`) to make shuffling, augmentation, and optimizer initialization deterministic across runs.
+- `--val-split` (default `0.1`) automatically carves out a validation subset from the training data; epoch logs now include both train and validation loss/accuracy.
+- Append `--confusion-matrix` to dump class-by-class counts after the final test evaluation—handy for spotting systematic mistakes.
+
+Example one-liners:
+
+```bash
+# Scalar MLP with deterministic split + confusion matrix
+python scalar/main.py --epochs 2 --batch-size 64 \
+    --seed 7 --val-split 0.15 --confusion-matrix
+
+# Vectorized MLP on GPU with CutMix + RandAugment, logging val metrics
+python vectorized/main.py --epochs 3 --batch-size 128 --gpu \
+    --seed 2024 --val-split 0.2 --augment-cutmix-prob 0.3 \
+    --augment-randaug-layers 2 --confusion-matrix
+
+# CNN baseline with validation monitoring and confusion matrix
+python convolutional/main.py baseline --epochs 3 --batch-size 64 --gpu \
+    --seed 99 --val-split 0.1 --confusion-matrix
+```
+
+---
+
 ## Fully Connected Networks
 
 ### Scalar Debug Mode
@@ -49,7 +74,7 @@ python vectorized/main.py --epochs 3 --batch-size 128 --gpu \
 - `--leaky-negative-slope` controls the slope when you include LeakyReLU in the activation list.
 - `--lr-schedule cosine` / `--lr-schedule reduce_on_plateau` plus `--min-lr`, `--reduce-factor`, `--reduce-patience`, and `--reduce-delta` let you test advanced learning-rate policies; pair them with `--early-stopping --early-patience 4 --early-delta 5e-4` to halt when validation loss stalls (validation split driven by `--val-split`, default 0.1).
 - Augmentation knobs are now built-in: tweak `--augment-max-shift`, `--augment-rotate-deg`, `--augment-hflip-prob`, `--augment-vflip-prob`, `--augment-noise-std`, etc., or disable everything with `--no-augment`.
-- Toggle `--gpu` to route every operation through CuPy without editing network code.
+- Note: the vectorized trainer is CPU/NumPy-only today. Use the convolutional entrypoint (`convolutional/main.py --gpu ...`) when you need CuPy acceleration.
 
 ---
 

@@ -66,6 +66,10 @@ class VTrainer:
         self.criterion_per_sample = CrossEntropyLoss(reduction="none")
         self.num_classes = num_classes
         self.loss_history = []
+        self.train_history = []
+        self.val_history = []
+        self.train_history = []
+        self.val_history = []
         self.grad_clip_norm = grad_clip_norm
         self.scheduler = self._build_scheduler(lr_scheduler_config)
         self.early_cfg = early_stopping_config or {}
@@ -104,6 +108,7 @@ class VTrainer:
             Xs = X[idx]
             ys = y[idx]
             total = 0.0
+            train_correct = 0
             batches = (n + batch_size - 1) // batch_size
             if verbose:
                 print(f"\n=== Epoch {epoch}/{epochs} ===")
@@ -127,21 +132,27 @@ class VTrainer:
                 logits = self.model.forward(Xb)
                 loss, grad_logits = self._compute_loss_and_grad(logits, yb, mix_meta)
                 total += float(loss) * len(Xb)
+                preds = np.argmax(logits, axis=1)
+                train_correct += int(np.sum(preds == yb))
                 self.model.backward(grad_logits)
                 self._clip_gradients(self.model.parameters())
                 self.optimizer.step(self.model.parameters(), batch_size=len(Xb))
 
             avg = total / n
             self.loss_history.append(avg)
-            val_loss = None
+            train_acc = train_correct / n
+            self.train_history.append({"loss": avg, "acc": train_acc})
+            val_loss = val_acc = None
             if X_val is not None and y_val is not None:
-                val_loss = self._evaluate_loss(X_val, y_val, batch_size)
-            self._maybe_adjust_lr(epoch, epochs, val_loss if val_loss is not None else avg)
+                val_loss, val_acc = self._evaluate_metrics(X_val, y_val, batch_size)
+                self.val_history.append({"loss": val_loss, "acc": val_acc})
+            metric_for_sched = val_loss if val_loss is not None else avg
+            self._maybe_adjust_lr(epoch, epochs, metric_for_sched)
             stopped = self._maybe_early_stop(val_loss)
             if verbose:
-                msg = f"Epoch {epoch}/{epochs} - Avg Loss: {avg:.6f}"
+                msg = f"Epoch {epoch}/{epochs} - Train Loss: {avg:.6f} | Train Acc: {train_acc*100:.2f}%"
                 if val_loss is not None:
-                    msg += f" | Val Loss: {val_loss:.6f}"
+                    msg += f" | Val Loss: {val_loss:.6f} | Val Acc: {val_acc*100:.2f}%"
                 if hasattr(self.optimizer, 'lr'):
                     msg += f" | LR: {self.optimizer.lr:.6g}"
                 print(msg)
@@ -153,15 +164,16 @@ class VTrainer:
         if verbose:
             print(f"\nTotal training time: {time.time()-t0:.2f}s")
 
-    def evaluate(self, X_test, y_test):
-        if hasattr(self.model, 'eval'):
-            self.model.eval()
-        X = np.asarray(X_test, dtype=np.float32)
-        y = self._prepare_labels(y_test)
-        logits = self.model.forward(X)
-        preds = np.argmax(logits, axis=1)
-        acc = float((preds == y).mean())
-        print(f"Test accuracy: {acc*100:.2f}%")
+    def evaluate(self, X_test, y_test, batch_size=256, return_preds=False):
+        metrics = self._evaluate_metrics(X_test, y_test, batch_size, collect_preds=return_preds)
+        if return_preds:
+            (loss, acc), preds, targets = metrics
+        else:
+            loss, acc = metrics
+            preds = targets = None
+        print(f"Test loss: {loss:.6f} | Test accuracy: {acc*100:.2f}%")
+        if return_preds:
+            return acc, preds, targets
         return acc
 
     def misclassification_data(self, X_test, y_test, max_images=None):
@@ -265,13 +277,17 @@ class VTrainer:
         self.early_wait += 1
         return self.early_wait >= patience
 
-    def _evaluate_loss(self, X, y, batch_size):
+    def _evaluate_metrics(self, X, y, batch_size, collect_preds=False):
+        if X is None or y is None or len(X) == 0:
+            return (0.0, 0.0) if not collect_preds else ((0.0, 0.0), np.array([]), np.array([]))
         if hasattr(self.model, 'eval'):
             self.model.eval()
         X = np.asarray(X, dtype=np.float32)
         y = self._prepare_labels(y)
         n = len(X)
         total = 0.0
+        correct = 0
+        preds_all = [] if collect_preds else None
         for start in range(0, n, batch_size):
             end = min(start + batch_size, n)
             xb = X[start:end]
@@ -279,9 +295,17 @@ class VTrainer:
             logits = self.model.forward(xb)
             loss = self.criterion.forward(logits, yb)
             total += float(loss) * len(xb)
+            preds = np.argmax(logits, axis=1)
+            correct += int(np.sum(preds == yb))
+            if collect_preds:
+                preds_all.append(preds)
         if hasattr(self.model, 'train'):
             self.model.train()
-        return total / n
+        loss = total / n
+        acc = correct / n
+        if collect_preds:
+            return (loss, acc), np.concatenate(preds_all), y.copy()
+        return loss, acc
 
     def _build_augment_cfg(self, config):
         if config:

@@ -9,6 +9,8 @@ if __package__ is None or __package__ == "":
 
 from common.data_utils import DataUtility
 from common.augment import build_augment_config
+from common.seed import set_global_seed
+from common.metrics import confusion_matrix, format_confusion_matrix
 from scalar.network import Network
 from scalar.trainer import Trainer
 
@@ -42,6 +44,18 @@ def parse_args():
         help="Dropout probability per hidden layer (single value or comma list). Use 0 to disable.",
     )
     parser.add_argument(
+        "--val-split",
+        type=float,
+        default=0.1,
+        help="Fraction of training data used for validation (0 disables).",
+    )
+    parser.add_argument("--seed", type=int, default=42, help="Global RNG seed for reproducibility.")
+    parser.add_argument(
+        "--confusion-matrix",
+        action="store_true",
+        help="Print confusion matrix after test evaluation.",
+    )
+    parser.add_argument(
         "--no-augment",
         action="store_true",
         help="Disable training-time data augmentations.",
@@ -68,15 +82,22 @@ def parse_args():
 
 def main():
     args = parse_args()
+    set_global_seed(args.seed)
 
     # 1. Load the data
     data_util = DataUtility(data_dir="data")
     X_train, y_train, X_test, y_test = data_util.load_data()
+    val_split = min(max(args.val_split, 0.0), 0.4)
+    X_train, y_train, X_val, y_val = DataUtility.train_val_split(
+        X_train, y_train, val_fraction=val_split, seed=args.seed
+    )
 
     print("Train images:", X_train.shape)   # (60000, 28, 28)
     print("Train labels:", y_train.shape)   # (60000,)
     print("Test images:", X_test.shape)     # (10000, 28, 28)
     print("Test labels:", y_test.shape)     # (10000,)
+    if X_val is not None:
+        print("Validation images:", X_val.shape)
 
     # 1b. Show some of the training data visually
     sample_pairs = DataUtility.sample_images(X_train, y_train, num_samples=10)
@@ -126,13 +147,19 @@ def main():
         epochs=args.epochs,
         batch_size=args.batch_size,
         verbose=True,
+        val_data=(X_val, y_val) if X_val is not None else None,
         augment=not args.no_augment,
     )
     if args.plot:
         plot_loss(trainer.loss_history)
 
     # 3. Test the result (evaluate)
-    trainer.evaluate(X_test, y_test)
+    if args.confusion_matrix:
+        acc, preds, targets = trainer.evaluate(X_test, y_test, return_preds=True)
+        cm = confusion_matrix(preds, targets, num_classes)
+        print("Confusion Matrix:\n" + format_confusion_matrix(cm))
+    else:
+        trainer.evaluate(X_test, y_test)
 
     # 3b. Show 10 random test images with true/pred labels
     pred_samples = trainer.get_random_predictions(X_test, y_test, num_samples=10)

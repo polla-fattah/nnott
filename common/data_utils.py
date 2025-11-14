@@ -72,6 +72,25 @@ class DataUtility:
         """Deprecated: returns sample data instead of plotting."""
         return cls.sample_images(images, labels, num_samples=num_samples)
 
+    @staticmethod
+    def train_val_split(X, y, val_fraction=0.1, seed=None):
+        """Split arrays into train/validation subsets."""
+        val_fraction = float(max(0.0, min(0.9, val_fraction)))
+        if val_fraction <= 0.0 or len(X) == 0:
+            return X, y, None, None
+        n_total = len(X)
+        n_val = max(1, int(n_total * val_fraction))
+        rng = np.random.default_rng(seed)
+        indices = np.arange(n_total)
+        rng.shuffle(indices)
+        val_idx = indices[:n_val]
+        train_idx = indices[n_val:]
+        X_val = X[val_idx]
+        y_val = y[val_idx]
+        X_train = X[train_idx]
+        y_train = y[train_idx]
+        return X_train, y_train, X_val, y_val
+
 
 def ensure_label_format(labels, num_classes):
     """

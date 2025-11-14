@@ -9,6 +9,8 @@ if __package__ is None or __package__ == "":
 
 from common.data_utils import DataUtility
 from common.augment import build_augment_config
+from common.seed import set_global_seed
+from common.metrics import confusion_matrix, format_confusion_matrix
 from vectorized.modules import (
     ACTIVATION_KINDS,
     Sequential,
@@ -49,6 +51,12 @@ def parse_args():
         default="0.2",
         help="Dropout probabilities per hidden layer (single value or comma list). Use 0 to disable.",
     )
+    parser.add_argument(
+        "--gpu",
+        action="store_true",
+        help="Placeholder flag for compatibility; vectorized trainer currently runs on CPU only.",
+    )
+    parser.add_argument("--seed", type=int, default=42, help="Global RNG seed for reproducibility.")
     parser.add_argument(
         "--no-augment",
         action="store_true",
@@ -116,26 +124,33 @@ def parse_args():
         action="store_true",
         help="Enable matplotlib plots (disabled by default). Collecting misclassifications requires an extra full pass and can be slow.",
     )
+    parser.add_argument(
+        "--confusion-matrix",
+        action="store_true",
+        help="Print the confusion matrix after evaluating on the test set.",
+    )
     return parser.parse_args()
 
 
 def main(opts=None):
     args = opts or parse_args()
+    set_global_seed(args.seed)
+    if args.gpu:
+        print("[WARN] --gpu requested but the vectorized trainer currently runs on CPU (NumPy) only.")
 
     # Load and flatten
     X_train, y_train, X_test, y_test = DataUtility("data").load_data()
+    val_split = min(max(args.val_split, 0.0), 0.4)
+    X_train, y_train, X_val, y_val = DataUtility.train_val_split(
+        X_train, y_train, val_fraction=val_split, seed=args.seed
+    )
     X_train = X_train.reshape(len(X_train), -1).astype(np.float32)
     X_test = X_test.reshape(len(X_test), -1).astype(np.float32)
+    if X_val is not None:
+        X_val = X_val.reshape(len(X_val), -1).astype(np.float32)
 
-    val_split = min(max(args.val_split, 0.0), 0.4)
-    X_val = y_val = None
-    if val_split > 0.0:
-        n_val = max(1, int(len(X_train) * val_split))
-        X_val = X_train[-n_val:]
-        y_val = y_train[-n_val:]
-        X_train = X_train[:-n_val]
-        y_train = y_train[:-n_val]
-        print(f"[Data] Using {n_val} samples ({val_split*100:.1f}%) for validation. Training set size: {len(X_train)}")
+    if X_val is not None:
+        print(f"[Data] Validation split: {len(X_val)} samples ({val_split*100:.1f}%). Training size: {len(X_train)}")
 
     hidden_sizes = parse_hidden_sizes(args.hidden_sizes, default=(256, 128, 64))
     hidden_acts = parse_activation_list(
@@ -199,7 +214,12 @@ def main(opts=None):
     if args.plot:
         plot_loss(trainer.loss_history)
 
-    trainer.evaluate(X_test, y_test)
+    if args.confusion_matrix:
+        acc, preds, targets = trainer.evaluate(X_test, y_test, return_preds=True)
+        cm = confusion_matrix(preds, targets, num_classes=10)
+        print("Confusion Matrix:\n" + format_confusion_matrix(cm))
+    else:
+        trainer.evaluate(X_test, y_test)
     imgs, preds, trues, total = trainer.misclassification_data(X_test, y_test, max_images=100)
     if args.plot and total:
         if confirm_heavy_step("collect and plot misclassifications"):

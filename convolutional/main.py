@@ -9,6 +9,8 @@ if __package__ is None or __package__ == "":
 
 from common.data_utils import DataUtility
 from common.augment import build_augment_config
+from common.seed import set_global_seed
+from common.metrics import confusion_matrix, format_confusion_matrix
 import common.backend as backend
 from convolutional.architectures import (
     LeNet,
@@ -56,6 +58,8 @@ def parse_args():
     )
     parser.add_argument("--epochs", type=int, default=8, help="Number of training epochs.")
     parser.add_argument("--batch-size", type=int, default=64, help="Mini-batch size.")
+    parser.add_argument("--val-split", type=float, default=0.1, help="Fraction of training data for validation (0 disables).")
+    parser.add_argument("--seed", type=int, default=42, help="Global RNG seed for reproducibility.")
     parser.add_argument("--save", type=str, help="Path to save trained weights.")
     parser.add_argument("--load", type=str, help="Load weights before training/evaluation.")
     parser.add_argument("--no-augment", action="store_true", help="Disable train-time augmentation.")
@@ -108,6 +112,11 @@ def parse_args():
         action="store_true",
         help="Collect misclassified samples after evaluation; adds a full pass over the test set.",
     )
+    parser.add_argument(
+        "--confusion-matrix",
+        action="store_true",
+        help="Print the confusion matrix on the test set after evaluation.",
+    )
     return parser.parse_args()
 
 
@@ -121,9 +130,17 @@ def main(opts=None):
         except RuntimeError as exc:
             print(f"[WARN] {exc} Falling back to CPU backend.")
             backend.use_cpu()
+    set_global_seed(args.seed)
     X_train, y_train, X_test, y_test = DataUtility("data").load_data()
+    val_split = min(max(args.val_split, 0.0), 0.4)
+    X_train, y_train, X_val, y_val = DataUtility.train_val_split(
+        X_train, y_train, val_fraction=val_split, seed=args.seed
+    )
     X_train = X_train.reshape(-1, 1, 28, 28).astype(np.float32)
     X_test = X_test.reshape(-1, 1, 28, 28).astype(np.float32)
+    if X_val is not None:
+        X_val = X_val.reshape(-1, 1, 28, 28).astype(np.float32)
+        print(f"[Data] Validation split: {len(X_val)} samples ({val_split*100:.1f}%).")
 
     model = build_cnn(arch_name, num_classes=10)
     optim = Adam(lr=5e-4, weight_decay=1e-4)
@@ -167,6 +184,7 @@ def main(opts=None):
             epochs=args.epochs,
             batch_size=args.batch_size,
             verbose=True,
+            val_data=(X_val, y_val) if X_val is not None else None,
             augment=not args.no_augment,
         )
         if args.plot:
@@ -174,7 +192,12 @@ def main(opts=None):
     else:
         print("Skipping training as requested.")
 
-    trainer.evaluate(X_test, y_test)
+    if args.confusion_matrix:
+        acc, preds, targets = trainer.evaluate(X_test, y_test, return_preds=True)
+        cm = confusion_matrix(preds, targets, num_classes=10)
+        print("Confusion Matrix:\n" + format_confusion_matrix(cm))
+    else:
+        trainer.evaluate(X_test, y_test)
     if args.show_misclassified or args.plot:
         imgs, preds, trues, total = trainer.collect_misclassifications(X_test, y_test, max_images=25)
         if args.plot and total:
