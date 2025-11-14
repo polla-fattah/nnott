@@ -9,21 +9,21 @@ Adam combines momentum and adaptive learning rates by keeping first and second m
 For gradient \( g_t \) at step \( t \):
 
 1. First moment (mean):
-   \[
+   $$
    m_t = \beta_1 m_{t-1} + (1 - \beta_1) g_t
-   \]
+   $$
 2. Second moment (uncentered variance):
-   \[
+   $$
    v_t = \beta_2 v_{t-1} + (1 - \beta_2) g_t^2
-   \]
+   $$
 3. Bias correction:
-   \[
+   $$
    \hat{m}_t = \frac{m_t}{1 - \beta_1^t}, \qquad \hat{v}_t = \frac{v_t}{1 - \beta_2^t}
-   \]
+   $$
 4. Parameter update:
-   \[
+   $$
    w_{t+1} = w_t - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
-   \]
+   $$
 
 Default hyperparameters: \( \beta_1 = 0.9 \), \( \beta_2 = 0.999 \), \( \epsilon = 10^{-8} \).
 
@@ -66,7 +66,3 @@ optim = Lookahead(Adam(lr=5e-4, weight_decay=1e-4), k=5, alpha=0.5)
 ## Reference
 
 - Kingma, D. P., & Ba, J. (2014). “Adam: A Method for Stochastic Optimization.” arXiv:1412.6980. <https://arxiv.org/abs/1412.6980>
-
-[Previous (Stochastic Gradient Descent (SGD) & Momentum)](sgd.md) | [Back to Optimizers Hub](../concepts/optimizers.md) | [Next (Gradient Clipping)](gradient-clipping.md)
-
-[Back to Optimizers Hub](../concepts/optimizers.md)

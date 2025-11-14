@@ -41,7 +41,7 @@ nav:
   - Backend Selector: concepts/backend.md
   - Convolution Basics: concepts/convolution.md
 - Scalar & Vectorized Labs:
-  - Activation Functions: activation-Functions.md
+  - Activation Functions: activation-functions.md
   - Experiment Log Template: experiment-log-template.md
   - Optimization Lab: optimization-lab.md
   - Debug Playbook: debug-playbook.md
@@ -77,26 +77,38 @@ nav:
 theme:
   name: material
   palette:
-    - scheme: slate
-      primary: blue grey
-      accent: cyan
-      toggle:
-        icon: material/brightness-7
-        name: Switch to soft daylight
-    - scheme: default
-      primary: grey
-      accent: light blue
-      toggle:
-        icon: material/brightness-4
-        name: Switch to moonlit mode
+  - scheme: slate
+    primary: blue grey
+    accent: cyan
+    toggle:
+      icon: material/brightness-7
+      name: Switch to soft daylight
+  - scheme: default
+    primary: grey
+    accent: light blue
+    toggle:
+      icon: material/brightness-4
+      name: Switch to moonlit mode
   font:
     text: Inter
     code: Fira Code
   features:
-    - navigation.instant
-    - navigation.sections
-    - content.code.copy
-    - navigation.expand
-    - navigation.footer
+  - navigation.instant
+  - navigation.sections
+  - content.code.copy
+  - navigation.expand
+  - navigation.footer
 extra_css:
 - stylesheets/extra.css
+markdown_extensions:
+- admonition
+- pymdownx.highlight
+- pymdownx.superfences
+- pymdownx.arithmatex:
+    generic: true
+- toc:
+    permalink: true
+extra_javascript:
+- javascripts/mathjax.js
+- https://polyfill.io/v3/polyfill.min.js?features=es6
+- https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
