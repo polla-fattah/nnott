@@ -192,5 +192,3 @@ Document your findings: timing tables, accuracy plots, or misclassification grid
 - **FileNotFoundError for data:** verify the `.npy` files exist under `data/`.
 - **Out-of-memory during misclassification plots:** reduce the visualization batch size or run on CPU; the helper in `convolutional/main.py` already requests batched predictions, but huge grids can still consume memory.
 - **Long training time on large nets:** start with `--epochs 1` to smoke-test your setup before longer runs.
-
-With these commands and experiments, you can turn the sandbox into a full hands-on lab sequence.

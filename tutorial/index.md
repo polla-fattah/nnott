@@ -43,36 +43,3 @@ Welcome to the learning guide for the **Neural Networks Optimization and Trainin
 | Visualize misclassifications | `python vectorized/main.py --epochs 2 --batch-size 64 --plot` (answer "y" when prompted) **or** `python convolutional/main.py baseline --plot --show-misclassified` (confirm the extra pass) |
 | Stress-test CuPy/GPU | `python scripts/test_cupy.py --stress-seconds 10 --stress-size 4096` |
 | Scalar loop walkthrough | `python scripts/quickstart_scalar.py --scenario basic --plot` |
-
-!!! tip "How to read this"
-    Each module is self-contained. Read them in order or jump directly to the section that matches your current work.
-
-
-=== "JavaScript"
-
-    ```javascript
-    console.log("Hello World")
-    ```
-
-    !!! note "Test this"
-        This block uses the classic note style.
-
-=== "Python"
-
-    ```python
-    print("Hi world")
-    ```
-
-    !!! info "Test That"
-        This collapsible block now uses an `info` style to contrast with the note.
-
-=== "Rust"
-
-    ```rust
-    fn main() {
-        println!("Hello from Rust!");
-    }
-    ```
-
-    !!! tip "Extra test"
-        Add as many languages as you need—this tab simply exercises another admonition type.
