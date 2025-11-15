@@ -163,5 +163,3 @@ Tune probabilities/thresholds per dataset and always visualize random batches to
 3. Experiment with RandAugment (layers/magnitude sweep) and discuss whether it helps small digit datasets or if it simply injects too much randomness.
 
 Remember: augmentations are only beneficial when they preserve label semantics. Evaluate carefully before enabling them in production runs.
-
-[Back to Project Tour](project-tour.md)

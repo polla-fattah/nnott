@@ -38,4 +38,3 @@ Residual Networks (ResNets) by He et al. solved the “degradation” problem: d
 
 - [“Deep Residual Learning for Image Recognition”](https://arxiv.org/abs/1512.03385)
 - [Analytics Vidhya summary of skip connections](https://www.analyticsvidhya.com/blog/2021/08/all-you-need-to-know-about-skip-connections/)
-

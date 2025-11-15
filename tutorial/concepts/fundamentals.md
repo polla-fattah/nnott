@@ -32,4 +32,3 @@ Understanding neural networks starts with the simplest building block: a neuron 
 
 - A solid grasp of neurons/layers demystifies backpropagation. Once you understand the scalar implementation, every other architecture becomes a composition of the same primitives.
 - Debugging tip: if a deep model misbehaves, temporarily swap in a smaller Sequential stack to isolate which module behaves unexpectedly.
-

@@ -38,4 +38,3 @@ In this project, the implementation mirrors the original layout but uses ReLU ac
 ## References
 
 - [LeNet on Wikipedia](https://en.wikipedia.org/wiki/LeNet)
-

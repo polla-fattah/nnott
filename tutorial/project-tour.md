@@ -156,5 +156,3 @@ The directory split mirrors the learning journey:
 4. **Rely on shared utilities** in `common/` so all implementations behave the same.
 
 Refer back to this map whenever you encounter a concept in the tutorial; the table above tells you which file to inspect next.
-
----

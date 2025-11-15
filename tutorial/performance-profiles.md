@@ -46,5 +46,3 @@ Use this page as a reference for typical training times and accuracies across ar
 1. Pick two architectures (one shallow, one deep) and reproduce the 1-epoch CPU and GPU timings on your own hardware. Record the numbers in your [Experiment Log](experiment-log-template.md).
 2. Explain any deviations from the table (e.g., slower GPU due to integrated graphics, faster CPU due to more cores).
 3. Share your findings with classmates to build a classroom-wide performance reference.
-
-[Back to Project Tour](project-tour.md)

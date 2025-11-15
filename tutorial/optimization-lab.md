@@ -122,5 +122,3 @@ imgs, preds, trues, total = trainer.misclassification_data(X_test, y_test, max_i
 4. **Batch size stress-test:** Keep epochs constant but sweep batch sizes `[32, 64, 128, 256]`. Track runtime and accuracy to discuss the trade-offs.
 
 Save the notebook as `notebooks/optimization_lab.ipynb` (or similar) so future students can open it, rerun the cells, and add their own observations.
-
-[Back to Running Experiments](running-experiments.md)

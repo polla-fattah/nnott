@@ -39,5 +39,3 @@ Facebook AI’s ConvNeXt revisits CNN design in the age of Vision Transformers. 
 
 - [ConvNeXt summary (Emergent Mind)](https://www.emergentmind.com/topics/convnext-backbone)
 - [“A ConvNet for the 2020s” paper](https://arxiv.org/abs/2201.03545)
-
-

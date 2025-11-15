@@ -88,4 +88,3 @@ y = gelu(x)
 3. Feed a random batch through each activation and measure the mean/std of the outputs—note how ReLU truncates negatives while SiLU/GELU keep them but dampen their magnitude.
 
 Document your observations in the notebook so you can refer back when choosing activations for custom architectures.
-

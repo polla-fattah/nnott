@@ -45,5 +45,3 @@ Each command exercises the exact same augmentation backend; only the model/optim
 - [Geometry Ops (shift/rotate/flip)](geometry.md)
 - [Noise + Cutout](noise-and-cutout.md)
 - [CutMix + RandAugment](cutmix-and-randaugment.md)
-
-Keep the [Augmentation Playground](../augmentation-playground.md) open for quick experiments and lab ideas.
