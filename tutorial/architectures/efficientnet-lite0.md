@@ -33,7 +33,6 @@ EfficientNet (Tan & Le) introduced a family of models that scale depth, width, a
 - Inspect per-layer parameter counts using `sum(p[0].size for p in model.parameters())`.
 - Demonstrate the impact of SE by temporarily disabling the squeeze-excite block (for exploratory learning).
 
-## References
-
-- [EfficientNet-Lite overview (Luxonis)](https://models.luxonis.com/luxonis/efficientnet-lite/fdacd30d-97f4-4c55-843f-8b7e872d8acb)
-- [“EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks”](https://arxiv.org/abs/1905.11946)
+!!! info "References"
+    - [EfficientNet-Lite overview (Luxonis)](https://models.luxonis.com/luxonis/efficientnet-lite/fdacd30d-97f4-4c55-843f-8b7e872d8acb)
+    - [“EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks”](https://arxiv.org/abs/1905.11946)

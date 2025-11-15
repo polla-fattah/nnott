@@ -34,7 +34,6 @@ K. Simonyan and A. Zisserman’s VGG-16 demonstrated that a deep network built f
 - Train with and without dropout to see overfitting on MNIST.
 - Time a single epoch on CPU vs GPU to quantify acceleration benefits.
 
-## References
-
-- [“Very Deep Convolutional Networks for Large-Scale Image Recognition”](https://arxiv.org/abs/1409.1556)
-- [VGG16 overview (Great Learning blog)](https://medium.com/@mygreatlearning/everything-you-need-to-know-about-vgg16-7315defb5918)
+!!! info "References"
+    - [“Very Deep Convolutional Networks for Large-Scale Image Recognition”](https://arxiv.org/abs/1409.1556)
+    - [VGG16 overview (Great Learning blog)](https://medium.com/@mygreatlearning/everything-you-need-to-know-about-vgg16-7315defb5918)

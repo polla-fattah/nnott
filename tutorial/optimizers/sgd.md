@@ -65,8 +65,7 @@ trainer.train(X_train, y_train, epochs=20, batch_size=128)
 - Combine with `--grad-clip` to keep updates stable at higher learning rates.
 - Use the default learning-rate schedule (`ConvTrainer._default_multistep_schedule`) to drop the LR mid-training, mimicking classic ImageNet training recipes.
 
-## References
-
-- Robbins, H., & Monro, S. (1951). “A Stochastic Approximation Method.” *Annals of Mathematical Statistics*. <https://projecteuclid.org/journals/annals-of-mathematics/volume-22/issue-3/A-Stochastic-Approximation-Method/10.1214/aoms/1177729586.full>
-- Polyak, B. T. (1964). “Some methods of speeding up the convergence of iteration methods.” *USSR Computational Mathematics and Mathematical Physics*. <https://doi.org/10.1016/0041-5553(64)90137-5>
-- Nesterov, Y. (1983). “A method for solving the convex programming problem with convergence rate O(1/k^2).” *Soviet Mathematics Doklady*.
+!!! info "References"
+    - Robbins, H., & Monro, S. (1951). “A Stochastic Approximation Method.” *Annals of Mathematical Statistics*. <https://projecteuclid.org/journals/annals-of-mathematics/volume-22/issue-3/A-Stochastic-Approximation-Method/10.1214/aoms/1177729586.full>
+    - Polyak, B. T. (1964). “Some methods of speeding up the convergence of iteration methods.” *USSR Computational Mathematics and Mathematical Physics*. <https://doi.org/10.1016/0041-5553(64)90137-5>
+    - Nesterov, Y. (1983). “A method for solving the convex programming problem with convergence rate O(1/k^2).” *Soviet Mathematics Doklady*.

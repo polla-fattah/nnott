@@ -16,7 +16,9 @@ One of the sandbox’s teaching pillars is showing how the same neural network e
 - **Location:** `vectorized/`
 - **What it teaches:** Rewrites the scalar math using NumPy arrays (and optionally CuPy). Files such as `vectorized/modules.py` and `vectorized/optim.py` replace loops with matrix multiplications and broadcasted operations.
 - **Benefits:** Orders-of-magnitude faster while remaining mathematically identical to the scalar version. Demonstrates why linear algebra primitives are the workhorse of deep learning.
-- **Tip:** Run `python vectorized/main.py --epochs 5 --batch-size 128` and compare runtime against the scalar script.
+
+!!! tip "Runtime comparison"
+    Run `python vectorized/main.py --epochs 5 --batch-size 128` and compare runtime against the scalar script.
 
 ## Convolutional Stack
 

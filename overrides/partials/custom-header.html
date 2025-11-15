@@ -1,0 +1,9 @@
+{% set header_links = config.extra.header_links | default([
+], true) %}
+{% if header_links %}
+  <nav class="custom-header-links" role="navigation" aria-label="Site shortcuts">
+    {% for link in header_links %}
+      <a class="custom-header-links__item" href="{{ link.href }}">{{ link.label }}</a>
+    {% endfor %}
+  </nav>
+{% endif %}

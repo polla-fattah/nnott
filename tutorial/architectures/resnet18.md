@@ -34,7 +34,6 @@ Residual Networks (ResNets) by He et al. solved the “degradation” problem: d
 - Comment out the skip addition (for a single block) to see training degrade—great for illustrating why residuals matter.
 - Compare training curves to VGG16; ResNet should converge faster/stabler despite similar depth.
 
-## References
-
-- [“Deep Residual Learning for Image Recognition”](https://arxiv.org/abs/1512.03385)
-- [Analytics Vidhya summary of skip connections](https://www.analyticsvidhya.com/blog/2021/08/all-you-need-to-know-about-skip-connections/)
+!!! info "References"
+    - [“Deep Residual Learning for Image Recognition”](https://arxiv.org/abs/1512.03385)
+    - [Analytics Vidhya summary of skip connections](https://www.analyticsvidhya.com/blog/2021/08/all-you-need-to-know-about-skip-connections/)

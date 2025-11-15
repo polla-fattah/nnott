@@ -35,6 +35,5 @@ In this project, the implementation mirrors the original layout but uses ReLU ac
 - Train for 1–2 epochs with and without augmentation to see robustness changes.
 - Compare training time vs BaselineCNN or modern nets to emphasize efficiency.
 
-## References
-
-- [LeNet on Wikipedia](https://en.wikipedia.org/wiki/LeNet)
+!!! info "References"
+    - [LeNet on Wikipedia](https://en.wikipedia.org/wiki/LeNet)

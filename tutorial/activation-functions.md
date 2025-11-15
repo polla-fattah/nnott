@@ -5,7 +5,8 @@ title: Activation Functions
 
 This page compares the activation functions implemented across the project so you can see how they shape neuron outputs and gradients. Each section includes the definition, derivative, usage context, and a quick snippet for plotting in a notebook.
 
-> For interactive plots, copy the sample code cells into a Jupyter notebook (see the Optimization Lab). The equations below match what you’ll find in `convolutional/modules.py`.
+!!! tip "Interactive plots"
+    Copy the sample code cells into a Jupyter notebook (see the Optimization Lab) for interactive plots. The equations below match what you’ll find in `convolutional/modules.py`.
 
 ---
 

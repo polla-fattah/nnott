@@ -35,7 +35,6 @@ Facebook AI’s ConvNeXt revisits CNN design in the age of Vision Transformers. 
 - Visualize misclassifications: does ConvNeXt make different mistakes compared to classic nets?
 - Try running just one stage (trim the architecture) to observe how depth affects performance.
 
-## References
-
-- [ConvNeXt summary (Emergent Mind)](https://www.emergentmind.com/topics/convnext-backbone)
-- [“A ConvNet for the 2020s” paper](https://arxiv.org/abs/2201.03545)
+!!! info "References"
+    - [ConvNeXt summary (Emergent Mind)](https://www.emergentmind.com/topics/convnext-backbone)
+    - [“A ConvNet for the 2020s” paper](https://arxiv.org/abs/2201.03545)

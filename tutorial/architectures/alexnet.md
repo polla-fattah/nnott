@@ -33,6 +33,5 @@ AlexNet, created by Alex Krizhevsky, Ilya Sutskever, and Geoffrey Hinton, won th
 - Train for a few epochs on GPU and compare accuracy/time to LeNet.
 - Toggle dropout or change batch size to study optimization stability.
 
-## References
-
-- [AlexNet on Wikipedia](https://en.wikipedia.org/wiki/AlexNet)
+!!! info "References"
+    - [AlexNet on Wikipedia](https://en.wikipedia.org/wiki/AlexNet)

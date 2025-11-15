@@ -1,7 +1,5 @@
 # Neural Networks Optimization and Training Tutorial (NNOTT)
 
-**Links:** [Tutorial Hub](tutorial/README.md) | [Code Base](https://github.com/polla-fattah/nnott/) | [License](LICENSE)
-
 This repository is an educational sandbox for implementing neural networks from first principles. You’ll find:
 
 - **Scalar MLPs** built entirely with Python loops for maximum transparency.
@@ -63,7 +61,3 @@ A new documentation portal is being built with [MkDocs Material](https://squidfu
    The generated HTML will be in the `site/` directory (ignored by git).
 
 The original markdown content is still available under `old_tutorial/` until the migration is complete.
-
----
-
-MIT License | [Tutorial Hub](tutorial/README.md) | [Code Base](https://github.com/polla-fattah/nnott/)

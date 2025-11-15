@@ -5,24 +5,17 @@ repo_url: https://github.com/polla-fattah/nnott
 repo_name: NNOTT
 copyright: MIT License
 extra:
-  announcement: '<a href="https://polla.dev">MyHome</a> |
-
-    <a href="README.md">Tutorial Hub</a> |
-
-    <a href="https://github.com/polla-fattah/nnott/">Code Base</a> |
-
-    <a href="architecture-gallery.md">Architectures</a>
-
-    '
+  footer_links:
+  - label: Architectures
+    href: architecture-gallery.md
+  - label: Tutorial Hub
+    href: README.md
+  - label: Code Base
+    href: https://github.com/polla-fattah/nnott/
   social:
   - icon: fontawesome/brands/github
     link: https://github.com/polla-fattah/nnott
   generator: false
-  footer: "<div class=\"md-footer-meta__inner\">\n  <div class=\"md-footer-meta__item\"\
-    >\n    MIT License \xA9 <a href=\"https://polla.dev\">Polla</a>\n  </div>\n  <div\
-    \ class=\"md-footer-meta__item\">\n    <a href=\"architecture-gallery.md\">Architectures</a>\
-    \ \xB7\n    <a href=\"README.md\">Tutorial Hub</a> \xB7\n    <a href=\"https://github.com/polla-fattah/nnott/\"\
-    >Code Base</a>\n  </div>\n</div>\n"
 nav:
 - Home: index.md
 - Getting Started:
@@ -76,6 +69,9 @@ nav:
   - About This Tutorial: about.md
 theme:
   name: material
+  custom_dir: overrides
+  logo: images/nnott-logo.svg
+  favicon: images/nnott-favicon.svg
   palette:
   - scheme: slate
     primary: blue grey
@@ -106,6 +102,9 @@ markdown_extensions:
 - pymdownx.superfences
 - pymdownx.arithmatex:
     generic: true
+- pymdownx.tabbed:
+    alternate_style: true
+- pymdownx.details
 - toc:
     permalink: true
 extra_javascript:

@@ -1,0 +1,25 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="nnott-favicon-gradient" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4DD0E1" />
+      <stop offset="1" stop-color="#82B1FF" />
+    </linearGradient>
+    <linearGradient id="nnott-favicon-gradient-light" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#B3E5FC" />
+      <stop offset="1" stop-color="#BBDEFB" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#0B1F2A" />
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <g stroke="url(#nnott-favicon-gradient)" stroke-width="5">
+      <path d="M18 46V18" />
+      <path d="M18 18L38 46" />
+      <path d="M38 46V18" />
+    </g>
+    <g stroke="url(#nnott-favicon-gradient-light)" stroke-width="2">
+      <path d="M18 46V18" />
+      <path d="M18 18L38 46" />
+      <path d="M38 46V18" />
+    </g>
+  </g>
+</svg>

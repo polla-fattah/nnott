@@ -10,7 +10,8 @@ This lab is designed to be run inside a Jupyter notebook so you can tweak hyperp
 2. In the repository root, launch `jupyter notebook`.
 3. Create a new notebook and copy increasingly complex cells from the sections below.
 
-> Tip: Keep the repo’s virtual environment activated before launching Jupyter so it can import project modules.
+!!! tip "Environment reminder"
+    Keep the repo’s virtual environment activated before launching Jupyter so it can import project modules.
 
 ## 1. Setup & Data Loading
 
