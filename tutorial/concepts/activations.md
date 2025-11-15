@@ -47,6 +47,4 @@ Activations introduce non-linearity so networks can model complex decision bound
 2. Replace ReLU with another activation in a small model and observe training behavior.
 3. Compare gradient distributions (using prints or histograms) to see why smooth activations can aid optimization.
 
-[Previous (Regularization & Augmentation)](regularization.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Backend & Device Utilities)](backend.md)
 
-[Back to Core Concepts](../core-concepts.md)

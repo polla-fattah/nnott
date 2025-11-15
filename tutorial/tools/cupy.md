@@ -75,5 +75,3 @@ Save as `scripts/install_cupy.sh`, run `bash scripts/install_cupy.sh 12x`, and y
 - Turn GPUs off by simply omitting `--gpu` or running `python -c "from common import backend; backend.use_cpu()"` before importing trainers.
 
 If `--gpu` raises `ModuleNotFoundError: cupy`, follow the installation steps above, then rerun the training command.
-
-[Previous (tqdm Quick Notes)](tqdm.md) | [Back to Project Tour](../project-tour.md) | [Next (Matplotlib Quick Notes)](matplotlib.md)

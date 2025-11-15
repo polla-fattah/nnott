@@ -15,6 +15,3 @@ This hub links to dedicated tutorials for every optimization technique used in t
 
 Use these references when you need to justify optimizer choices in lab reports or debug training behavior.
 
-[Previous (Normalization Layers)](normalization.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Regularization & Augmentation)](regularization.md)
-
-[Back to Core Concepts](../core-concepts.md)

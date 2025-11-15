@@ -37,9 +37,3 @@ EfficientNet (Tan & Le) introduced a family of models that scale depth, width, a
 
 - [EfficientNet-Lite overview (Luxonis)](https://models.luxonis.com/luxonis/efficientnet-lite/fdacd30d-97f4-4c55-843f-8b7e872d8acb)
 - [“EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks”](https://arxiv.org/abs/1905.11946)
-
-[Previous (ConvNeXt-Tiny (2022))](convnext-tiny.md) | [Back to Gallery](../architecture-gallery.md) | [Next (LeNet-5 (1998))](lenet.md)
-
-[Back to Architecture Gallery](../architecture-gallery.md)
-
-[Previous (ConvNeXt-Tiny (2022))](convnext-tiny.md) | [Back to Gallery](../architecture-gallery.md) | [Next (LeNet-5 (1998))](lenet.md)

@@ -39,8 +39,3 @@ In this project, the implementation mirrors the original layout but uses ReLU ac
 
 - [LeNet on Wikipedia](https://en.wikipedia.org/wiki/LeNet)
 
-[Previous (EfficientNet-Lite0 (2019))](efficientnet-lite0.md) | [Back to Gallery](../architecture-gallery.md) | [Next (ResNet-18 (2015))](resnet18.md)
-
-[Back to Architecture Gallery](../architecture-gallery.md)
-
-[Previous (EfficientNet-Lite0 (2019))](efficientnet-lite0.md) | [Back to Gallery](../architecture-gallery.md) | [Next (ResNet-18 (2015))](resnet18.md)

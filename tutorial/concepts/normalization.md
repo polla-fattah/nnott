@@ -38,6 +38,3 @@ Normalization stabilizes activations, speeds up training, and often improves gen
 2. Swap BatchNorm for LayerNorm in a block to see how it affects performance on small batches.
 3. Log running means/vars for BatchNorm to understand how they converge over time.
 
-[Previous (Loss & Softmax: Cross-Entropy from Logits)](loss-and-softmax.md) | [Back to Core Concepts](../core-concepts.md) | [Next (Optimizer Hub)](optimizers.md)
-
-[Back to Core Concepts](../core-concepts.md)

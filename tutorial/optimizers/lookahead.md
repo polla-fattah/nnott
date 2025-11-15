@@ -62,6 +62,3 @@ Vectorized MLPs currently require a code edit (wrap the optimizer manually as in
 
 - Zhang, M., Lucas, J., Hinton, G., & Ba, J. (2019). “Lookahead Optimizer: k steps forward, 1 step back.” arXiv:1907.08610. <https://arxiv.org/abs/1907.08610>
 
-[Previous (Gradient Clipping)](gradient-clipping.md) | [Back to Optimizers Hub](../concepts/optimizers.md) | [Next (Stochastic Gradient Descent (SGD) & Momentum)](sgd.md)
-
-[Back to Optimizers Hub](../concepts/optimizers.md)

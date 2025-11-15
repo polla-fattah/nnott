@@ -70,7 +70,3 @@ trainer.train(X_train, y_train, epochs=20, batch_size=128)
 - Robbins, H., & Monro, S. (1951). “A Stochastic Approximation Method.” *Annals of Mathematical Statistics*. <https://projecteuclid.org/journals/annals-of-mathematics/volume-22/issue-3/A-Stochastic-Approximation-Method/10.1214/aoms/1177729586.full>
 - Polyak, B. T. (1964). “Some methods of speeding up the convergence of iteration methods.” *USSR Computational Mathematics and Mathematical Physics*. <https://doi.org/10.1016/0041-5553(64)90137-5>
 - Nesterov, Y. (1983). “A method for solving the convex programming problem with convergence rate O(1/k^2).” *Soviet Mathematics Doklady*.
-
-[Previous (Lookahead Optimizer)](lookahead.md) | [Back to Optimizers Hub](../concepts/optimizers.md) | [Next (Adam (Adaptive Moment Estimation))](adam.md)
-
-[Back to Optimizers Hub](../concepts/optimizers.md)
