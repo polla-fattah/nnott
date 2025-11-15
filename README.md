@@ -1,6 +1,6 @@
 # Neural Networks Optimization and Training Tutorial (NNOTT)
 
-NNOTT is a hands-on lab for understanding neural networks across multiple implementation tiers: **scalar loops**, **vectorized NumPy/CuPy**, and **production-style convolutional architectures**. Each tier has matching tutorials, scripts, and checkpoints so you can see how the same ideas scale from notebook math to GPU-ready pipelines.
+NNOTT is a hands-on lab for understanding neural networks across multiple implementation tiers: **scalar loops**, **vectorized NumPy/CuPy**, and **production-style convolutional architectures**. Each tier has matching tutorials, scripts, and checkpoints so you can see how the same ideas scale from notebook math to GPU-ready pipelines. Browse the full tutorial portal at **https://polla-fattah.github.io/nnott** (or read the Markdown directly under `tutorial/`).
 
 ## What’s Inside
 
@@ -118,7 +118,7 @@ Serve the tutorial locally through MkDocs (instructions below) or read the Markd
 
 ## Documentation (MkDocs Material)
 
-MkDocs is simply the publishing tool for the tutorial content. To preview it:
+MkDocs is simply the publishing tool for the tutorial content. To preview the same site locally:
 
 ```bash
 pip install mkdocs mkdocs-material pymdown-extensions
